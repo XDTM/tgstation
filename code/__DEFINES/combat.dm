@@ -11,6 +11,36 @@
 #define STAMINA 	"stamina"
 #define BRAIN		"brain"
 
+//Damage classes
+#define DAM_CLASS_NONE		"none"
+
+//Brute
+#define DAM_CLASS_CRUSH 	"crush"
+#define DAM_CLASS_CUT		"cut"
+#define DAM_CLASS_PIERCE	"pierce"
+#define DAM_CLASS_INTERNAL	"internal" //Mostly due to chems
+
+//Burn
+#define DAM_CLASS_ELECTRIC	"electric"
+#define DAM_CLASS_BURN		"burn"
+#define DAM_CLASS_COLD		"cold"
+#define DAM_CLASS_ACID		"acid"
+
+//Toxin
+#define DAM_CLASS_TOXIN "toxin"
+
+//Oxyloss
+#define DAM_CLASS_SUFFOCATION "suffocation"
+
+//Stamina
+#define DAM_CLASS_STAMINA "stamina"
+
+//Cellular
+#define DAM_CLASS_GENETIC	"genetic"
+
+//Special
+#define DAM_CLASS_NECROTIC	"necrotic" //magic death
+
 //bitflag damage defines used for suicide_act
 #define BRUTELOSS 		(1<<0)
 #define FIRELOSS 		(1<<1)

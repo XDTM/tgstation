@@ -7,6 +7,7 @@
 	var/set_obj_flags // ONLY FOR MAPPING: Sets flags from a string list, handled in Initialize. Usage: set_obj_flags = "EMAGGED;!CAN_BE_HIT" to set EMAGGED and clear CAN_BE_HIT.
 
 	var/damtype = BRUTE
+	var/damage_class = DAM_CLASS_CRUSHING
 	var/force = 0
 
 	var/datum/armor/armor

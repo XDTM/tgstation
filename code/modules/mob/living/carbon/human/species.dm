@@ -1415,7 +1415,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 			H.forcesay(GLOB.hit_appends)	//forcesay checks stat already.
 	return TRUE
 
-/datum/species/proc/apply_damage(damage, damagetype = BRUTE, def_zone = null, blocked, mob/living/carbon/human/H)
+/datum/species/proc/apply_damage(damage, damagetype = BRUTE, def_zone = null, blocked, mob/living/carbon/human/H, _damage_class)
 	var/hit_percent = (100-(blocked+armor))/100
 	hit_percent = (hit_percent * (100-H.physiology.damage_resistance))/100
 	if(!damage || hit_percent <= 0)
@@ -1435,29 +1435,29 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 		if(BRUTE)
 			H.damageoverlaytemp = 20
 			if(BP)
-				if(BP.receive_damage(damage * hit_percent * brutemod * H.physiology.brute_mod, 0))
+				if(BP.receive_damage(damage * hit_percent * brutemod * H.physiology.brute_mod, 0, damage_class = _damage_class))
 					H.update_damage_overlays()
 			else//no bodypart, we deal damage with a more general method.
-				H.adjustBruteLoss(damage * hit_percent * brutemod * H.physiology.brute_mod)
+				H.adjustBruteLoss(damage * hit_percent * brutemod * H.physiology.brute_mod, damage_class = _damage_class)
 		if(BURN)
 			H.damageoverlaytemp = 20
 			if(BP)
-				if(BP.receive_damage(0, damage * hit_percent * burnmod * H.physiology.burn_mod))
+				if(BP.receive_damage(0, damage * hit_percent * burnmod * H.physiology.burn_mod, damage_class = _damage_class))
 					H.update_damage_overlays()
 			else
-				H.adjustFireLoss(damage * hit_percent * burnmod * H.physiology.burn_mod)
+				H.adjustFireLoss(damage * hit_percent * burnmod * H.physiology.burn_mod, damage_class = _damage_class)
 		if(TOX)
-			H.adjustToxLoss(damage * hit_percent * H.physiology.tox_mod)
+			H.adjustToxLoss(damage * hit_percent * H.physiology.tox_mod, damage_class = _damage_class)
 		if(OXY)
-			H.adjustOxyLoss(damage * hit_percent * H.physiology.oxy_mod)
+			H.adjustOxyLoss(damage * hit_percent * H.physiology.oxy_mod, damage_class = _damage_class)
 		if(CLONE)
-			H.adjustCloneLoss(damage * hit_percent * H.physiology.clone_mod)
+			H.adjustCloneLoss(damage * hit_percent * H.physiology.clone_mod, damage_class = _damage_class)
 		if(STAMINA)
 			if(BP)
-				if(BP.receive_damage(0, 0, damage * hit_percent * H.physiology.stamina_mod))
+				if(BP.receive_damage(0, 0, damage * hit_percent * H.physiology.stamina_mod, damage_class = _damage_class))
 					H.update_stamina()
 			else
-				H.adjustStaminaLoss(damage * hit_percent * H.physiology.stamina_mod)
+				H.adjustStaminaLoss(damage * hit_percent * H.physiology.stamina_mod, damage_class = _damage_class)
 		if(BRAIN)
 			H.adjustBrainLoss(damage * hit_percent * H.physiology.brain_mod)
 	return 1

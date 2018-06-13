@@ -8,43 +8,43 @@
 	Returns
 	standard 0 if fail
 */
-/mob/living/proc/apply_damage(damage = 0,damagetype = BRUTE, def_zone = null, blocked = FALSE)
+/mob/living/proc/apply_damage(damage = 0,damagetype = BRUTE, def_zone = null, blocked = FALSE, _damage_class)
 	var/hit_percent = (100-blocked)/100
 	if(!damage || (hit_percent <= 0))
 		return 0
 	switch(damagetype)
 		if(BRUTE)
-			adjustBruteLoss(damage * hit_percent)
+			adjustBruteLoss(damage * hit_percent, damage_class = _damage_class)
 		if(BURN)
-			adjustFireLoss(damage * hit_percent)
+			adjustFireLoss(damage * hit_percent, damage_class = _damage_class)
 		if(TOX)
-			adjustToxLoss(damage * hit_percent)
+			adjustToxLoss(damage * hit_percent, damage_class = _damage_class)
 		if(OXY)
-			adjustOxyLoss(damage * hit_percent)
+			adjustOxyLoss(damage * hit_percent, damage_class = _damage_class)
 		if(CLONE)
-			adjustCloneLoss(damage * hit_percent)
+			adjustCloneLoss(damage * hit_percent, damage_class = _damage_class)
 		if(STAMINA)
-			adjustStaminaLoss(damage * hit_percent)
+			adjustStaminaLoss(damage * hit_percent, damage_class = _damage_class)
 		if(BRAIN)
-			adjustBrainLoss(damage * hit_percent)
+			adjustBrainLoss(damage * hit_percent, damage_class = _damage_class)
 	return 1
 
-/mob/living/proc/apply_damage_type(damage = 0, damagetype = BRUTE) //like apply damage except it always uses the damage procs
+/mob/living/proc/apply_damage_type(damage = 0, damagetype = BRUTE, _damage_class) //like apply damage except it always uses the damage procs
 	switch(damagetype)
 		if(BRUTE)
-			return adjustBruteLoss(damage)
+			return adjustBruteLoss(damage, damage_class = _damage_class)
 		if(BURN)
-			return adjustFireLoss(damage)
+			return adjustFireLoss(damage, damage_class = _damage_class)
 		if(TOX)
-			return adjustToxLoss(damage)
+			return adjustToxLoss(damage, damage_class = _damage_class)
 		if(OXY)
-			return adjustOxyLoss(damage)
+			return adjustOxyLoss(damage, damage_class = _damage_class)
 		if(CLONE)
-			return adjustCloneLoss(damage)
+			return adjustCloneLoss(damage, damage_class = _damage_class)
 		if(STAMINA)
-			return adjustStaminaLoss(damage)
+			return adjustStaminaLoss(damage, damage_class = _damage_class)
 		if(BRAIN)
-			return adjustBrainLoss(damage)
+			return adjustBrainLoss(damage, damage_class = _damage_class)
 
 /mob/living/proc/get_damage_amount(damagetype = BRUTE)
 	switch(damagetype)
@@ -142,7 +142,7 @@
 /mob/living/proc/getBruteLoss()
 	return bruteloss
 
-/mob/living/proc/adjustBruteLoss(amount, updating_health = TRUE, forced = FALSE)
+/mob/living/proc/adjustBruteLoss(amount, updating_health = TRUE, forced = FALSE, damage_class = DAM_CLASS_CRUSH)
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	bruteloss = CLAMP((bruteloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth * 2)
@@ -153,7 +153,7 @@
 /mob/living/proc/getOxyLoss()
 	return oxyloss
 
-/mob/living/proc/adjustOxyLoss(amount, updating_health = TRUE, forced = FALSE)
+/mob/living/proc/adjustOxyLoss(amount, updating_health = TRUE, forced = FALSE, damage_class = DAM_CLASS_SUFFOCATION)
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	oxyloss = CLAMP((oxyloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth * 2)
@@ -172,7 +172,7 @@
 /mob/living/proc/getToxLoss()
 	return toxloss
 
-/mob/living/proc/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE)
+/mob/living/proc/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE, damage_class = DAM_CLASS_TOXIN)
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	toxloss = CLAMP((toxloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth * 2)
@@ -191,7 +191,7 @@
 /mob/living/proc/getFireLoss()
 	return fireloss
 
-/mob/living/proc/adjustFireLoss(amount, updating_health = TRUE, forced = FALSE)
+/mob/living/proc/adjustFireLoss(amount, updating_health = TRUE, forced = FALSE, damage_class = DAM_CLASS_BURN)
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	fireloss = CLAMP((fireloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth * 2)
@@ -202,7 +202,7 @@
 /mob/living/proc/getCloneLoss()
 	return cloneloss
 
-/mob/living/proc/adjustCloneLoss(amount, updating_health = TRUE, forced = FALSE)
+/mob/living/proc/adjustCloneLoss(amount, updating_health = TRUE, forced = FALSE, damage_class = DAM_CLASS_GENETIC)
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	cloneloss = CLAMP((cloneloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth * 2)
@@ -230,7 +230,7 @@
 /mob/living/proc/getStaminaLoss()
 	return staminaloss
 
-/mob/living/proc/adjustStaminaLoss(amount, updating_stamina = TRUE, forced = FALSE)
+/mob/living/proc/adjustStaminaLoss(amount, updating_stamina = TRUE, forced = FALSE, damage_class = DAM_CLASS_STAMINA)
 	return
 
 /mob/living/proc/setStaminaLoss(amount, updating_stamina = TRUE, forced = FALSE)
@@ -246,10 +246,10 @@
 		update_stamina()
 
 // damage ONE external organ, organ gets randomly selected from damaged ones.
-/mob/living/proc/take_bodypart_damage(brute = 0, burn = 0, stamina = 0, updating_health = TRUE)
-	adjustBruteLoss(brute, FALSE) //zero as argument for no instant health update
-	adjustFireLoss(burn, FALSE)
-	adjustStaminaLoss(stamina, FALSE)
+/mob/living/proc/take_bodypart_damage(brute = 0, burn = 0, stamina = 0, updating_health = TRUE, damage_class)
+	adjustBruteLoss(brute, FALSE, damage_class) //zero as argument for no instant health update
+	adjustFireLoss(burn, FALSE, damage_class)
+	adjustStaminaLoss(stamina, FALSE, damage_class)
 	if(updating_health)
 		updatehealth()
 		update_stamina()
@@ -264,10 +264,10 @@
 		update_stamina()
 
 // damage MANY bodyparts, in random order
-/mob/living/proc/take_overall_damage(brute = 0, burn = 0, stamina = 0, updating_health = TRUE)
-	adjustBruteLoss(brute, FALSE) //zero as argument for no instant health update
-	adjustFireLoss(burn, FALSE)
-	adjustStaminaLoss(stamina, FALSE)
+/mob/living/proc/take_overall_damage(brute = 0, burn = 0, stamina = 0, updating_health = TRUE, damage_class)
+	adjustBruteLoss(brute, FALSE, damage_class) //zero as argument for no instant health update
+	adjustFireLoss(burn, FALSE, damage_class)
+	adjustStaminaLoss(stamina, FALSE, damage_class)
 	if(updating_health)
 		updatehealth()
 		update_stamina()

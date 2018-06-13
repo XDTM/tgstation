@@ -61,25 +61,25 @@
 	return amount
 
 
-/mob/living/carbon/adjustBruteLoss(amount, updating_health = TRUE, forced = FALSE)
+/mob/living/carbon/adjustBruteLoss(amount, updating_health = TRUE, forced = FALSE, damage_class = DAM_CLASS_CRUSH)
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	if(amount > 0)
-		take_overall_damage(amount, 0, 0, updating_health)
+		take_overall_damage(amount, 0, 0, updating_health, damage_class)
 	else
 		heal_overall_damage(abs(amount), 0, 0, FALSE, TRUE, updating_health)
 	return amount
 
-/mob/living/carbon/adjustFireLoss(amount, updating_health = TRUE, forced = FALSE)
+/mob/living/carbon/adjustFireLoss(amount, updating_health = TRUE, forced = FALSE, damage_class = DAM_CLASS_BURN)
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	if(amount > 0)
-		take_overall_damage(0, amount, 0, updating_health)
+		take_overall_damage(0, amount, 0, updating_health, damage_class)
 	else
 		heal_overall_damage(0, abs(amount), 0, FALSE, TRUE, updating_health)
 	return amount
 
-/mob/living/carbon/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE)
+/mob/living/carbon/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE, damage_class = DAM_CLASS_TOXIN)
 	if(!forced && has_trait(TRAIT_TOXINLOVER)) //damage becomes healing and healing becomes damage
 		amount = -amount
 		if(amount > 0)
@@ -94,13 +94,13 @@
 		var/obj/item/bodypart/BP = X
 		. += BP.stamina_dam
 
-/mob/living/carbon/adjustStaminaLoss(amount, updating_health = TRUE, forced = FALSE)
+/mob/living/carbon/adjustStaminaLoss(amount, updating_health = TRUE, forced = FALSE, damage_class = DAM_CLASS_STAMINA)
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	if(amount > 0)
-		take_overall_damage(0, 0, amount, updating_health)
+		take_overall_damage(0, 0, amount, updating_health, damage_class)
 	else
-		heal_overall_damage(0, 0, abs(amount), FALSE, FALSE, updating_health)
+		heal_overall_damage(0, 0, abs(amount), FALSE, FALSE, updating_health, damage_class)
 	return amount
 
 /mob/living/carbon/setStaminaLoss(amount, updating = TRUE, forced = FALSE)
