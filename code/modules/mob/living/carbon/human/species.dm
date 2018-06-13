@@ -1418,6 +1418,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 /datum/species/proc/apply_damage(damage, damagetype = BRUTE, def_zone = null, blocked, mob/living/carbon/human/H, _damage_class)
 	var/hit_percent = (100-(blocked+armor))/100
 	hit_percent = (hit_percent * (100-H.physiology.damage_resistance))/100
+	hit_percent = (hit_percent * (100-H.physiology.armor.check_class_resistance(_damage_class)))/100
 	if(!damage || hit_percent <= 0)
 		return 0
 
