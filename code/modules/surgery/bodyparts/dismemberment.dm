@@ -96,6 +96,11 @@
 			C.surgeries -= S
 			qdel(S)
 			break
+	
+	for(var/X in body_traumas)
+		var/datum/body_trauma/BT = X
+		BT.on_lose()
+		BT.owner = null
 
 	for(var/obj/item/I in embedded_objects)
 		embedded_objects -= I
@@ -294,6 +299,11 @@
 
 	for(var/obj/item/organ/O in contents)
 		O.Insert(C)
+		
+	for(var/X in body_traumas)
+		var/datum/body_trauma/BT = X
+		BT.owner = C
+		BT.on_gain()
 
 	update_bodypart_damage_state()
 

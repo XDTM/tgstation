@@ -52,6 +52,8 @@
 	var/light_burn_msg = "numb"
 	var/medium_burn_msg = "blistered"
 	var/heavy_burn_msg = "peeling away"
+	
+	var/list/datum/body_trauma/body_traumas = list()
 
 /obj/item/bodypart/examine(mob/user)
 	..()
@@ -64,6 +66,7 @@
 	take_damage(max_damage)
 
 /obj/item/bodypart/Destroy()
+	QDEL_LIST(body_traumas)
 	if(owner)
 		owner.bodyparts -= src
 		owner = null
