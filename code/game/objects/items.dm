@@ -580,6 +580,16 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 	if(affecting.can_dismember(src))
 		if((sharpness || damtype == BURN) && w_class >= 3)
 			. = force*(w_class-1)
+			
+/obj/item/proc/get_injury_chance(obj/item/bodypart/affecting)
+	if(affecting.can_dismember(src))
+		if((sharpness || damtype == BURN) && w_class >= 3)
+			. = force*(w_class-1)
+			
+/obj/item/proc/get_injury_tags()
+	var/list/tags = list()
+	if(sharpness)
+		tags += 
 
 /obj/item/proc/get_dismember_sound()
 	if(damtype == BURN)

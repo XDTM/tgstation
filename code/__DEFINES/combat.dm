@@ -147,6 +147,17 @@
 #define GRENADE_NONCLUMSY_FUMBLE 2
 #define GRENADE_NO_FUMBLE 3
 
+#define INJURY_TAG_SHARP "sharp"
+#define INJURY_TAG_BLUNT "blunt"
+#define INJURY_TAG_PIERCE "pierce"
+#define INJURY_TAG_BURN  "burn"
+
+#define INJURY_SEVERITY_MINOR 1
+#define INJURY_SEVERITY_NORMAL 2
+#define INJURY_SEVERITY_SEVERE 3
+#define INJURY_SEVERITY_CRIPPLING 4
+#define INJURY_SEVERITY_ABSURD 5
+
 #define BODY_ZONE_HEAD		"head"
 #define BODY_ZONE_CHEST		"chest"
 #define BODY_ZONE_L_ARM		"l_arm"

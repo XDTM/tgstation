@@ -53,7 +53,7 @@
 	var/medium_burn_msg = "blistered"
 	var/heavy_burn_msg = "peeling away"
 	
-	var/list/datum/body_trauma/body_traumas = list()
+	var/list/datum/injury/injuries = list()
 
 /obj/item/bodypart/examine(mob/user)
 	..()
@@ -379,7 +379,43 @@
 /obj/item/bodypart/deconstruct(disassembled = TRUE)
 	drop_organs()
 	qdel(src)
-
+	
+	
+	
+/obj/item/bodypart/proc/injure(severity_min, severity_max, list/tags)
+	var/chosen_severity = rand(severity_min, severity_max)
+	if(!chosen_severity) //too weak
+		return
+	var/list/possible_injuries = list()
+	for(var/X in GLOB.injuries)
+		var/datum/injury/I = X
+		if(chosen_severity != initial(I.severity)) //wrong severity (oh god that papercut disemboweled me)
+			continue
+		if(bodypart_status != initial(I.bodypart_status))	//wrong limb status (hard to bleed from a metal arm)
+			continue
+			
+		var/limb_ok = FALSE
+		for(var/Z in initial(I.possible_bodyparts)) //wrong limb (my left leg is having a heart attack)
+			if(istype(src, Z))
+				limb_ok = TRUE
+				break
+		if(!limb_ok)
+			continue		
+			
+		var/tag_ok = FALSE
+		for(var/Z in tags)
+			if(Z in initial(I.injury_tags)) //wrong tag (that electrocution left me bleeding profusely)
+				tag_ok = TRUE
+				break
+		if(!tag_ok)
+			continue
+			
+	if(!possible_injuries.len)	//congratulations, you already collected all the injuries you can get
+		return
+	
+	var/injury_type = pick(possible_injuries)
+	var/datum/injury/new_injury = new injury_type(src)
+	
 /obj/item/bodypart/chest
 	name = BODY_ZONE_CHEST
 	desc = "It's impolite to stare at a person's chest."

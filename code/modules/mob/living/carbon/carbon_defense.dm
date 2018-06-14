@@ -93,13 +93,21 @@
 					if(head)
 						head.add_mob_blood(src)
 						update_inv_head()
-
+						
 		//dismemberment
 		var/probability = I.get_dismemberment_chance(affecting)
 		if(prob(probability))
 			if(affecting.dismember(I.damtype))
 				I.add_mob_blood(src)
 				playsound(get_turf(src), I.get_dismember_sound(), 80, 1)
+				
+		//injury
+		var/probability = I.get_injury_chance(affecting)
+		if(prob(probability))
+			var/severity_min = Clamp(FLOOR(I.force / 10, 1), 0, INJURY_SEVERITY_ABSURD) //5=>0, 10=>1, 15=>1, 20=>2, 25=>2, 30=>3
+			var/severity_max = Clamp(FLOOR(I.force / 5, 1), 0, INJURY_SEVERITY_ABSURD) //5=>1, 10=>2, 15=>3, 20=>4, 25=>5, 30=>5(max)
+			affecting.injure(severity_min, severity_max, I.get_injury_tags())
+			
 		return TRUE //successful attack
 
 /mob/living/carbon/attack_drone(mob/living/simple_animal/drone/user)
