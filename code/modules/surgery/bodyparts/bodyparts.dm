@@ -130,8 +130,8 @@
 	if(status == BODYPART_ROBOTIC) //This makes robolimbs not damageable by chems and makes it stronger
 		brute = max(0, brute - 5)
 		burn = max(0, burn - 4)
-		//No stamina scaling.. for now..
-
+		//No stamina scaling.. for now..	
+		
 	if(!brute && !burn && !stamina)
 		return FALSE
 
@@ -150,6 +150,10 @@
 		brute = brute * (excess / total_damage)
 		burn = burn * (excess / total_damage)
 
+	for(var/X in injuries)
+		var/datum/injury/I = X
+		I.on_damage(brute, burn)
+		
 	brute_dam += brute
 	burn_dam += burn
 
@@ -382,33 +386,36 @@
 	
 	
 	
-/obj/item/bodypart/proc/injure(severity_min, severity_max, list/tags)
+/obj/item/bodypart/proc/injure(severity_min, severity_max, list/tags, list/specific_injuries)
 	var/chosen_severity = rand(severity_min, severity_max)
 	if(!chosen_severity) //too weak
 		return
 	var/list/possible_injuries = list()
-	for(var/X in GLOB.injuries)
-		var/datum/injury/I = X
-		if(chosen_severity != initial(I.severity)) //wrong severity (oh god that papercut disemboweled me)
-			continue
-		if(bodypart_status != initial(I.bodypart_status))	//wrong limb status (hard to bleed from a metal arm)
-			continue
-			
-		var/limb_ok = FALSE
-		for(var/Z in initial(I.possible_bodyparts)) //wrong limb (my left leg is having a heart attack)
-			if(istype(src, Z))
-				limb_ok = TRUE
-				break
-		if(!limb_ok)
-			continue		
-			
-		var/tag_ok = FALSE
-		for(var/Z in tags)
-			if(Z in initial(I.injury_tags)) //wrong tag (that electrocution left me bleeding profusely)
-				tag_ok = TRUE
-				break
-		if(!tag_ok)
-			continue
+	if(LAZYLEN(specific_injuries))
+		possible_injuries = specific_injuries
+	else
+		for(var/X in GLOB.injuries)
+			var/datum/injury/I = X
+			if(chosen_severity != initial(I.severity)) //wrong severity (oh god that papercut disemboweled me)
+				continue
+			if(bodypart_status != initial(I.bodypart_status))	//wrong limb status (hard to bleed from a metal arm)
+				continue
+				
+			var/limb_ok = FALSE
+			for(var/Z in initial(I.possible_bodyparts)) //wrong limb (my left leg is having a heart attack)
+				if(istype(src, Z))
+					limb_ok = TRUE
+					break
+			if(!limb_ok)
+				continue		
+				
+			var/tag_ok = FALSE
+			for(var/Z in tags)
+				if(Z in initial(I.injury_tags)) //wrong tag (that electrocution left me bleeding profusely)
+					tag_ok = TRUE
+					break
+			if(!tag_ok)
+				continue
 			
 	if(!possible_injuries.len)	//congratulations, you already collected all the injuries you can get
 		return

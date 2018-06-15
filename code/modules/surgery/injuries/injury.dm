@@ -5,7 +5,7 @@ GLOBAL_LIST_INIT(injuries, typesof(/datum/injury))
 	var/desc = "An injury which causes issues to the patient."
 	var/examine_desc = "a generic injury" //description when examined
 	var/mob/living/carbon/owner	//The bodypart's owner
-	var/obj/item/bodypart/source_bodypart //The injured bodypart
+	var/obj/item/bodypart/bodypart //The injured bodypart
 	var/can_gain = FALSE //can this be gained through random traumas?
 	
 	var/severity = 0 //how debilitating/dangerous it is
@@ -33,36 +33,44 @@ GLOBAL_LIST_INIT(injuries, typesof(/datum/injury))
 	possible_bodyparts = list(/obj/item/bodypart/head)
 	
 /datum/injury/New(obj/item/bodypart/target)
-	if(check_valid(target))
+	if(!check_valid(target))
 		qdel(src)
 		return
 	//TODO check for required organs
-	source_bodypart = target
-	source_bodypart.injuries += src
+	bodypart = target
+	bodypart.injuries += src
 	on_add()
 	if(source_bodypart.owner)
-		owner = source_bodypart.owner
+		owner = bodypart.owner
 		on_gain()
 	
 /datum/injury/Destroy()
-	source_bodypart.injuries -= src
+	bodypart.injuries -= src
 	on_remove()
 	if(owner)
 		on_lose()
-	source_bodypart = null
+	bodypart = null
 	owner = null
 	return ..()
 
-/datum/injury/proc/check_valid(obj/item/bodypart/bodypart)
+/datum/injury/proc/check_valid(obj/item/bodypart/target_bodypart)
 	var/dupe_amount = 0
-	for(var/X in injuries)
+	for(var/X in target_bodypart.injuries)
 		if(istype(X, src))
 			dupe_amount++
 			if(dupe_amount >= max_amount)
 				return FALSE
-				
+	
+	for(var/X in required_organs)
+		if(target_bodypart.owner)
+			if(!(locate(X) in owner.internal_organs))
+				return FALSE
+		else
+			if(!(locate(X) in target_bodypart.contents))
+				return FALSE
+	
 	for(var/X in possible_bodyparts)
-		if(istype(bodypart, X))
+		if(istype(target_bodypart, X))
 			return TRUE
 	return FALSE
 	
@@ -92,3 +100,8 @@ GLOBAL_LIST_INIT(injuries, typesof(/datum/injury))
 		
 /datum/injury/proc/lose_message()
 	to_chat(owner, "<span class='notice'>You no longer feel generically hurt.</span>")
+	
+//Called when the limb is damaged
+/datum/injury/proc/on_damage(brute, burn)
+	return
+	
