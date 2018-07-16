@@ -27,3 +27,7 @@
 #define ERT_LEADER "leader"
 #define DEATHSQUAD "ds"
 #define DEATHSQUAD_LEADER "ds_leader"
+
+//Changelings
+#define BIOMODE_DISGUISE 1
+#define BIOMODE_SURVIVAL 2

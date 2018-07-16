@@ -102,7 +102,19 @@ GLOBAL_VAR(changeling_team_objective_type) //If this is not null, we hand our th
 	user.undershirt = chosen_prof.undershirt
 	user.socks = chosen_prof.socks
 
-	chosen_dna.transfer_identity(user, 1)
+	user.dna.unique_enzymes = chosen_dna.unique_enzymes
+	user.dna.uni_identity = chosen_dna.uni_identity
+	user.dna.blood_type = chosen_dna.blood_type
+	if(!is_species(user, /datum/species/changeling))
+		user.set_species(/datum/species/changeling, icon_update=0)
+	var/datum/species/changeling/CH = user.dna.species
+	if(CH.can_imitate(user, chosen_dna.species))
+		CH.set_form(user, chosen_dna.species.type)
+	user.dna.features = chosen_dna.features.Copy()
+	user.dna.real_name = chosen_dna.real_name
+	user.dna.temporary_mutations = chosen_dna.temporary_mutations.Copy()
+	user.dna.struc_enzymes = chosen_dna.struc_enzymes
+	
 	user.updateappearance(mutcolor_update=1)
 	user.update_body()
 	user.domutcheck()
