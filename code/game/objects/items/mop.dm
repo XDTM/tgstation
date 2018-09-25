@@ -19,8 +19,8 @@
 	force_string = "robust... against germs"
 	var/insertable = TRUE
 
-/obj/item/mop/New()
-	..()
+/obj/item/mop/Initialize()
+	. = ..()
 	create_reagents(mopcap)
 
 
@@ -87,14 +87,35 @@
 	throwforce = 8
 	throw_range = 4
 	mopspeed = 20
+	var/obj/item/mop_mod/mop_mods = list()
 	var/refill_enabled = TRUE //Self-refill toggle for when a janitor decides to mop with something other than water.
 	var/refill_rate = 1 //Rate per process() tick mop refills itself
 	var/refill_reagent = "water" //Determins what reagent to use for refilling, just in case someone wanted to make a HOLY MOP OF PURGING
+	var/list/refill_options = list("water")
 
 /obj/item/mop/advanced/New()
 	..()
 	START_PROCESSING(SSobj, src)
 
+/obj/item/mop/advanced/attackby(obj/item/I, mob/user, params)
+	if(istype(I, /obj/item/mop_mod))
+		var/obj/item/mop_mod/mod = I
+		var/can_insert = TRUE
+		for(var/X in mop_mods)
+			if(I.type == X.type)
+				can_insert = FALSE
+				break
+		if(can_insert)
+			mop_mods += mod
+			mod.mop = src
+			mod.forceMove(src)
+			mod.on_insert()
+			to_chat(user, "<span class='notice'>You install [mod] on [src].</span>")
+		else
+			to_chat(user, "<span class='warning'>[mod] is already installed on [src]!</span>")
+		return
+	return ..()
+	
 /obj/item/mop/advanced/attack_self(mob/user)
 	refill_enabled = !refill_enabled
 	if(refill_enabled)
@@ -102,6 +123,12 @@
 	else
 		STOP_PROCESSING(SSobj,src)
 	to_chat(user, "<span class='notice'>You set the condenser switch to the '[refill_enabled ? "ON" : "OFF"]' position.</span>")
+	playsound(user, 'sound/machines/click.ogg', 30, 1)
+	
+/obj/item/mop/advanced/AltClick(mob/user)
+	refill_reagent = next_list_item(refill_reagent, refill_options)
+	var/datum/reagent/temp = GLOB.chemical_reagents_list[refill_reagent]
+	to_chat(user, "<span class='notice'>You set the condenser dispenser to [temp.name].</span>")
 	playsound(user, 'sound/machines/click.ogg', 30, 1)
 
 /obj/item/mop/advanced/process()
@@ -112,6 +139,9 @@
 /obj/item/mop/advanced/examine(mob/user)
 	..()
 	to_chat(user, "<span class='notice'>The condenser switch is set to <b>[refill_enabled ? "ON" : "OFF"]</b>.</span>")
+	if(refill_options.len > 1)
+		var/datum/reagent/temp = GLOB.chemical_reagents_list[refill_reagent]
+		to_chat(user, "<span class='notice'>Currently dispensing <b>[temp.name]</b>. Alt-Click to switch.</span>")
 
 /obj/item/mop/advanced/Destroy()
 	if(refill_enabled)
@@ -120,3 +150,10 @@
 
 /obj/item/mop/advanced/cyborg
 	insertable = FALSE
+	
+/obj/item/mop_mod
+	name = "mop mod"
+	desc = "An add-on for an advanced mop, modifying its functionality."
+	icon = 'icons/obj/janitor.dmi'
+	icon_state = "advmop"
+	w_class = WEIGHT_CLASS_SMALL
