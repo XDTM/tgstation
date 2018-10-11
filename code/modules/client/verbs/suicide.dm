@@ -31,10 +31,10 @@
 
 				//Do 200 damage divided by the number of damage types applied.
 				if(damagetype & BRUTELOSS)
-					adjustBruteLoss(200/damage_mod)
+					take_overall_damage(brute = 200/damage_mod)
 
 				if(damagetype & FIRELOSS)
-					adjustFireLoss(200/damage_mod)
+					take_overall_damage(burn = 200/damage_mod)
 
 				if(damagetype & TOXLOSS)
 					adjustToxLoss(200/damage_mod)

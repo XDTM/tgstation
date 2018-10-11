@@ -124,11 +124,11 @@
 	if(!QDELETED(affecting) && affecting.dismemberable && affecting.owner == user && !QDELETED(user))
 		playsound(user, hitsound, 25, 1)
 		affecting.dismember(BRUTE)
-		user.adjustBruteLoss(20)
+		user.take_bodypart_damage(brute = 20)
 
 /obj/item/melee/sabre/proc/manual_suicide(mob/living/user, originally_nodropped)
 	if(!QDELETED(user))
-		user.adjustBruteLoss(200)
+		user.take_overall_damage(brute = 200)
 		user.death(FALSE)
 	if(!originally_nodropped)
 		item_flags &= ~NODROP

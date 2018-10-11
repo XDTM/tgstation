@@ -118,7 +118,7 @@
 /obj/structure/trap/damage/trap_effect(mob/living/L)
 	to_chat(L, "<span class='danger'><B>The ground quakes beneath your feet!</B></span>")
 	L.Knockdown(100)
-	L.adjustBruteLoss(35)
+	L.take_bodypart_damage(brute = 35)
 
 /obj/structure/trap/damage/flare()
 	..()

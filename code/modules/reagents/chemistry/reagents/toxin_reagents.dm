@@ -427,7 +427,7 @@
 
 /datum/reagent/toxin/histamine/overdose_process(mob/living/M)
 	M.adjustOxyLoss(2*REM, 0)
-	M.adjustBruteLoss(2*REM, 0)
+	M.take_overall_damage(brute = 2*REM, organic_only = TRUE, updating_health = FALSE)
 	M.adjustToxLoss(2*REM, 0)
 	..()
 	. = 1
@@ -460,7 +460,7 @@
 
 /datum/reagent/toxin/venom/on_mob_life(mob/living/carbon/M)
 	toxpwr = 0.2*volume
-	M.adjustBruteLoss((0.3*volume)*REM, 0)
+	M.take_overall_damage(brute = 0.3*REM*volume, organic_only = TRUE, updating_health = FALSE)
 	. = 1
 	if(prob(15))
 		M.reagents.add_reagent("histamine", pick(5,10))
@@ -531,15 +531,15 @@
 /datum/reagent/toxin/itching_powder/on_mob_life(mob/living/carbon/M)
 	if(prob(15))
 		to_chat(M, "You scratch at your head.")
-		M.adjustBruteLoss(0.2*REM, 0)
+		M.apply_damage(0.2, BRUTE, BODY_ZONE_HEAD)
 		. = 1
 	if(prob(15))
 		to_chat(M, "You scratch at your leg.")
-		M.adjustBruteLoss(0.2*REM, 0)
+		M.apply_damage(0.2, BRUTE, pick(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG))
 		. = 1
 	if(prob(15))
 		to_chat(M, "You scratch at your arm.")
-		M.adjustBruteLoss(0.2*REM, 0)
+		M.apply_damage(0.2, BRUTE, pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM))
 		. = 1
 	if(prob(3))
 		M.reagents.add_reagent("histamine",rand(1,3))
@@ -733,7 +733,7 @@
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		H.bleed_rate = min(H.bleed_rate + 2, 8)
-		H.adjustBruteLoss(1, 0) //Brute damage increases with the amount they're bleeding
+		H.take_overall_damage(brute = 1, updating_health = FALSE) //Brute damage increases with the amount they're bleeding
 		. = 1
 	return ..() || .
 
@@ -838,10 +838,10 @@
 		return
 	reac_volume = round(reac_volume,0.1)
 	if(method == INGEST)
-		C.adjustBruteLoss(min(6*toxpwr, reac_volume * toxpwr))
+		C.take_overall_damage(brute = (min(6*toxpwr, reac_volume * toxpwr)))
 		return
 	if(method == INJECT)
-		C.adjustBruteLoss(1.5 * min(6*toxpwr, reac_volume * toxpwr))
+		C.take_overall_damage(brute = (1.5 * min(6*toxpwr, reac_volume * toxpwr)))
 		return
 	C.acid_act(acidpwr, reac_volume)
 

@@ -291,11 +291,11 @@
 
 			switch(rand(1,3))
 				if (2)
-					D.adjustBruteLoss(rand(20,30))
+					D.take_bodypart_damage(brute = rand(20,30))
 				if (3)
 					D.ex_act(EXPLODE_LIGHT)
 				else
-					D.adjustBruteLoss(rand(10,20))
+					D.take_bodypart_damage(brute = (rand(10,20)))
 		else
 			D.ex_act(EXPLODE_LIGHT)
 
@@ -327,7 +327,7 @@
 		addtimer(CALLBACK(src, .proc/CheckStrikeTurf, A, T), 4)
 
 		A.visible_message("<span class = 'danger'><b>[A] headbutts [D]!</b></span>")
-		D.adjustBruteLoss(rand(10,20))
+		D.take_bodypart_damage(brute = (rand(10,20)))
 		playsound(A.loc, "swing_hit", 50, 1)
 		D.Unconscious(20)
 	log_combat(A, D, "headbutted")
@@ -341,7 +341,7 @@
 
 	A.visible_message("<span class = 'danger'><B>[A] roundhouse-kicks [D]!</B></span>")
 	playsound(A.loc, "swing_hit", 50, 1)
-	D.adjustBruteLoss(rand(10,20))
+	D.take_bodypart_damage(brute = (rand(10,20)))
 
 	var/turf/T = get_edge_target_turf(A, get_dir(A, get_step_away(D, A)))
 	if (T && isturf(T))
@@ -383,7 +383,7 @@
 			A.pixel_y = 0
 			if (falling == 1)
 				A.visible_message("<span class = 'danger'><B>...and dives head-first into the ground, ouch!</b></span>")
-				A.adjustBruteLoss(rand(10,20))
+				A.take_bodypart_damage(brute = (rand(10,20)))
 				A.Knockdown(60)
 			to_chat(A, "[D] is too far away!")
 			return 0
@@ -409,9 +409,9 @@
 			if (prob(33) || D.stat)
 				D.ex_act(EXPLODE_LIGHT)
 			else
-				D.adjustBruteLoss(rand(20,30))
+				D.take_bodypart_damage(brute = (rand(20,30)))
 		else
-			D.adjustBruteLoss(rand(20,30))
+			D.take_bodypart_damage(brute = (rand(20,30)))
 
 		D.Knockdown(40)
 

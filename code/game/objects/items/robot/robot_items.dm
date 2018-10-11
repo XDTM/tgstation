@@ -119,7 +119,7 @@
 						M.update_canmove()
 					else
 						if(!iscyborg(M))
-							M.adjustFireLoss(10)
+							M.take_overall_damage(burn = 10)
 							user.visible_message("<span class='userdanger'>[user] shocks [M]!</span>", \
 								"<span class='danger'>You shock [M]!</span>")
 						else
@@ -138,7 +138,7 @@
 						user.visible_message("<span class='userdanger'>[user] crushes [M]!</span>", \
 								"<span class='danger'>You crush [M]!</span>")
 					playsound(loc, 'sound/weapons/smash.ogg', 50, 1, -1)
-					M.adjustBruteLoss(15)
+					M.take_bodypart_damage(brute = 15)
 					user.cell.charge -= 300
 					ccooldown = world.time + 10
 

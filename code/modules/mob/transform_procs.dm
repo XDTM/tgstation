@@ -71,10 +71,9 @@
 	//keep damage?
 	if (tr_flags & TR_KEEPDAMAGE)
 		O.setToxLoss(getToxLoss(), 0)
-		O.adjustBruteLoss(getBruteLoss(), 0)
+		O.take_overall_damage(brute = getBruteLoss(), burn = getFireLoss(), updating_health = FALSE)
 		O.setOxyLoss(getOxyLoss(), 0)
 		O.setCloneLoss(getCloneLoss(), 0)
-		O.adjustFireLoss(getFireLoss(), 0)
 		O.setBrainLoss(getBrainLoss(), 0)
 		O.updatehealth()
 		O.radiation = radiation

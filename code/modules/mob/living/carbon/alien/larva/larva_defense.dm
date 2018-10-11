@@ -21,7 +21,7 @@
 /mob/living/carbon/alien/larva/attack_hulk(mob/living/carbon/human/user, does_attack_animation = 0)
 	if(user.a_intent == INTENT_HARM)
 		..(user, 1)
-		adjustBruteLoss(5 + rand(1,9))
+		take_bodypart_damage(brute = (5 + rand(1,9)))
 		new /datum/forced_movement(src, get_step_away(user,src, 30), 1)
 		return 1
 

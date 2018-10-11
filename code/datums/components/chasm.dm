@@ -101,7 +101,7 @@
 		if(isliving(AM))
 			var/mob/living/L = AM
 			L.Knockdown(100)
-			L.adjustBruteLoss(30)
+			L.take_bodypart_damage(brute = 30)
 		falling_atoms -= AM
 
 	else

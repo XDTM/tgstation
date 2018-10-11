@@ -276,16 +276,14 @@
 		M.adjustStaminaLoss(-10, 0)
 		M.adjustToxLoss(-2, 0)
 		M.adjustOxyLoss(-2, 0)
-		M.adjustBruteLoss(-2, 0)
-		M.adjustFireLoss(-2, 0)
+		M.heal_overall_damage(brute = 2*REM, burn = 2*REM, organic_only = TRUE, updating_health = FALSE)
 		if(ishuman(M) && M.blood_volume < BLOOD_VOLUME_NORMAL)
 			M.blood_volume += 3
 	else  // Will deal about 90 damage when 50 units are thrown
 		M.adjustBrainLoss(3, 150)
 		M.adjustToxLoss(2, 0)
-		M.adjustFireLoss(2, 0)
 		M.adjustOxyLoss(2, 0)
-		M.adjustBruteLoss(2, 0)
+		M.take_overall_damage(brute = 2*REM, burn = 2*REM, organic_only = TRUE, updating_health = FALSE)
 	holder.remove_reagent(id, 1)
 	return TRUE
 
@@ -1056,16 +1054,14 @@
 	taste_description = "acid"
 
 /datum/reagent/space_cleaner/ez_clean/on_mob_life(mob/living/carbon/M)
-	M.adjustBruteLoss(3.33)
-	M.adjustFireLoss(3.33)
+	M.take_overall_damage(brute = 3.33*REM, burn = 3.33*REM, organic_only = TRUE, updating_health = FALSE)
 	M.adjustToxLoss(3.33)
 	..()
 
 /datum/reagent/space_cleaner/ez_clean/reaction_mob(mob/living/M, method=TOUCH, reac_volume)
 	..()
 	if((method == TOUCH || method == VAPOR) && !issilicon(M))
-		M.adjustBruteLoss(1)
-		M.adjustFireLoss(1)
+		M.take_overall_damage(brute = 1, burn = 1, organic_only = TRUE, updating_health = FALSE)
 
 /datum/reagent/cryptobiolin
 	name = "Cryptobiolin"

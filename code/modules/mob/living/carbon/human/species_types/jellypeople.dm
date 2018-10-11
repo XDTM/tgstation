@@ -36,7 +36,7 @@
 		return
 	if(!H.blood_volume)
 		H.blood_volume += 5
-		H.adjustBruteLoss(5)
+		H.take_bodypart_damage(brute = 5)
 		to_chat(H, "<span class='danger'>You feel empty!</span>")
 
 	if(H.blood_volume < BLOOD_VOLUME_NORMAL)

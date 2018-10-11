@@ -195,7 +195,7 @@
 		L = new(H.loc)
 	visible_message("<span class='warning'>[L] staggers to [L.p_their()] feet!</span>")
 	H.death()
-	H.adjustBruteLoss(1000)
+	H.take_overall_damage(brute = 1000)
 	L.stored_mob = H
 	H.forceMove(L)
 	qdel(src)

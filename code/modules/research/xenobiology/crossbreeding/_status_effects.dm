@@ -44,7 +44,7 @@
 	owner.color = "#3070CC"
 	if(ishuman(owner))
 		var/mob/living/carbon/human/H = owner
-		H.physiology.damage_resistance += 10
+		H.physiology.damage_mod *= 0.9
 	owner.visible_message("<span class='warning'>[owner] is suddenly covered in a strange, blue-ish gel!</span>",
 		"<span class='notice'>You are covered in a thick, rubbery gel.</span>")
 	return ..()
@@ -53,7 +53,7 @@
 	owner.color = originalcolor
 	if(ishuman(owner))
 		var/mob/living/carbon/human/H = owner
-		H.physiology.damage_resistance -= 10
+		H.physiology.damage_mod /= 0.9
 	owner.visible_message("<span class='warning'>[owner]'s gel coating liquefies and dissolves away.</span>",
 		"<span class='notice'>Your gel second-skin dissolves!</span>")
 

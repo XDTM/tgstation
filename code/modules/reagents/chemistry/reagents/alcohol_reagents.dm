@@ -193,7 +193,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 				eye.forceMove(get_turf(M))
 				to_chat(M, "<span class='userdanger'>You double over in pain as you feel your eyeballs liquify in your head!</span>")
 				M.emote("scream")
-				M.adjustBruteLoss(15)
+				M.apply_damage(15, BRUTE, BOZY_ZONE_HEAD)
 		else
 			to_chat(M, "<span class='userdanger'>You scream in terror as you go blind!</span>")
 			M.become_blind(EYE_DAMAGE)
@@ -455,8 +455,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 /datum/reagent/consumable/ethanol/cuba_libre/on_mob_life(mob/living/carbon/M)
 	if(M.mind && M.mind.has_antag_datum(/datum/antagonist/rev)) //Cuba Libre, the traditional drink of revolutions! Heals revolutionaries.
-		M.adjustBruteLoss(-1, 0)
-		M.adjustFireLoss(-1, 0)
+		M.heal_overall_damage(brute = 1, burn = 1)
 		M.adjustToxLoss(-1, 0)
 		M.adjustOxyLoss(-5, 0)
 		. = 1
@@ -681,8 +680,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 /datum/reagent/consumable/ethanol/manly_dorf/on_mob_life(mob/living/carbon/M)
 	if(dorf_mode)
-		M.adjustBruteLoss(-2)
-		M.adjustFireLoss(-2)
+		M.heal_overall_damage(brute = 2, burn = 2)
 	return ..()
 
 /datum/reagent/consumable/ethanol/longislandicedtea
@@ -836,7 +834,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	if(ishuman(M)) //Barefoot causes the imbiber to quickly regenerate brute trauma if they're not wearing shoes.
 		var/mob/living/carbon/human/H = M
 		if(!H.shoes)
-			H.adjustBruteLoss(-3, 0)
+			H.heal_overall_damage(brute = 3)
 			. = 1
 	return ..() || .
 
@@ -1239,8 +1237,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 /datum/reagent/consumable/ethanol/hearty_punch/on_mob_life(mob/living/carbon/M)
 	if(M.health <= 0)
-		M.adjustBruteLoss(-3, 0)
-		M.adjustFireLoss(-3, 0)
+		M.heal_overall_damage(brute = 3, burn = 3)
 		M.adjustCloneLoss(-5, 0)
 		M.adjustOxyLoss(-4, 0)
 		M.adjustToxLoss(-3, 0)
@@ -1473,8 +1470,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 /datum/reagent/consumable/ethanol/quadruple_sec/on_mob_life(mob/living/carbon/M)
 	if(M.mind && M.mind.assigned_role in list("Security Officer", "Detective", "Head of Security", "Warden", "Lawyer")) //Securidrink in line with the screwderiver for engineers or nothing for mimes.
-		M.heal_bodypart_damage(1, 1)
-		M.adjustBruteLoss(-2,0)
+		M.heal_bodypart_damage(brute = 3, burn = 1)
 		. = 1
 	return ..()
 
@@ -1492,10 +1488,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 /datum/reagent/consumable/ethanol/quintuple_sec/on_mob_life(mob/living/carbon/M)
 	if(M.mind && M.mind.assigned_role in list("Security Officer", "Detective", "Head of Security", "Warden", "Lawyer")) //Securidrink in line with the screwderiver for engineers or nothing for mimes but STRONG..
-		M.heal_bodypart_damage(2,2,2)
-		M.adjustBruteLoss(-5,0)
+		M.heal_bodypart_damage(brute = 7,burn = 7, stamina = 2)
 		M.adjustOxyLoss(-5,0)
-		M.adjustFireLoss(-5,0)
 		M.adjustToxLoss(-5,0)
 		. = 1
 	return ..()
@@ -1543,22 +1537,18 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	if(L.health <= 0)
 		heal_points = 20 //heal more if we're in softcrit
 	for(var/i in 1 to min(volume, heal_points)) //only heals 1 point of damage per unit on add, for balance reasons
-		L.adjustBruteLoss(-1)
-		L.adjustFireLoss(-1)
+		L.heal_overall_damage(brute = 1, burn = 1, stamina = 1)
 		L.adjustToxLoss(-1)
 		L.adjustOxyLoss(-1)
-		L.adjustStaminaLoss(-1)
 	L.visible_message("<span class='warning'>[L] shivers with renewed vigor!</span>", "<span class='notice'>One taste of [lowertext(name)] fills you with energy!</span>")
 	if(!L.stat && heal_points == 20) //brought us out of softcrit
 		L.visible_message("<span class='danger'>[L] lurches to [L.p_their()] feet!</span>", "<span class='boldnotice'>Up and at 'em, kid.</span>")
 
 /datum/reagent/consumable/ethanol/bastion_bourbon/on_mob_life(mob/living/L)
 	if(L.health > 0)
-		L.adjustBruteLoss(-1)
-		L.adjustFireLoss(-1)
+		L.heal_overall_damage(brute = 1, burn = 1, stamina = 5)
 		L.adjustToxLoss(-0.5)
 		L.adjustOxyLoss(-3)
-		L.adjustStaminaLoss(-5)
 		. = TRUE
 	..()
 
@@ -1623,7 +1613,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_desc = "It'll either knock the drunkenness out of you or knock you out cold. Both, probably."
 
 /datum/reagent/consumable/ethanol/crevice_spike/on_mob_add(mob/living/L) //damage only applies when drink first enters system and won't again until drink metabolizes out
-	L.adjustBruteLoss(3 * min(5,volume)) //minimum 3 brute damage on ingestion to limit non-drink means of injury - a full 5 unit gulp of the drink trucks you for the full 15
+	L.take_overall_damage(brute = (3 * min(5,volume))) //minimum 3 brute damage on ingestion to limit non-drink means of injury - a full 5 unit gulp of the drink trucks you for the full 15
 
 /datum/reagent/consumable/ethanol/sake
 	name = "Sake"
@@ -1714,13 +1704,13 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	if(L.IsSleeping())
 		if(L.bruteloss && L.fireloss) //If you are damaged by both types, slightly increased healing but it only heals one. The more the merrier wink wink.
 			if(prob(50))
-				L.adjustBruteLoss(-0.25)
+				L.heal_bodypart_damage(brute = 0.25)
 			else
-				L.adjustFireLoss(-0.25)
+				L.heal_bodypart_damage(burn = 0.25)
 		else if(L.bruteloss && !L.fireloss) //If you have only one, it still heals but not as well.
-			L.adjustBruteLoss(-0.2)
+			L.heal_bodypart_damage(brute = 0.2)
 		else if(!L.bruteloss && L.fireloss)
-			L.adjustFireLoss(-0.2)
+			L.heal_bodypart_damage(burn = 0.2)
 
 /datum/reagent/consumable/ethanol/kamikaze
 	name = "Kamikaze"

@@ -192,7 +192,7 @@
 		var/message = "[user] has [hulk_verb]ed [src]!"
 		visible_message("<span class='danger'>[message]</span>", \
 								"<span class='userdanger'>[message]</span>")
-		adjustBruteLoss(15)
+		take_bodypart_damage(brute = 15)
 		return 1
 
 /mob/living/carbon/human/attack_hand(mob/user)

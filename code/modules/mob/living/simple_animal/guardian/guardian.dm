@@ -215,7 +215,7 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	if(summoner)
 		if(loc == summoner)
 			return FALSE
-		summoner.adjustBruteLoss(amount)
+		summoner.take_bodypart_damage(brute = amount)
 		if(amount > 0)
 			to_chat(summoner, "<span class='danger'><B>Your [name] is under attack! You take damage!</span></B>")
 			summoner.visible_message("<span class='danger'><B>Blood sprays from [summoner] as [src] takes damage!</B></span>")

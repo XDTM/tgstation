@@ -24,7 +24,7 @@
 		if(iscarbon(L))
 			L.Knockdown(100)
 			L.visible_message("<span class='warning'>[L] is maimed as the skewer shatters while still in [L.p_their()] body!</span>")
-			L.adjustBruteLoss(15)
+			L.take_bodypart_damage(brute = 15)
 		unbuckle_mob(L)
 	return ..()
 
@@ -32,7 +32,7 @@
 	if(density)
 		if(buckled_mobs && LAZYLEN(buckled_mobs))
 			var/mob/living/spitroast = buckled_mobs[1]
-			spitroast.adjustBruteLoss(0.1)
+			spitroast.take_bodypart_damage(brute = 0.1)
 
 /obj/structure/destructible/clockwork/trap/attackby(obj/item/I, mob/living/user, params)
 	if(buckled_mobs && (user in buckled_mobs))

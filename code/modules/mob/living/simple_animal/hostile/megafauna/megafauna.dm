@@ -95,7 +95,7 @@
 		"<span class='danger'>[src] devours [L]!</span>",
 		"<span class='userdanger'>You feast on [L], restoring your health!</span>")
 	if(!is_station_level(z) || client) //NPC monsters won't heal while on station
-		adjustBruteLoss(-L.maxHealth/2)
+		heal_overall_damage(brute = L.maxHealth/2)
 	L.gib()
 
 /mob/living/simple_animal/hostile/megafauna/ex_act(severity, target)

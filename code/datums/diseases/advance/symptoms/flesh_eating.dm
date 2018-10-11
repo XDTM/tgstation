@@ -55,9 +55,7 @@ Bonus
 
 /datum/symptom/flesh_eating/proc/Flesheat(mob/living/M, datum/disease/advance/A)
 	var/get_damage = rand(15,25) * power
-	M.adjustBruteLoss(get_damage)
-	if(pain)
-		M.adjustStaminaLoss(get_damage)
+	M.take_bodypart_damage(brute = get_damage, stamina = (pain ? get_damage : 0), only_organic = TRUE)
 	if(bleed)
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
@@ -122,7 +120,7 @@ Bonus
 
 /datum/symptom/flesh_death/proc/Flesh_death(mob/living/M, datum/disease/advance/A)
 	var/get_damage = rand(6,10)
-	M.adjustBruteLoss(get_damage)
+	M.take_bodypart_damage(brute = get_damage, only_organic = TRUE)
 	if(chems)
 		M.reagents.add_reagent_list(list("heparin" = 2, "lipolicide" = 2))
 	if(zombie)

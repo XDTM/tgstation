@@ -30,8 +30,7 @@
 	. = ..()
 	if(is_deployed() && toggle && iscarbon(target))
 		var/mob/living/carbon/C = target
-		C.adjustBruteLoss(-5)
-		C.adjustFireLoss(-5)
+		C.heal_bodypart_damage(brute = 5, burn = 5)
 		C.adjustOxyLoss(-5)
 		C.adjustToxLoss(-5)
 		var/obj/effect/temp_visual/heal/H = new /obj/effect/temp_visual/heal(get_turf(C))

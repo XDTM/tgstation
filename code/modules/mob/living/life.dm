@@ -162,4 +162,4 @@
 /mob/living/proc/handle_high_gravity(gravity)
 	if(gravity >= GRAVITY_DAMAGE_TRESHOLD) //Aka gravity values of 3 or more
 		var/grav_stregth = gravity - GRAVITY_DAMAGE_TRESHOLD
-		adjustBruteLoss(min(grav_stregth,3))
+		take_overall_damage(brute = (min(grav_stregth,3)))

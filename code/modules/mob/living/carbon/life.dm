@@ -409,7 +409,7 @@
 				continue
 			if(SSmobs.times_fired%3==1)
 				if(!(M.status_flags & GODMODE))
-					M.adjustBruteLoss(5)
+					M.take_bodypart_damage(brute = 5)
 				nutrition += 10
 
 
@@ -520,8 +520,7 @@ GLOBAL_LIST_INIT(ballmer_windows_me_msg, list("Yo man, what if, we like, uh, put
 				slurring += 2
 			jitteriness = max(jitteriness - 3, 0)
 			if(has_trait(TRAIT_DRUNK_HEALING))
-				adjustBruteLoss(-0.12, FALSE)
-				adjustFireLoss(-0.06, FALSE)
+				heal_overall_damage(brute = 0.12, burn = 0.06, update_overlays = FALSE)
 
 		if(drunkenness >= 11 && slurring < 5)
 			slurring += 1.2
@@ -548,8 +547,7 @@ GLOBAL_LIST_INIT(ballmer_windows_me_msg, list("Yo man, what if, we like, uh, put
 				confused += 2
 			Dizzy(10)
 			if(has_trait(TRAIT_DRUNK_HEALING)) // effects stack with lower tiers
-				adjustBruteLoss(-0.3, FALSE)
-				adjustFireLoss(-0.15, FALSE)
+				heal_overall_damage(brute = 0.3, burn = 0.15, update_overlays = FALSE)
 
 		if(drunkenness >= 51)
 			if(prob(5))
@@ -561,8 +559,7 @@ GLOBAL_LIST_INIT(ballmer_windows_me_msg, list("Yo man, what if, we like, uh, put
 			if(prob(50))
 				blur_eyes(5)
 			if(has_trait(TRAIT_DRUNK_HEALING))
-				adjustBruteLoss(-0.4, FALSE)
-				adjustFireLoss(-0.2, FALSE)
+				heal_overall_damage(brute = 0.4, burn = 0.2, update_overlays = FALSE)
 
 		if(drunkenness >= 71)
 			blur_eyes(5)

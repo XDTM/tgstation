@@ -1321,10 +1321,10 @@
 			var/newamt
 			switch(Text)
 				if("brute")
-					L.adjustBruteLoss(amount)
+					L.adjust_overall_damage(brute = amount)
 					newamt = L.getBruteLoss()
 				if("fire")
-					L.adjustFireLoss(amount)
+					L.adjust_overall_damage(burn = amount)
 					newamt = L.getFireLoss()
 				if("toxin")
 					L.adjustToxLoss(amount)
@@ -1339,7 +1339,7 @@
 					L.adjustCloneLoss(amount)
 					newamt = L.getCloneLoss()
 				if("stamina")
-					L.adjustStaminaLoss(amount)
+					L.adjust_overall_damage(stamina = amount)
 					newamt = L.getStaminaLoss()
 				else
 					to_chat(usr, "You caused an error. DEBUG: Text:[Text] Mob:[L]")

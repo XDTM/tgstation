@@ -582,7 +582,7 @@
 		to_chat(M, "<span class='userdanger'>A terrible pain travels down your back as wings burst out!</span>")
 		M.set_species(/datum/species/angel)
 		playsound(M.loc, 'sound/items/poster_ripped.ogg', 50, 1, -1)
-		M.adjustBruteLoss(20)
+		M.apply_damage(20, BRUTE, BODY_ZONE_CHEST)
 		M.emote("scream")
 	..()
 

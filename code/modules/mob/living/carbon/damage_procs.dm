@@ -21,13 +21,13 @@
 				if(BP.receive_damage(damage * hit_percent, 0))
 					update_damage_overlays()
 			else //no bodypart, we deal damage with a more general method.
-				adjustBruteLoss(damage * hit_percent)
+				take_bodypart_damage(brute = (damage * hit_percent))
 		if(BURN)
 			if(BP)
 				if(BP.receive_damage(0, damage * hit_percent))
 					update_damage_overlays()
 			else
-				adjustFireLoss(damage * hit_percent)
+				take_bodypart_damage(burn = (damage * hit_percent))
 		if(TOX)
 			adjustToxLoss(damage * hit_percent)
 		if(OXY)
@@ -39,7 +39,7 @@
 				if(BP.receive_damage(0, 0, damage * hit_percent))
 					update_damage_overlays()
 			else
-				adjustStaminaLoss(damage * hit_percent)
+				take_bodypart_damage(stamina = (damage * hit_percent))
 		if(BRAIN)
 			adjustBrainLoss(damage * hit_percent)
 	return TRUE
@@ -135,23 +135,23 @@
 //Heals ONE bodypart randomly selected from damaged ones.
 //It automatically updates damage overlays if necessary
 //It automatically updates health status
-/mob/living/carbon/heal_bodypart_damage(brute = 0, burn = 0, stamina = 0, updating_health = TRUE, only_robotic = FALSE, only_organic = TRUE)
+/mob/living/carbon/heal_bodypart_damage(brute = 0, burn = 0, stamina = 0, only_robotic = FALSE, only_organic = TRUE, updating_health = TRUE)
 	var/list/obj/item/bodypart/parts = get_damaged_bodyparts(brute,burn)
 	if(!parts.len)
 		return
 	var/obj/item/bodypart/picked = pick(parts)
-	if(picked.heal_damage(brute, burn, stamina, only_robotic, only_organic))
+	if(picked.heal_damage(brute, burn, stamina, only_robotic, only_organic, updating_health))
 		update_damage_overlays()
 
 //Damages ONE bodypart randomly selected from damagable ones.
 //It automatically updates damage overlays if necessary
 //It automatically updates health status
-/mob/living/carbon/take_bodypart_damage(brute = 0, burn = 0, stamina = 0)
+/mob/living/carbon/take_bodypart_damage(brute = 0, burn = 0, stamina = 0, only_robotic = FALSE, only_organic = TRUE, updating_health = TRUE)
 	var/list/obj/item/bodypart/parts = get_damageable_bodyparts()
 	if(!parts.len)
 		return
 	var/obj/item/bodypart/picked = pick(parts)
-	if(picked.receive_damage(brute, burn, stamina))
+	if(picked.receive_damage(brute, burn, stamina, only_robotic, only_organic, updating_health))
 		update_damage_overlays()
 
 //Heal MANY bodyparts, in random order
@@ -180,7 +180,7 @@
 		update_damage_overlays()
 
 // damage MANY bodyparts, in random order
-/mob/living/carbon/take_overall_damage(brute = 0, burn = 0, stamina = 0, updating_health = TRUE)
+/mob/living/carbon/take_overall_damage(brute = 0, burn = 0, stamina = 0, only_robotic = FALSE, only_organic = TRUE, updating_health = TRUE)
 	if(status_flags & GODMODE)
 		return	//godmode
 
@@ -197,7 +197,7 @@
 		var/stamina_was = picked.stamina_dam
 
 
-		update |= picked.receive_damage(brute_per_part, burn_per_part, stamina_per_part, FALSE)
+		update |= picked.receive_damage(brute_per_part, burn_per_part, stamina_per_part, only_robotic, only_organic, FALSE)
 
 		brute	= round(brute - (picked.brute_dam - brute_was), DAMAGE_PRECISION)
 		burn	= round(burn - (picked.burn_dam - burn_was), DAMAGE_PRECISION)

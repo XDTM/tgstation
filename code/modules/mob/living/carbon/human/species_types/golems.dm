@@ -615,12 +615,11 @@
 
 /datum/species/golem/runic/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
 	if(chem.id == "holywater")
-		H.adjustFireLoss(4)
+		H.take_overall_damage(burn = 4)
 		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
 
 	if(chem.id == "unholywater")
-		H.adjustBruteLoss(-4)
-		H.adjustFireLoss(-4)
+		H.heal_overall_damage(brute = 4, burn = 4)
 		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
 
 

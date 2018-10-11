@@ -243,8 +243,7 @@
 		var/mob/living/L = occupant
 		if(GLOB.clockwork_vitality) //If there's Vitality, the sleeper has passive healing
 			GLOB.clockwork_vitality = max(0, GLOB.clockwork_vitality - 1)
-			L.adjustBruteLoss(-1)
-			L.adjustFireLoss(-1)
+			L.heal_overall_damage(brute = 1, burn = 1)
 			L.adjustOxyLoss(-5)
 
 /obj/machinery/sleeper/old

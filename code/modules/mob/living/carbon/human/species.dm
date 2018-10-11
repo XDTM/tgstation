@@ -713,7 +713,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 		var/takes_crit_damage = (!H.has_trait(TRAIT_NOCRITDAMAGE))
 		if((H.health < H.crit_threshold) && takes_crit_damage)
-			H.adjustBruteLoss(1)
+			H.take_bodypart_damage(brute = 1)
 
 /datum/species/proc/spec_death(gibbed, mob/living/carbon/human/H)
 	return
@@ -1404,7 +1404,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 /datum/species/proc/apply_damage(damage, damagetype = BRUTE, def_zone = null, blocked, mob/living/carbon/human/H)
 	var/hit_percent = (100-(blocked+armor))/100
-	hit_percent = (hit_percent * (100-H.physiology.damage_resistance))/100
+	hit_percent = (hit_percent * H.physiology.damage_mod)/100
 	if(!damage || hit_percent <= 0)
 		return 0
 
@@ -1425,14 +1425,14 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 				if(BP.receive_damage(damage * hit_percent * brutemod * H.physiology.brute_mod, 0))
 					H.update_damage_overlays()
 			else//no bodypart, we deal damage with a more general method.
-				H.adjustBruteLoss(damage * hit_percent * brutemod * H.physiology.brute_mod)
+				H.take_bodypart_damage(brute = (damage * hit_percent * brutemod * H.physiology.brute_mod))
 		if(BURN)
 			H.damageoverlaytemp = 20
 			if(BP)
 				if(BP.receive_damage(0, damage * hit_percent * burnmod * H.physiology.burn_mod))
 					H.update_damage_overlays()
 			else
-				H.adjustFireLoss(damage * hit_percent * burnmod * H.physiology.burn_mod)
+				H.take_bodypart_damage(burn = (damage * hit_percent * burnmod * H.physiology.burn_mod))
 		if(TOX)
 			H.adjustToxLoss(damage * hit_percent * H.physiology.tox_mod)
 		if(OXY)
@@ -1444,7 +1444,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 				if(BP.receive_damage(0, 0, damage * hit_percent * H.physiology.stamina_mod))
 					H.update_stamina()
 			else
-				H.adjustStaminaLoss(damage * hit_percent * H.physiology.stamina_mod)
+				H.take_bodypart_damage(stamina = (damage * hit_percent * H.physiology.stamina_mod))
 		if(BRAIN)
 			H.adjustBrainLoss(damage * hit_percent * H.physiology.brain_mod)
 	return 1
@@ -1549,7 +1549,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	switch(adjusted_pressure)
 		if(HAZARD_HIGH_PRESSURE to INFINITY)
 			if(!H.has_trait(TRAIT_RESISTHIGHPRESSURE))
-				H.adjustBruteLoss(min(((adjusted_pressure / HAZARD_HIGH_PRESSURE) -1 ) * PRESSURE_DAMAGE_COEFFICIENT, MAX_HIGH_PRESSURE_DAMAGE) * H.physiology.pressure_mod)
+				H.take_overall_damage(brute = (min(((adjusted_pressure / HAZARD_HIGH_PRESSURE) -1 ) * PRESSURE_DAMAGE_COEFFICIENT, MAX_HIGH_PRESSURE_DAMAGE) * H.physiology.pressure_mod))
 				H.throw_alert("pressure", /obj/screen/alert/highpressure, 2)
 			else
 				H.clear_alert("pressure")
@@ -1563,7 +1563,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 			if(H.has_trait(TRAIT_RESISTLOWPRESSURE))
 				H.clear_alert("pressure")
 			else
-				H.adjustBruteLoss(LOW_PRESSURE_DAMAGE * H.physiology.pressure_mod)
+				H.take_overall_damage(brute = (LOW_PRESSURE_DAMAGE * H.physiology.pressure_mod))
 				H.throw_alert("pressure", /obj/screen/alert/lowpressure, 2)
 
 //////////

@@ -132,8 +132,7 @@
 	var/power = -0.00003 * (M.bodytemperature ** 2) + 3
 	if(M.bodytemperature < T0C)
 		M.adjustOxyLoss(-3 * power, 0)
-		M.adjustBruteLoss(-power, 0)
-		M.adjustFireLoss(-power, 0)
+		M.heal_overall_damage(brute = power, burn = power, updating_health = FALSE)
 		M.adjustToxLoss(-power, 0, TRUE) //heals TOXINLOVERs
 		M.adjustCloneLoss(-power, 0)
 		M.remove_trait(TRAIT_DISFIGURED, TRAIT_GENERIC) //fixes common causes for disfiguration
@@ -279,7 +278,7 @@
 			if(show_message)
 				to_chat(M, "<span class='warning'>You don't feel so good...</span>")
 		else if(M.getBruteLoss())
-			M.adjustBruteLoss(-reac_volume)
+			M.heal_overall_damage(brute = reac_volume)
 			if(show_message)
 				to_chat(M, "<span class='danger'>You feel your bruises healing! It stings like hell!</span>")
 			M.emote("scream")
@@ -287,7 +286,7 @@
 
 
 /datum/reagent/medicine/styptic_powder/on_mob_life(mob/living/carbon/M)
-	M.adjustBruteLoss(-2*REM, 0)
+	M.heal_overall_damage(brute = 2*REM, updating_health = FALSE)
 	..()
 	. = 1
 
@@ -313,8 +312,7 @@
 		last_added = new_blood_level - M.blood_volume
 		M.blood_volume = new_blood_level
 	if(prob(33))
-		M.adjustBruteLoss(-0.5*REM, 0)
-		M.adjustFireLoss(-0.5*REM, 0)
+		M.heal_overall_damage(brute = 0.5*REM, burn = 0.5*REM, organic_only = TRUE, updating_health = FALSE)
 		. = TRUE
 	..()
 
@@ -328,8 +326,7 @@
 		holder.add_reagent("sugar", 1)
 		holder.remove_reagent("salglu_solution", 0.5)
 	if(prob(33))
-		M.adjustBruteLoss(0.5*REM, 0)
-		M.adjustFireLoss(0.5*REM, 0)
+		M.take_overall_damage(brute = 0.5*REM, organic_only = TRUE, updating_health = FALSE)
 		. = TRUE
 	..()
 
@@ -343,8 +340,7 @@
 
 /datum/reagent/medicine/mine_salve/on_mob_life(mob/living/carbon/C)
 	C.hal_screwyhud = SCREWYHUD_HEALTHY
-	C.adjustBruteLoss(-0.25*REM, 0)
-	C.adjustFireLoss(-0.25*REM, 0)
+	C.heal_overall_damage(brute = 0.25*REM, burn = 0.25*REM, organic_only = TRUE, updating_health = FALSE)
 	..()
 	return TRUE
 
@@ -383,8 +379,7 @@
 		if (M.stat == DEAD)
 			show_message = 0
 		if(method in list(PATCH, TOUCH))
-			M.adjustBruteLoss(-1.25 * reac_volume)
-			M.adjustFireLoss(-1.25 * reac_volume)
+			M.heal_overall_damage(brute = 1.25*reac_volume, burn = 1.25*reac_volume, organic_only = TRUE, updating_health = FALSE)
 			if(show_message)
 				to_chat(M, "<span class='danger'>You feel your burns and bruises healing! It stings like hell!</span>")
 	..()
@@ -418,16 +413,14 @@
 /datum/reagent/medicine/omnizine/on_mob_life(mob/living/carbon/M)
 	M.adjustToxLoss(-0.5*REM, 0)
 	M.adjustOxyLoss(-0.5*REM, 0)
-	M.adjustBruteLoss(-0.5*REM, 0)
-	M.adjustFireLoss(-0.5*REM, 0)
+	M.heal_overall_damage(brute = 0.5*REM, burn = 0.5*REM, organic_only = TRUE, updating_health = FALSE)
 	..()
 	. = 1
 
 /datum/reagent/medicine/omnizine/overdose_process(mob/living/M)
 	M.adjustToxLoss(1.5*REM, 0)
 	M.adjustOxyLoss(1.5*REM, 0)
-	M.adjustBruteLoss(1.5*REM, 0)
-	M.adjustFireLoss(1.5*REM, 0)
+	M.take_overall_damage(brute = 1.5*REM, burn = 1.5*REM, organic_only = TRUE, updating_health = FALSE)
 	..()
 	. = 1
 
@@ -491,15 +484,15 @@
 
 /datum/reagent/medicine/sal_acid/on_mob_life(mob/living/carbon/M)
 	if(M.getBruteLoss() > 50)
-		M.adjustBruteLoss(-4*REM, 0) //Twice as effective as styptic powder for severe bruising
+		M.heal_overall_damage(brute = 4*REM, organic_only = TRUE, updating_health = FALSE) //Twice as effective as styptic powder for severe bruising
 	else
-		M.adjustBruteLoss(-0.5*REM, 0) //But only a quarter as effective for more minor ones
+		M.heal_overall_damage(brute = 0.5*REM, organic_only = TRUE, updating_health = FALSE) //But only a quarter as effective for more minor ones
 	..()
 	. = 1
 
 /datum/reagent/medicine/sal_acid/overdose_process(mob/living/M)
 	if(M.getBruteLoss()) //It only makes existing bruises worse
-		M.adjustBruteLoss(4.5*REM, 0) // it's going to be healing either 4 or 0.5
+		M.take_overall_damage(brute = 4.5*REM, organic_only = TRUE, updating_health = FALSE) // it's going to be healing either 4 or 0.5
 		. = 1
 	..()
 
@@ -530,8 +523,7 @@
 	M.adjustOxyLoss(-12*REM, 0)
 	M.silent = max(M.silent, 5)
 	if(prob(33))
-		M.adjustBruteLoss(-0.5*REM, 0)
-		M.adjustFireLoss(-0.5*REM, 0)
+		M.take_overall_damage(brute = 0.5*REM, burn = 0.5*REM, organic_only = TRUE, updating_health = FALSE)
 	..()
 	return TRUE
 
@@ -723,8 +715,7 @@
 /datum/reagent/medicine/atropine/on_mob_life(mob/living/carbon/M)
 	if(M.health < 0)
 		M.adjustToxLoss(-2*REM, 0)
-		M.adjustBruteLoss(-2*REM, 0)
-		M.adjustFireLoss(-2*REM, 0)
+		M.heal_overall_damage(brute = 2*REM, burn = 2*REM, organic_only = TRUE, updating_health = FALSE)
 		M.adjustOxyLoss(-5*REM, 0)
 		. = 1
 	M.losebreath = 0
@@ -752,8 +743,7 @@
 /datum/reagent/medicine/epinephrine/on_mob_life(mob/living/carbon/M)
 	if(M.health < 0)
 		M.adjustToxLoss(-0.5*REM, 0)
-		M.adjustBruteLoss(-0.5*REM, 0)
-		M.adjustFireLoss(-0.5*REM, 0)
+		M.heal_overall_damage(brute = 0.5*REM, burn = 0.5*REM, organic_only = TRUE, updating_health = FALSE)
 	if(M.oxyloss > 35)
 		M.setOxyLoss(35, 0)
 	if(M.losebreath >= 4)
@@ -807,8 +797,7 @@
 	..()
 
 /datum/reagent/medicine/strange_reagent/on_mob_life(mob/living/carbon/M)
-	M.adjustBruteLoss(0.5*REM, 0)
-	M.adjustFireLoss(0.5*REM, 0)
+	M.take_overall_damage(brute = 0.5*REM, burn = 0.5*REM, organic_only = TRUE, updating_health = FALSE)
 	..()
 	. = 1
 
@@ -878,8 +867,7 @@
 	if(M.health < 50 && M.health > 0)
 		M.adjustOxyLoss(-1*REM, 0)
 		M.adjustToxLoss(-1*REM, 0)
-		M.adjustBruteLoss(-1*REM, 0)
-		M.adjustFireLoss(-1*REM, 0)
+		M.heal_overall_damage(brute = 1*REM, burn = 1*REM, organic_only = TRUE, updating_health = FALSE)
 	M.AdjustStun(-60, 0)
 	M.AdjustKnockdown(-60, 0)
 	M.AdjustUnconscious(-60, 0)
@@ -919,12 +907,12 @@
 	overdose_threshold = 30
 
 /datum/reagent/medicine/bicaridine/on_mob_life(mob/living/carbon/M)
-	M.adjustBruteLoss(-2*REM, 0)
+	M.heal_overall_damage(brute = 2*REM, organic_only = TRUE, updating_health = FALSE)
 	..()
 	. = 1
 
 /datum/reagent/medicine/bicaridine/overdose_process(mob/living/M)
-	M.adjustBruteLoss(4*REM, 0)
+	M.take_overall_damage(brute = 4*REM, organic_only = TRUE, updating_health = FALSE)
 	..()
 	. = 1
 
@@ -955,12 +943,12 @@
 	overdose_threshold = 30
 
 /datum/reagent/medicine/kelotane/on_mob_life(mob/living/carbon/M)
-	M.adjustFireLoss(-2*REM, 0)
+	M.heal_overall_damage(burn = 2*REM, organic_only = TRUE, updating_health = FALSE)
 	..()
 	. = 1
 
 /datum/reagent/medicine/kelotane/overdose_process(mob/living/M)
-	M.adjustFireLoss(4*REM, 0)
+	M.take_overall_damage(burn = 4*REM, organic_only = TRUE, updating_health = FALSE)
 	..()
 	. = 1
 
@@ -1008,8 +996,7 @@
 
 /datum/reagent/medicine/tricordrazine/on_mob_life(mob/living/carbon/M)
 	if(prob(80))
-		M.adjustBruteLoss(-1*REM, 0)
-		M.adjustFireLoss(-1*REM, 0)
+		M.heal_overall_damage(brute = 1*REM, burn = 1*REM, organic_only = TRUE, updating_health = FALSE)
 		M.adjustOxyLoss(-1*REM, 0)
 		M.adjustToxLoss(-1*REM, 0)
 		. = 1
@@ -1018,8 +1005,7 @@
 /datum/reagent/medicine/tricordrazine/overdose_process(mob/living/M)
 	M.adjustToxLoss(2*REM, 0)
 	M.adjustOxyLoss(2*REM, 0)
-	M.adjustBruteLoss(2*REM, 0)
-	M.adjustFireLoss(2*REM, 0)
+	M.take_overall_damage(brute = 2*REM, burn = 2*REM, organic_only = TRUE, updating_health = FALSE)
 	..()
 	. = 1
 
@@ -1032,8 +1018,7 @@
 	taste_description = "jelly"
 
 /datum/reagent/medicine/regen_jelly/on_mob_life(mob/living/carbon/M)
-	M.adjustBruteLoss(-1.5*REM, 0)
-	M.adjustFireLoss(-1.5*REM, 0)
+	M.heal_overall_damage(brute = 1.5*REM, burn = 1.5*REM, organic_only = TRUE, updating_health = FALSE)
 	M.adjustOxyLoss(-1.5*REM, 0)
 	M.adjustToxLoss(-1.5*REM, 0, TRUE) //heals TOXINLOVERs
 	. = 1
@@ -1047,8 +1032,7 @@
 	color = "#555555"
 
 /datum/reagent/medicine/syndicate_nanites/on_mob_life(mob/living/carbon/M)
-	M.adjustBruteLoss(-5*REM, 0) //A ton of healing - this is a 50 telecrystal investment.
-	M.adjustFireLoss(-5*REM, 0)
+	M.heal_overall_damage(brute = 5*REM, burn = 5*REM, updating_health = FALSE) //A ton of healing - this is a 50 telecrystal investment.
 	M.adjustOxyLoss(-15, 0)
 	M.adjustToxLoss(-5*REM, 0)
 	M.adjustBrainLoss(-15*REM)
@@ -1064,8 +1048,7 @@
 	overdose_threshold = 25
 
 /datum/reagent/medicine/earthsblood/on_mob_life(mob/living/carbon/M)
-	M.adjustBruteLoss(-3 * REM, 0)
-	M.adjustFireLoss(-3 * REM, 0)
+	M.heal_overall_damage(brute = 3*REM, burn = 3*REM, organic_only = TRUE, updating_health = FALSE)
 	M.adjustOxyLoss(-15 * REM, 0)
 	M.adjustToxLoss(-3 * REM, 0)
 	M.adjustBrainLoss(2 * REM, 150) //This does, after all, come from ambrosia, and the most powerful ambrosia in existence, at that!
@@ -1100,7 +1083,7 @@
 		M.hallucination -= 5
 	if(prob(20))
 		M.adjustBrainLoss(1*REM, 50)
-	M.adjustStaminaLoss(2.5*REM, 0)
+	M.take_overall_damage(stamina = 2.5*REM, organic_only = TRUE, updating_health = FALSE)
 	..()
 	return TRUE
 
@@ -1113,13 +1096,12 @@
 	can_synth = FALSE
 
 /datum/reagent/medicine/lavaland_extract/on_mob_life(mob/living/carbon/M)
-	M.heal_bodypart_damage(5,5)
+	M.heal_bodypart_damage(brute = 5,burn = 5)
 	..()
 	return TRUE
 
 /datum/reagent/medicine/lavaland_extract/overdose_process(mob/living/M)
-	M.adjustBruteLoss(3*REM, 0)
-	M.adjustFireLoss(3*REM, 0)
+	M.take_overall_damage(brute = 3*REM, burn = 3*REM, organic_only = TRUE, updating_health = FALSE)
 	M.adjustToxLoss(3*REM, 0)
 	..()
 	return TRUE

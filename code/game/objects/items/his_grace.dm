@@ -92,7 +92,7 @@
 				master.remove_status_effect(STATUS_EFFECT_HISGRACE)
 				item_flags &= ~NODROP
 				master.Knockdown(60)
-				master.adjustBruteLoss(master.maxHealth)
+				master.take_overall_damage(brute = master.maxHealth)
 				playsound(master, 'sound/effects/splat.ogg', 100, 0)
 			else
 				master.apply_status_effect(STATUS_EFFECT_HISGRACE)
@@ -116,7 +116,7 @@
 			do_attack_animation(L, null, src)
 			playsound(L, 'sound/weapons/smash.ogg', 50, 1)
 			playsound(L, 'sound/misc/desceration-01.ogg', 50, 1)
-			L.adjustBruteLoss(force)
+			L.take_bodypart_damage(brute = force)
 			adjust_bloodthirst(-5) //Don't stop attacking they're right there!
 		else
 			consume(L)
@@ -176,7 +176,7 @@
 		return
 	var/victims = 0
 	meal.visible_message("<span class='warning'>[src] swings open and devours [meal]!</span>", "<span class='his_grace big bold'>[src] consumes you!</span>")
-	meal.adjustBruteLoss(200)
+	meal.take_overall_damage(brute = 200)
 	playsound(meal, 'sound/misc/desceration-02.ogg', 75, 1)
 	playsound(src, 'sound/items/eatfood.ogg', 100, 1)
 	meal.forceMove(src)

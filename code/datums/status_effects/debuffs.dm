@@ -97,8 +97,7 @@
 	for(var/obj/item/his_grace/HG in owner.held_items)
 		qdel(src)
 		return
-	owner.adjustBruteLoss(0.1)
-	owner.adjustFireLoss(0.1)
+	owner.take_bodypart_damage(brute = 0.1, burn = 0.1)
 	owner.adjustToxLoss(0.2, TRUE, TRUE)
 
 /datum/status_effect/belligerent
@@ -354,7 +353,7 @@
 		for(var/d in GLOB.alldirs)
 			new /obj/effect/temp_visual/dir_setting/bloodsplatter(T, d)
 		playsound(T, "desceration", 200, 1, -1)
-		owner.adjustBruteLoss(bleed_damage)
+		owner.take_bodypart_damage(brute = bleed_damage)
 	else
 		new /obj/effect/temp_visual/bleed(get_turf(owner))
 

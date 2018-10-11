@@ -476,7 +476,7 @@
 			if(T)
 				add_splatter_floor(T)
 			if(stun)
-				adjustBruteLoss(3)
+				take_overall_damage(brute = 3)
 		else
 			if(T)
 				T.add_vomit_floor(src, toxic)//toxic barf looks different
