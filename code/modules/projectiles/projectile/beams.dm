@@ -20,6 +20,30 @@
 	muzzle_type = /obj/effect/projectile/muzzle/laser
 	impact_type = /obj/effect/projectile/impact/laser
 
+/obj/item/projectile/beam/laser/weak
+	damage = 12
+
+/obj/item/projectile/beam/laser/strong
+	name = "amplified laser"
+	icon_state = "heavylaser"
+	damage = 35
+	tracer_type = /obj/effect/projectile/tracer/heavy_laser
+	muzzle_type = /obj/effect/projectile/muzzle/heavy_laser
+	impact_type = /obj/effect/projectile/impact/heavy_laser
+	
+/obj/item/projectile/beam/laser/chirped
+	name = "chirped pulse laser"
+	icon_state = "chirpedlaser"
+	damage = 25
+	
+/obj/item/projectile/beam/laser/heavylaser
+	name = "heavy laser"
+	icon_state = "heavylaser"
+	damage = 40
+	tracer_type = /obj/effect/projectile/tracer/heavy_laser
+	muzzle_type = /obj/effect/projectile/muzzle/heavy_laser
+	impact_type = /obj/effect/projectile/impact/heavy_laser	
+	
 /obj/item/projectile/beam/laser/heavylaser
 	name = "heavy laser"
 	icon_state = "heavylaser"

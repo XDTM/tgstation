@@ -46,6 +46,34 @@
 	desc = "An industrial-grade heavy-duty laser rifle with a modified laser lens to scatter its shot into multiple smaller lasers. The inner-core can self-charge for theoretically infinite use."
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/scatter, /obj/item/ammo_casing/energy/laser)
 
+/obj/item/gun/energy/laser/advanced
+	name ="prototype laser gun"
+	icon_state = "laser_adv"
+	desc = "A prototype based on the classic laser gun design, fitted with a customizable focus for different firing modes."
+	var/list/focus_modes = list("Classic","Q-Switching","Mode-Locking")
+	var/current_focus = "Classic"
+	
+/obj/item/gun/energy/laser/advanced/examine(mob/user)
+	. = ..()
+	to_chat(user, "<span class='notice'>Current Focus: <b>[current_focus]</b>. Alt-Click to switch focus.</span>")
+	
+/obj/item/gun/energy/laser/advanced/proc/switch_focus()
+	current_focus = next_list_item(current_focus, focus_modes)
+	ammo_type = initial(ammo_type)
+	burst_size = initial(burst_size)
+	fire_delay = initial(fire_delay)
+	switch(current_focus)
+		if("Classic")
+			ammo_type = list(/obj/item/ammo_casing/energy/lasergun)
+		if("Q-Switching")
+			ammo_type = list(/obj/item/ammo_casing/energy/lasergun/qswitch)
+		if("Mode-Locking")
+			ammo_type = list(/obj/item/ammo_casing/energy/lasergun/modelock)
+			burst_size = 3
+			fire_delay = 3
+		if("Chirped Pulse Amplification")
+			ammo_type = list(/obj/item/ammo_casing/energy/lasergun/chirped)
+	
 /obj/item/gun/energy/laser/cyborg
 	can_charge = 0
 	desc = "An energy-based laser gun that draws power from the cyborg's internal energy cell directly. So this is what freedom looks like?"

@@ -6,6 +6,19 @@
 	projectile_type = /obj/item/projectile/beam/laser
 	e_cost = 83
 	select_name = "kill"
+	
+/obj/item/ammo_casing/energy/lasergun/modelock
+	projectile_type = /obj/item/projectile/beam/laser/weak
+	e_cost = 25
+	
+/obj/item/ammo_casing/energy/lasergun/qswitch
+	projectile_type = /obj/item/projectile/beam/laser/strong
+	delay = 20
+	e_cost = 100
+	
+/obj/item/ammo_casing/energy/lasergun/chirped
+	projectile_type = /obj/item/projectile/beam/laser/chirped
+	e_cost = 50
 
 /obj/item/ammo_casing/energy/lasergun/old
 	projectile_type = /obj/item/projectile/beam/laser
