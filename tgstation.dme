@@ -851,6 +851,7 @@
 #include "code\game\objects\items\devices\scanners.dm"
 #include "code\game\objects\items\devices\sensor_device.dm"
 #include "code\game\objects\items\devices\taperecorder.dm"
+#include "code\game\objects\items\devices\teleporters.dm"
 #include "code\game\objects\items\devices\traitordevices.dm"
 #include "code\game\objects\items\devices\transfer_valve.dm"
 #include "code\game\objects\items\devices\PDA\cart.dm"
