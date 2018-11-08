@@ -33,17 +33,9 @@
 	var/turf/T = get_turf(target)
 	if(T.density)
 		return
-	if(get_dist(T,src) > field_distance_limit)
-		return
-	if(LAZYLEN(current_fields) >= max_fields)
-		to_chat(user, "<span class='notice'>[src] cannot sustain any more forcefields!</span>")
-		return
-
-	playsound(src,'sound/weapons/resonator_fire.ogg',50,1)
-	user.visible_message("<span class='warning'>[user] projects a forcefield!</span>","<span class='notice'>You project a forcefield.</span>")
-	var/obj/structure/projected_forcefield/F = new(T, src)
-	current_fields += F
-	user.changeNext_move(CLICK_CD_MELEE)
+	var/list/path = AStar(user, T, dist, maxnodes, maxnodedepth, mintargetdist, adjacent,id, exclude, simulated_only)
+	
+/obj/item/teleporter/sidewinder/afterattack(turf/target, mob/user, list/path)	
 
 /obj/item/forcefield_projector/attack_self(mob/user)
 	if(LAZYLEN(current_fields))
