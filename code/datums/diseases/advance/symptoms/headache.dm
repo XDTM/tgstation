@@ -1,60 +1,56 @@
-/*
-//////////////////////////////////////
-
-Headache
-
-	Noticable.
-	Highly resistant.
-	Increases stage speed.
-	Not transmittable.
-	Low Level.
-
-BONUS
-	Displays an annoying message!
-	Should be used for buffing your disease.
-
-//////////////////////////////////////
+/*!
+	Adds a negative moodlet.
 */
-
-/datum/symptom/headache
-
+/datum/disease_property/symptom/headache
 	name = "Headache"
 	desc = "The virus causes inflammation inside the brain, causing constant headaches."
-	stealth = -1
-	resistance = 4
-	stage_speed = 2
-	transmittable = 0
 	level = 1
-	severity = 1
-	base_message_chance = 100
 	symptom_delay_min = 15
 	symptom_delay_max = 30
-	threshold_desc = "<b>Stage Speed 6:</b> Headaches will cause severe pain, that weakens the host.<br>\
-					  <b>Stage Speed 9:</b> Headaches become less frequent but far more intense, preventing any action from the host.<br>\
-					  <b>Stealth 4:</b> Reduces headache frequency until later stages."
+	var/headache_active = FALSE
+	var/strong_headache = FALSE
+	var/cluster_headache = FALSE
+	threshold_desc = "<b>BETA:</b> Makes headaches more painful.<br>\
+					  <b>GAMMA:</b> Rarely causes cluster headaches, which blind and disable the host for a while."
 
-/datum/symptom/headache/Start(datum/disease/advance/A)
-	if(!..())
-		return
-	if(A.properties["stealth"] >= 4)
-		base_message_chance = 50
-	if(A.properties["stage_rate"] >= 6) //severe pain
-		power = 2
-	if(A.properties["stage_rate"] >= 9) //cluster headaches
-		symptom_delay_min = 30
-		symptom_delay_max = 60
-		power = 3
+/datum/disease_property/symptom/headache/update_mutators()
+	if(disease.mutators[DISEASE_MUTATOR_BETA])
+		strong_headache = TRUE
+	else
+		strong_headache = FALSE
+	if(disease.mutators[DISEASE_MUTATOR_GAMMA])
+		cluster_headache = TRUE
+	else
+		cluster_headache = FALSE
 
-/datum/symptom/headache/Activate(datum/disease/advance/A)
-	if(!..())
-		return
-	var/mob/living/M = A.affected_mob
-	if(power < 2)
-		if(prob(base_message_chance) || A.stage >=4)
-			to_chat(M, "<span class='warning'>[pick("Your head hurts.", "Your head pounds.")]</span>")
-	if(power >= 2 && A.stage >= 4)
-		to_chat(M, "<span class='warning'>[pick("Your head hurts a lot.", "Your head pounds incessantly.")]</span>")
-		M.adjustStaminaLoss(25)
-	if(power >= 3 && A.stage >= 5)
-		to_chat(M, "<span class='userdanger'>[pick("Your head hurts!", "You feel a burning knife inside your brain!", "A wave of pain fills your head!")]</span>")
-		M.Stun(35)
+/datum/disease_property/symptom/headache/on_stage_change(new_stage, prev_stage)
+	if(new_stage > prev_stage)
+		if(new_stage >= 4 && !headache_active)
+			if(!strong_headache)
+				SEND_SIGNAL(disease.affected_mob, COMSIG_ADD_MOOD_EVENT, "headache", /datum/mood_event/headache)
+			else
+				SEND_SIGNAL(disease.affected_mob, COMSIG_ADD_MOOD_EVENT, "headache", /datum/mood_event/headache/strong)
+			headache_active = TRUE
+	else
+		if(new_stage <= 3 && headache_active)
+			SEND_SIGNAL(disease.affected_mob, COMSIG_CLEAR_MOOD_EVENT, "headache")
+			headache_active = FALSE
+
+/datum/disease_property/symptom/headache/on_end()
+	SEND_SIGNAL(disease.affected_mob, COMSIG_CLEAR_MOOD_EVENT, "headache")
+	headache_active = FALSE
+
+/datum/disease_property/symptom/headache/activate()
+	var/mob/living/M = disease.affected_mob
+	if(prob(25) && cluster_headache && disease.stage >= 5)
+		to_chat(M, "<span class='userdanger'>[pick("You feel a burning knife inside your brain!", "A wave of pain fills your head!")]</span>")
+		M.Unconscious(60) //Simulates being in too much pain to focus on anything else
+	if(disease.stage < 4)
+		if(message_cooldown())
+			to_chat(M, "<span class='warning'>[pick("Your head aches.", "Your head pounds.")]</span>")
+	else
+		if(!strong_headache)
+			to_chat(M, "<span class='warning'>[pick("Your head hurts.", "Your head pounds painfully.")]</span>")
+		else
+			to_chat(M, "<span class='warning'>[pick("Your head hurts a lot.", "Your head pounds incessantly.", "You feel needles inside your head.")]</span>")
+	

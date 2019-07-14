@@ -7,7 +7,8 @@
 	agent = "Shenanigans"
 	viable_mobtypes = list(/mob/living/carbon/human, /mob/living/carbon/monkey, /mob/living/carbon/alien)
 	severity = DISEASE_SEVERITY_BIOHAZARD
-	stage_prob = 10
+	stage_time_min = 200
+	stage_time_max = 300
 	visibility_flags = HIDDEN_SCANNER|HIDDEN_PANDEMIC
 	disease_flags = CURABLE
 	var/list/stage1 = list("You feel unremarkable.")
@@ -28,23 +29,29 @@
 	D.new_form = D.new_form
 	return D
 
-/datum/disease/transformation/stage_act()
-	..()
-	switch(stage)
+/datum/disease/transformation/update_stage(new_stage)
+	. = ..()
+	switch(new_stage)
 		if(1)
-			if (prob(stage_prob) && stage1)
+			if(stage1)
 				to_chat(affected_mob, pick(stage1))
 		if(2)
-			if (prob(stage_prob) && stage2)
+			if(stage2)
 				to_chat(affected_mob, pick(stage2))
 		if(3)
-			if (prob(stage_prob*2) && stage3)
+			if(stage3)
 				to_chat(affected_mob, pick(stage3))
 		if(4)
-			if (prob(stage_prob*2) && stage4)
+			if(stage4)
 				to_chat(affected_mob, pick(stage4))
 		if(5)
 			do_disease_transformation(affected_mob)
+
+
+/datum/disease/transformation/on_process()
+	if(stage == 5)
+		do_disease_transformation(affected_mob) //in case it didnt proc on stage change, keep trying
+
 
 /datum/disease/transformation/proc/do_disease_transformation(mob/living/affected_mob)
 	if(istype(affected_mob, /mob/living/carbon) && affected_mob.stat != DEAD)
@@ -153,7 +160,6 @@
 
 
 /datum/disease/transformation/robot
-
 	name = "Robotic Transformation"
 	cure_text = "An injection of copper."
 	cures = list(/datum/reagent/copper)
@@ -186,7 +192,6 @@
 
 
 /datum/disease/transformation/xeno
-
 	name = "Xenomorph Transformation"
 	cure_text = "Spaceacillin & Glycerol"
 	cures = list(/datum/reagent/medicine/spaceacillin, /datum/reagent/glycerol)
@@ -237,7 +242,7 @@
 		if(1)
 			if(ishuman(affected_mob) && affected_mob.dna)
 				if(affected_mob.dna.species.id == "slime" || affected_mob.dna.species.id == "stargazer" || affected_mob.dna.species.id == "lum")
-					stage = 5
+					update_stage(5)
 		if(3)
 			if(ishuman(affected_mob))
 				var/mob/living/carbon/human/human = affected_mob
@@ -275,7 +280,6 @@
 	cures = list(/datum/reagent/medicine/adminordrazine)
 	agent = "Gluttony's Blessing"
 	desc = "A 'gift' from somewhere terrible."
-	stage_prob = 20
 	severity = DISEASE_SEVERITY_BIOHAZARD
 	visibility_flags = 0
 	stage1	= list("Your stomach rumbles.")
@@ -291,7 +295,6 @@
 	cure_text = "Condensed Capsaicin, ingested or injected." //getting pepper sprayed doesn't help
 	cures = list(/datum/reagent/consumable/condensedcapsaicin) //beats the hippie crap right out of your system
 	cure_chance = 80
-	stage_prob = 5
 	agent = "Tranquility"
 	desc = "Consuming the flesh of a Gondola comes at a terrible price."
 	severity = DISEASE_SEVERITY_BIOHAZARD

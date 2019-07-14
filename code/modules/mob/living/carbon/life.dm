@@ -330,8 +330,8 @@
 /mob/living/carbon/handle_diseases()
 	for(var/thing in diseases)
 		var/datum/disease/D = thing
-		if(prob(D.infectivity))
-			D.spread()
+		if(prob(10))
+			D.airborne_spread(1)
 
 		if(stat != DEAD || D.process_dead)
 			D.stage_act()

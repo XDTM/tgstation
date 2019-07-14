@@ -4,7 +4,8 @@
 
 //Visibility Flags
 #define HIDDEN_SCANNER	(1<<0)
-#define HIDDEN_PANDEMIC	(1<<1)
+#define HIDDEN_HUD		(1<<1)
+#define HIDDEN_PANDEMIC	(1<<2)
 
 //Disease Flags
 #define CURABLE		(1<<0)
@@ -18,6 +19,12 @@
 #define DISEASE_SPREAD_CONTACT_FLUIDS	(1<<3)
 #define DISEASE_SPREAD_CONTACT_SKIN 	(1<<4)
 #define DISEASE_SPREAD_AIRBORNE			(1<<5)
+
+//Mutator Defines
+#define DISEASE_MUTATOR_ALPHA		"alpha"
+#define DISEASE_MUTATOR_BETA		"beta"
+#define DISEASE_MUTATOR_GAMMA		"gamma"
+#define DISEASE_MUTATOR_DELTA		"delta"
 
 //Severity Defines
 #define DISEASE_SEVERITY_POSITIVE	"Positive"  //Diseases that buff, heal, or at least do nothing at all

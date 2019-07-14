@@ -15,7 +15,9 @@
 	//Stages
 	var/stage = 1
 	var/max_stages = 0
-	var/stage_prob = 4
+	var/stage_time_min = 300
+	var/stage_time_max = 700
+	var/next_stage = 0
 
 	//Other
 	var/list/viable_mobtypes = list() //typepaths of viable mobs
@@ -25,7 +27,7 @@
 	var/cure_chance = 8
 	var/carrier = FALSE //If our host is only a carrier
 	var/bypasses_immunity = FALSE //Does it skip species virus immunity check? Some things may diseases and not viruses
-	var/permeability_mod = 1
+	var/base_infect_chance = 50 //Chance to infect a new host. Modified by the type of infection.
 	var/severity = DISEASE_SEVERITY_NONTHREAT
 	var/list/required_organs = list()
 	var/needs_all_cures = TRUE
@@ -71,15 +73,16 @@
 	stage = min(stage, max_stages)
 
 	if(!cure)
-		if(prob(stage_prob))
+		if(world.time > next_stage)
 			update_stage(min(stage + 1,max_stages))
+			next_stage = world.time + rand(stage_time_min, stage_time_max)
 	else
 		if(prob(cure_chance))
 			update_stage(max(stage - 1, 1))
+			next_stage = world.time + rand(stage_time_min, stage_time_max)
 
-	if(disease_flags & CURABLE)
-		if(cure && prob(cure_chance))
-			cure()
+	if(cure && prob(cure_chance))
+		cure()
 
 /datum/disease/proc/update_stage(new_stage)
 	stage = new_stage
@@ -96,27 +99,24 @@
 		return FALSE
 
 //Airborne spreading
-/datum/disease/proc/spread(force_spread = 0)
+/datum/disease/proc/airborne_spread(spread_range = 2, required_spread_flags = DISEASE_SPREAD_AIRBORNE, force)
 	if(!affected_mob)
 		return
 
-	if(!(spread_flags & DISEASE_SPREAD_AIRBORNE) && !force_spread)
+	if(!(spread_flags & required_spread_flags) && !force)
 		return
 
+	if(HAS_TRAIT(affected_mob, NO_DISEASE_SPREAD))
+		return
 	if(affected_mob.reagents.has_reagent(/datum/reagent/medicine/spaceacillin) || (affected_mob.satiety > 0 && prob(affected_mob.satiety/10)))
 		return
-
-	var/spread_range = 2
-
-	if(force_spread)
-		spread_range = force_spread
 
 	var/turf/T = affected_mob.loc
 	if(istype(T))
 		for(var/mob/living/carbon/C in oview(spread_range, affected_mob))
 			var/turf/V = get_turf(C)
 			if(disease_air_spread_walk(T, V))
-				C.AirborneContractDisease(src, force_spread)
+				C.AirborneContractDisease(src)
 
 /proc/disease_air_spread_walk(turf/start, turf/end)
 	if(!start || !end)
@@ -133,7 +133,7 @@
 /datum/disease/proc/cure(add_resistance = TRUE)
 	if(affected_mob)
 		if(add_resistance && (disease_flags & CAN_RESIST))
-			affected_mob.disease_resistances |= GetDiseaseID()
+			affected_mob.disease_resistances |= get_disease_id()
 	qdel(src)
 
 /datum/disease/proc/IsSame(datum/disease/D)
@@ -143,26 +143,15 @@
 
 
 /datum/disease/proc/Copy()
-	//note that stage is not copied over - the copy starts over at stage 1
-	var/static/list/copy_vars = list("name", "visibility_flags", "disease_flags", "spread_flags", "form", "desc", "agent", "spread_text",
-									"cure_text", "max_stages", "stage_prob", "viable_mobtypes", "cures", "infectivity", "cure_chance",
-									"bypasses_immunity", "permeability_mod", "severity", "required_organs", "needs_all_cures", "strain_data",
-									"infectable_biotypes", "process_dead")
-
-	var/datum/disease/D = copy_type ? new copy_type() : new type()
-	for(var/V in copy_vars)
-		var/val = vars[V]
-		if(islist(val))
-			var/list/L = val
-			val = L.Copy()
-		D.vars[V] = val
+	var/datum/disease/D = new type()
+	D.id = id
 	return D
 
 /datum/disease/proc/after_add()
 	return
 
 
-/datum/disease/proc/GetDiseaseID()
+/datum/disease/proc/get_disease_id()
 	return "[type]"
 
 /datum/disease/proc/remove_disease()

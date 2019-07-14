@@ -9,9 +9,16 @@
 	agent = "S4E1 retrovirus"
 	viable_mobtypes = list(/mob/living/carbon/human)
 	var/datum/dna/original_dna = null
-	var/transformed = 0
+	var/datum/dna/replicated_dna = null
+	var/transformed = FALSE
 	desc = "This disease transplants the genetic code of the initial vector into new hosts."
 	severity = DISEASE_SEVERITY_MEDIUM
+
+/datum/disease/dnaspread/Copy()
+	. = ..()
+	var/datum/disease/dnaspread/new_disease = .
+	new_disease.replicated_dna = replicated_dna
+	return new_disease
 
 
 /datum/disease/dnaspread/stage_act()
@@ -21,10 +28,10 @@
 	if((NOTRANSSTING in affected_mob.dna.species.species_traits) || (NO_DNA_COPY in affected_mob.dna.species.species_traits)) //Only species that can be spread by transformation sting can be spread by the retrovirus
 		cure()
 
-	if(!strain_data["dna"])
+	if(!replicated_dna)
 		//Absorbs the target DNA.
-		strain_data["dna"] = new affected_mob.dna.type
-		affected_mob.dna.copy_dna(strain_data["dna"])
+		replicated_dna = new affected_mob.dna.type
+		affected_mob.dna.copy_dna(replicated_dna)
 		carrier = TRUE
 		stage = 4
 		return
@@ -51,15 +58,14 @@
 				affected_mob.dna.copy_dna(original_dna)
 
 				to_chat(affected_mob, "<span class='danger'>You don't feel like yourself..</span>")
-				var/datum/dna/transform_dna = strain_data["dna"]
 
-				transform_dna.transfer_identity(affected_mob, transfer_SE = 1)
+				replicated_dna.transfer_identity(affected_mob, transfer_SE = 1)
 				affected_mob.real_name = affected_mob.dna.real_name
 				affected_mob.updateappearance(mutcolor_update=1)
 				affected_mob.domutcheck()
 
-				transformed = 1
-				carrier = 1 //Just chill out at stage 4
+				transformed = TRUE
+				carrier = TRUE //Just chill out at stage 4
 
 	return
 

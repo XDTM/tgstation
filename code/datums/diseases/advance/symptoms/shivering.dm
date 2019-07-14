@@ -15,7 +15,7 @@ Bonus
 //////////////////////////////////////
 */
 
-/datum/symptom/shivering
+/datum/disease_property/symptom/shivering
 	name = "Shivering"
 	desc = "The virus inhibits the body's thermoregulation, cooling the body down."
 	stealth = 0
@@ -30,7 +30,7 @@ Bonus
 	threshold_desc = "<b>Stage Speed 5:</b> Increases cooling speed; the host can fall below safe temperature levels.<br>\
 					  <b>Stage Speed 10:</b> Further increases cooling speed."
 
-/datum/symptom/fever/Start(datum/disease/advance/A)
+/datum/disease_property/symptom/fever/Start(datum/disease/advance/A)
 	if(!..())
 		return
 	if(A.properties["stage_rate"] >= 5) //dangerous cold
@@ -39,7 +39,7 @@ Bonus
 	if(A.properties["stage_rate"] >= 10)
 		power = 2.5
 
-/datum/symptom/shivering/Activate(datum/disease/advance/A)
+/datum/disease_property/symptom/shivering/Activate(datum/disease/advance/A)
 	if(!..())
 		return
 	var/mob/living/carbon/M = A.affected_mob
@@ -50,7 +50,7 @@ Bonus
 	if(M.bodytemperature > BODYTEMP_COLD_DAMAGE_LIMIT || unsafe)
 		Chill(M, A)
 
-/datum/symptom/shivering/proc/Chill(mob/living/M, datum/disease/advance/A)
+/datum/disease_property/symptom/shivering/proc/Chill(mob/living/M, datum/disease/advance/A)
 	var/get_cold = 6 * power
 	var/limit = BODYTEMP_COLD_DAMAGE_LIMIT + 1
 	if(unsafe)

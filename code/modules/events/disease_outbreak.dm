@@ -68,7 +68,7 @@
 		if(advanced_virus)
 			var/datum/disease/advance/A = D
 			var/list/name_symptoms = list() //for feedback
-			for(var/datum/symptom/S in A.symptoms)
+			for(var/datum/disease_property/symptom/S in A.symptoms)
 				name_symptoms += S.name
 			message_admins("An event has triggered a random advanced virus outbreak on [ADMIN_LOOKUPFLW(H)]! It has these symptoms: [english_list(name_symptoms)]")
 			log_game("An event has triggered a random advanced virus outbreak on [key_name(H)]! It has these symptoms: [english_list(name_symptoms)]")

@@ -49,7 +49,7 @@
 	var/hands_ch = 35
 	var/feet_ch = 15
 
-	if(prob(15/D.permeability_mod))
+	if(!prob(D.infectivity * 0.75))
 		return
 
 	if(satiety>0 && prob(satiety/10)) // positive satiety makes it harder to contract the disease.
@@ -110,11 +110,11 @@
 	if(passed)
 		D.try_infect(src)
 
-/mob/living/proc/AirborneContractDisease(datum/disease/D, force_spread)
-	if( ((D.spread_flags & DISEASE_SPREAD_AIRBORNE) || force_spread) && prob((50*D.permeability_mod) - 1))
+/mob/living/proc/AirborneContractDisease(datum/disease/D)
+	if((D.spread_flags & DISEASE_SPREAD_AIRBORNE) && prob(D.infectivity * 0.50)
 		ForceContractDisease(D)
 
-/mob/living/carbon/AirborneContractDisease(datum/disease/D, force_spread)
+/mob/living/carbon/AirborneContractDisease(datum/disease/D)
 	if(internal)
 		return
 	if(HAS_TRAIT(src, TRAIT_NOBREATH))

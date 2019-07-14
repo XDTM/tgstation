@@ -16,7 +16,7 @@ Bonus
 //////////////////////////////////////
 */
 
-/datum/symptom/sneeze
+/datum/disease_property/symptom/sneeze
 	name = "Sneezing"
 	desc = "The virus causes irritation of the nasal cavity, making the host sneeze occasionally."
 	stealth = -2
@@ -30,7 +30,7 @@ Bonus
 	threshold_desc = "<b>Transmission 9:</b> Increases sneezing range, spreading the virus over a larger area.<br>\
 					  <b>Stealth 4:</b> The symptom remains hidden until active."
 
-/datum/symptom/sneeze/Start(datum/disease/advance/A)
+/datum/disease_property/symptom/sneeze/Start(datum/disease/advance/A)
 	if(!..())
 		return
 	if(A.properties["transmittable"] >= 9) //longer spread range
@@ -38,7 +38,7 @@ Bonus
 	if(A.properties["stealth"] >= 4)
 		suppress_warning = TRUE
 
-/datum/symptom/sneeze/Activate(datum/disease/advance/A)
+/datum/disease_property/symptom/sneeze/Activate(datum/disease/advance/A)
 	if(!..())
 		return
 	var/mob/living/M = A.affected_mob
@@ -49,4 +49,4 @@ Bonus
 		else
 			M.emote("sneeze")
 			if(M.CanSpreadAirborneDisease()) //don't spread germs if they covered their mouth
-				A.spread(4 + power)
+				A.airborne_spread(4 + power)

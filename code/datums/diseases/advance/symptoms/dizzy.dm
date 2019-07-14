@@ -1,53 +1,29 @@
-/*
-//////////////////////////////////////
-
-Dizziness
-
-	Hidden.
-	Lowers resistance considerably.
-	Decreases stage speed.
-	Reduced transmittability
-	Intense Level.
-
-Bonus
+/*!
 	Shakes the affected mob's screen for short periods.
-
-//////////////////////////////////////
 */
-
-/datum/symptom/dizzy // Not the egg
-
+/datum/disease_property/symptom/dizzy
 	name = "Dizziness"
 	desc = "The virus causes inflammation of the vestibular system, leading to bouts of dizziness."
-	resistance = -2
-	stage_speed = -3
-	transmittable = -1
 	level = 4
-	severity = 2
-	base_message_chance = 50
 	symptom_delay_min = 15
 	symptom_delay_max = 40
-	threshold_desc = "<b>Transmission 6:</b> Also causes druggy vision.<br>\
-					  <b>Stealth 4:</b> The symptom remains hidden until active."
+	var/drugginess = FALSE
+	threshold_desc = "<b>BETA:</b> Also causes druggy vision."
 
-/datum/symptom/dizzy/Start(datum/disease/advance/A)
-	if(!..())
-		return
-	if(A.properties["stealth"] >= 4)
-		suppress_warning = TRUE
-	if(A.properties["transmittable"] >= 6) //druggy
-		power = 2
+/datum/disease_property/symptom/dizzy/update_mutators()
+	if(disease.mutators[DISEASE_MUTATOR_BETA])
+		drugginess = TRUE
+	else
+		drugginess = FALSE
 
-/datum/symptom/dizzy/Activate(datum/disease/advance/A)
-	if(!..())
-		return
-	var/mob/living/M = A.affected_mob
-	switch(A.stage)
+/datum/disease_property/symptom/dizzy/activate()
+	var/mob/living/M = disease.affected_mob
+	switch(disease.stage)
 		if(1, 2, 3, 4)
-			if(prob(base_message_chance) && !suppress_warning)
+			if(message_cooldown())
 				to_chat(M, "<span class='warning'>[pick("You feel dizzy.", "Your head spins.")]</span>")
 		else
 			to_chat(M, "<span class='userdanger'>A wave of dizziness washes over you!</span>")
 			M.Dizzy(5)
-			if(power >= 2)
+			if(drugginess)
 				M.set_drugginess(5)

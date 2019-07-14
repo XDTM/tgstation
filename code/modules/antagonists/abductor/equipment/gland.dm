@@ -278,18 +278,18 @@
 	if(max_symptoms > VIRUS_SYMPTOM_LIMIT)
 		max_symptoms = VIRUS_SYMPTOM_LIMIT
 	var/datum/disease/advance/A = new /datum/disease/advance()
-	var/list/datum/symptom/possible_symptoms = list()
-	for(var/symptom in subtypesof(/datum/symptom))
-		var/datum/symptom/S = symptom
+	var/list/datum/disease_property/symptom/possible_symptoms = list()
+	for(var/symptom in subtypesof(/datum/disease_property/symptom))
+		var/datum/disease_property/symptom/S = symptom
 		if(initial(S.level) > max_level)
 			continue
 		if(initial(S.level) <= 0) //unobtainable symptoms
 			continue
 		possible_symptoms += S
 	for(var/i in 1 to max_symptoms)
-		var/datum/symptom/chosen_symptom = pick_n_take(possible_symptoms)
+		var/datum/disease_property/symptom/chosen_symptom = pick_n_take(possible_symptoms)
 		if(chosen_symptom)
-			var/datum/symptom/S = new chosen_symptom
+			var/datum/disease_property/symptom/S = new chosen_symptom
 			A.symptoms += S
 	A.Refresh() //just in case someone already made and named the same disease
 	return A

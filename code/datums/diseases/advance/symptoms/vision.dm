@@ -15,7 +15,7 @@ Bonus
 //////////////////////////////////////
 */
 
-/datum/symptom/visionloss
+/datum/disease_property/symptom/visionloss
 
 	name = "Hyphema"
 	desc = "The virus causes inflammation of the retina, leading to eye damage and eventually blindness."
@@ -32,7 +32,7 @@ Bonus
 	threshold_desc = "<b>Resistance 12:</b> Weakens extraocular muscles, eventually leading to complete detachment of the eyes.<br>\
 					  <b>Stealth 4:</b> The symptom remains hidden until active."
 
-/datum/symptom/visionloss/Start(datum/disease/advance/A)
+/datum/disease_property/symptom/visionloss/Start(datum/disease/advance/A)
 	if(!..())
 		return
 	if(A.properties["stealth"] >= 4)
@@ -40,7 +40,7 @@ Bonus
 	if(A.properties["resistance"] >= 12) //goodbye eyes
 		remove_eyes = TRUE
 
-/datum/symptom/visionloss/Activate(datum/disease/advance/A)
+/datum/disease_property/symptom/visionloss/Activate(datum/disease/advance/A)
 	if(!..())
 		return
 	var/mob/living/carbon/M = A.affected_mob

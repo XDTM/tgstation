@@ -1,4 +1,4 @@
-/datum/symptom/mind_restoration
+/datum/disease_property/symptom/mind_restoration
 	name = "Mind Restoration"
 	desc = "The virus strengthens the bonds between neurons, reducing the duration of any ailments of the mind."
 	stealth = -1
@@ -15,7 +15,7 @@
 					  <b>Resistance 9:</b> Heals severe brain traumas.<br>\
 					  <b>Transmission 8:</b> Purges alcohol in the bloodstream."
 
-/datum/symptom/mind_restoration/Start(datum/disease/advance/A)
+/datum/disease_property/symptom/mind_restoration/Start(datum/disease/advance/A)
 	if(!..())
 		return
 	if(A.properties["resistance"] >= 6) //heal brain damage
@@ -25,7 +25,7 @@
 	if(A.properties["transmittable"] >= 8) //purge alcohol
 		purge_alcohol = TRUE
 
-/datum/symptom/mind_restoration/Activate(var/datum/disease/advance/A)
+/datum/disease_property/symptom/mind_restoration/Activate(var/datum/disease/advance/A)
 	if(!..())
 		return
 	var/mob/living/M = A.affected_mob
@@ -62,7 +62,7 @@
 
 
 
-/datum/symptom/sensory_restoration
+/datum/disease_property/symptom/sensory_restoration
 	name = "Sensory Restoration"
 	desc = "The virus stimulates the production and replacement of sensory tissues, causing the host to regenerate eyes and ears when damaged."
 	stealth = 0
@@ -74,7 +74,7 @@
 	symptom_delay_min = 1
 	symptom_delay_max = 1
 
-/datum/symptom/sensory_restoration/Activate(datum/disease/advance/A)
+/datum/disease_property/symptom/sensory_restoration/Activate(datum/disease/advance/A)
 	if(!..())
 		return
 	var/mob/living/M = A.affected_mob

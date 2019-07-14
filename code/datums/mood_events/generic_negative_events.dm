@@ -188,6 +188,14 @@
 	mood_change = -2
 	timeout = 1200
 
+/datum/mood_event/headache
+	description = "<span class='warning'>Ow, my head...</span>\n"
+	mood_change = -3
+
+/datum/mood_event/headache/strong
+	description = "<span class='warning'>It feels like i have needles in my brain!</span>\n"
+	mood_change = -6
+
 //These are unused so far but I want to remember them to use them later
 /datum/mood_event/cloned_corpse
 	description = "<span class='boldwarning'>I recently saw my own corpse...</span>\n"

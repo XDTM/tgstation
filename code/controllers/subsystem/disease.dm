@@ -6,7 +6,9 @@ SUBSYSTEM_DEF(disease)
 	var/list/diseases
 	var/list/archive_diseases = list()
 
-	var/static/list/list_symptoms = subtypesof(/datum/symptom)
+	var/current_id = 0
+
+	var/static/list/list_properties = subtypesof(/datum/disease_property/symptom) + subtypesof(/datum/disease_property/trait)
 
 /datum/controller/subsystem/disease/PreInit()
 	if(!diseases)
@@ -16,11 +18,15 @@ SUBSYSTEM_DEF(disease)
 	var/list/all_common_diseases = diseases - typesof(/datum/disease/advance)
 	for(var/common_disease_type in all_common_diseases)
 		var/datum/disease/prototype = new common_disease_type()
-		archive_diseases[prototype.GetDiseaseID()] = prototype
+		archive_diseases[prototype.get_disease_id()] = prototype
 	return ..()
 
 /datum/controller/subsystem/disease/stat_entry(msg)
 	..("P:[active_diseases.len]")
+
+/datum/controller/subsystem/disease/proc/generate_id()
+	current_id++
+	return current_id
 
 /datum/controller/subsystem/disease/proc/get_disease_name(id)
 	var/datum/disease/advance/A = archive_diseases[id]

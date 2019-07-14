@@ -72,7 +72,7 @@ new /datum/disease_ability/symptom/powerful/heal/youth
 		var/stage_speed = 0
 		var/transmittable = 0
 		for(var/T in symptoms)
-			var/datum/symptom/S = T
+			var/datum/disease_property/symptom/S = T
 			stealth += initial(S.stealth)
 			resistance += initial(S.resistance)
 			stage_speed += initial(S.stage_speed)
@@ -105,7 +105,7 @@ new /datum/disease_ability/symptom/powerful/heal/youth
 		var/datum/disease/advance/sentient_disease/SD = V
 		if(symptoms)
 			for(var/T in symptoms)
-				var/datum/symptom/S = new T()
+				var/datum/disease_property/symptom/S = new T()
 				SD.symptoms += S
 				if(SD.processing)
 					S.Start(SD)
@@ -132,7 +132,7 @@ new /datum/disease_ability/symptom/powerful/heal/youth
 		var/datum/disease/advance/sentient_disease/SD = V
 		if(symptoms)
 			for(var/T in symptoms)
-				var/datum/symptom/S = locate(T) in SD.symptoms
+				var/datum/disease_property/symptom/S = locate(T) in SD.symptoms
 				if(S)
 					SD.symptoms -= S
 					if(SD.processing)
@@ -184,7 +184,7 @@ new /datum/disease_ability/symptom/powerful/heal/youth
 	L.emote("cough")
 	if(L.CanSpreadAirborneDisease()) //don't spread germs if they covered their mouth
 		var/datum/disease/advance/sentient_disease/SD = D.hosts[L]
-		SD.spread(2)
+		SD.airborne_spread(2)
 	StartCooldown()
 	return TRUE
 
@@ -299,171 +299,171 @@ new /datum/disease_ability/symptom/powerful/heal/youth
 
 /datum/disease_ability/symptom/mild/cough
 	name = "Involuntary Coughing"
-	symptoms = list(/datum/symptom/cough)
+	symptoms = list(/datum/disease_property/symptom/cough)
 	short_desc = "Cause victims to cough intermittently."
 	long_desc = "Cause victims to cough intermittently, spreading your infection if your transmissibility is high."
 
 /datum/disease_ability/symptom/mild/sneeze
 	name = "Involuntary Sneezing"
-	symptoms = list(/datum/symptom/sneeze)
+	symptoms = list(/datum/disease_property/symptom/sneeze)
 	short_desc = "Cause victims to sneeze intermittently."
 	long_desc = "Cause victims to sneeze intermittently, spreading your infection and also increasing transmissibility and resistance, at the cost of stealth."
 
 
 /******MEDIUM******/
 /datum/disease_ability/symptom/medium/shedding
-	symptoms = list(/datum/symptom/shedding)
+	symptoms = list(/datum/disease_property/symptom/shedding)
 
 /datum/disease_ability/symptom/medium/beard
-	symptoms = list(/datum/symptom/beard)
+	symptoms = list(/datum/disease_property/symptom/beard)
 	short_desc = "Cause all victims to grow a luscious beard."
 	long_desc = "Cause all victims to grow a luscious beard. Ineffective against Santa Claus."
 
 /datum/disease_ability/symptom/medium/hallucigen
-	symptoms = list(/datum/symptom/hallucigen)
+	symptoms = list(/datum/disease_property/symptom/hallucigen)
 	short_desc = "Cause victims to hallucinate."
 	long_desc = "Cause victims to hallucinate. Decreases stats, especially resistance."
 
 
 /datum/disease_ability/symptom/medium/choking
-	symptoms = list(/datum/symptom/choking)
+	symptoms = list(/datum/disease_property/symptom/choking)
 	short_desc = "Cause victims to choke."
 	long_desc = "Cause victims to choke, threatening asphyxiation. Decreases stats, especially transmissibility."
 
 
 /datum/disease_ability/symptom/medium/confusion
-	symptoms = list(/datum/symptom/confusion)
+	symptoms = list(/datum/disease_property/symptom/confusion)
 	short_desc = "Cause victims to become confused."
 	long_desc = "Cause victims to become confused intermittently."
 
 
 /datum/disease_ability/symptom/medium/youth
-	symptoms = list(/datum/symptom/youth)
+	symptoms = list(/datum/disease_property/symptom/youth)
 	short_desc = "Cause victims to become eternally young."
 	long_desc = "Cause victims to become eternally young. Provides boosts to all stats except transmissibility."
 
 
 /datum/disease_ability/symptom/medium/vomit
-	symptoms = list(/datum/symptom/vomit)
+	symptoms = list(/datum/disease_property/symptom/vomit)
 	short_desc = "Cause victims to vomit."
 	long_desc = "Cause victims to vomit. Slightly increases transmissibility. Vomiting also also causes the victims to lose nutrition and removes some toxin damage."
 
 
 /datum/disease_ability/symptom/medium/voice_change
-	symptoms = list(/datum/symptom/voice_change)
+	symptoms = list(/datum/disease_property/symptom/voice_change)
 	short_desc = "Change the voice of victims."
 	long_desc = "Change the voice of victims, causing confusion in communications."
 
 
 /datum/disease_ability/symptom/medium/visionloss
-	symptoms = list(/datum/symptom/visionloss)
+	symptoms = list(/datum/disease_property/symptom/visionloss)
 	short_desc = "Damage the eyes of victims, eventually causing blindness."
 	long_desc = "Damage the eyes of victims, eventually causing blindness. Decreases all stats."
 
 /datum/disease_ability/symptom/medium/deafness
-	symptoms = list(/datum/symptom/deafness)
+	symptoms = list(/datum/disease_property/symptom/deafness)
 
 /datum/disease_ability/symptom/medium/fever
-	symptoms = list(/datum/symptom/fever)
+	symptoms = list(/datum/disease_property/symptom/fever)
 
 /datum/disease_ability/symptom/medium/shivering
-	symptoms = list(/datum/symptom/shivering)
+	symptoms = list(/datum/disease_property/symptom/shivering)
 
 /datum/disease_ability/symptom/medium/headache
-	symptoms = list(/datum/symptom/headache)
+	symptoms = list(/datum/disease_property/symptom/headache)
 
 /datum/disease_ability/symptom/medium/nano_boost
-	symptoms = list(/datum/symptom/nano_boost)
+	symptoms = list(/datum/disease_property/symptom/nano_boost)
 
 /datum/disease_ability/symptom/medium/nano_destroy
-	symptoms = list(/datum/symptom/nano_destroy)
+	symptoms = list(/datum/disease_property/symptom/nano_destroy)
 
 
 /datum/disease_ability/symptom/medium/viraladaptation
-	symptoms = list(/datum/symptom/viraladaptation)
+	symptoms = list(/datum/disease_property/symptom/viraladaptation)
 	short_desc = "Cause your infection to become more resistant to detection and eradication."
 	long_desc = "Cause your infection to mimic the function of normal body cells, becoming much harder to spot and to eradicate, but reducing its speed."
 
 /datum/disease_ability/symptom/medium/viralevolution
-	symptoms = list(/datum/symptom/viralevolution)
+	symptoms = list(/datum/disease_property/symptom/viralevolution)
 
 /datum/disease_ability/symptom/medium/vitiligo
-	symptoms = list(/datum/symptom/vitiligo)
+	symptoms = list(/datum/disease_property/symptom/vitiligo)
 
 /datum/disease_ability/symptom/medium/revitiligo
-	symptoms = list(/datum/symptom/revitiligo)
+	symptoms = list(/datum/disease_property/symptom/revitiligo)
 
 
 /datum/disease_ability/symptom/medium/itching
-	symptoms = list(/datum/symptom/itching)
+	symptoms = list(/datum/disease_property/symptom/itching)
 	short_desc = "Cause victims to itch."
 	long_desc = "Cause victims to itch, increasing all stats except stealth."
 
 
 /datum/disease_ability/symptom/medium/heal/weight_loss
-	symptoms = list(/datum/symptom/weight_loss)
+	symptoms = list(/datum/disease_property/symptom/weight_loss)
 	short_desc = "Cause victims to lose weight."
 	long_desc = "Cause victims to lose weight, and make it almost impossible for them to gain nutrition from food. Reduced nutrition allows your infection to spread more easily from hosts, especially by sneezing."
 
 /datum/disease_ability/symptom/medium/heal/sensory_restoration
-	symptoms = list(/datum/symptom/sensory_restoration)
+	symptoms = list(/datum/disease_property/symptom/sensory_restoration)
 	short_desc = "Regenerate eye and ear damage of victims."
 	long_desc = "Regenerate eye and ear damage of victims."
 
 /datum/disease_ability/symptom/medium/heal/mind_restoration
-	symptoms = list(/datum/symptom/mind_restoration)
+	symptoms = list(/datum/disease_property/symptom/mind_restoration)
 
 /******POWERFUL******/
 
 
 /datum/disease_ability/symptom/powerful/fire
-	symptoms = list(/datum/symptom/fire)
+	symptoms = list(/datum/disease_property/symptom/fire)
 
 /datum/disease_ability/symptom/powerful/flesh_eating
-	symptoms = list(/datum/symptom/flesh_eating)
+	symptoms = list(/datum/disease_property/symptom/flesh_eating)
 
 /datum/disease_ability/symptom/powerful/genetic_mutation
-	symptoms = list(/datum/symptom/genetic_mutation)
+	symptoms = list(/datum/disease_property/symptom/genetic_mutation)
 	cost = 8
 
 /datum/disease_ability/symptom/powerful/inorganic_adaptation
-	symptoms = list(/datum/symptom/inorganic_adaptation)
+	symptoms = list(/datum/disease_property/symptom/inorganic_adaptation)
 
 /datum/disease_ability/symptom/powerful/narcolepsy
-	symptoms = list(/datum/symptom/narcolepsy)
+	symptoms = list(/datum/disease_property/symptom/narcolepsy)
 
 /****HEALING SUBTYPE****/
 
 /datum/disease_ability/symptom/powerful/heal/starlight
-	symptoms = list(/datum/symptom/heal/starlight)
+	symptoms = list(/datum/disease_property/symptom/heal/starlight)
 
 /datum/disease_ability/symptom/powerful/heal/oxygen
-	symptoms = list(/datum/symptom/oxygen)
+	symptoms = list(/datum/disease_property/symptom/oxygen)
 
 /datum/disease_ability/symptom/powerful/heal/chem
-	symptoms = list(/datum/symptom/heal/chem)
+	symptoms = list(/datum/disease_property/symptom/heal/chem)
 
 /datum/disease_ability/symptom/powerful/heal/metabolism
-	symptoms = list(/datum/symptom/heal/metabolism)
+	symptoms = list(/datum/disease_property/symptom/heal/metabolism)
 	short_desc = "Increase the metabolism of victims, causing them to process chemicals and grow hungry faster."
 	long_desc = "Increase the metabolism of victims, causing them to process chemicals twice as fast and grow hungry more quickly."
 
 /datum/disease_ability/symptom/powerful/heal/dark
-	symptoms = list(/datum/symptom/heal/darkness)
+	symptoms = list(/datum/disease_property/symptom/heal/darkness)
 
 /datum/disease_ability/symptom/powerful/heal/water
-	symptoms = list(/datum/symptom/heal/water)
+	symptoms = list(/datum/disease_property/symptom/heal/water)
 
 /datum/disease_ability/symptom/powerful/heal/plasma
-	symptoms = list(/datum/symptom/heal/plasma)
+	symptoms = list(/datum/disease_property/symptom/heal/plasma)
 
 /datum/disease_ability/symptom/powerful/heal/radiation
-	symptoms = list(/datum/symptom/heal/radiation)
+	symptoms = list(/datum/disease_property/symptom/heal/radiation)
 
 /datum/disease_ability/symptom/powerful/heal/coma
-	symptoms = list(/datum/symptom/heal/coma)
+	symptoms = list(/datum/disease_property/symptom/heal/coma)
 	short_desc = "Cause victims to fall into a healing coma when hurt."
 	long_desc = "Cause victims to fall into a healing coma when hurt."
 
 /datum/disease_ability/symptom/powerful/heal/youth
-	symptoms = list(/datum/symptom/youth)
+	symptoms = list(/datum/disease_property/symptom/youth)

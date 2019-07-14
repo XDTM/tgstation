@@ -19,7 +19,7 @@ Bonus
 //////////////////////////////////////
 */
 
-/datum/symptom/vomit
+/datum/disease_property/symptom/vomit
 
 	name = "Vomiting"
 	desc = "The virus causes nausea and irritates the stomach, causing occasional vomit."
@@ -38,7 +38,7 @@ Bonus
 					  <b>Transmission 7:</b> Host will projectile vomit, increasing vomiting range.<br>\
 					  <b>Stealth 4:</b> The symptom remains hidden until active."
 
-/datum/symptom/vomit/Start(datum/disease/advance/A)
+/datum/disease_property/symptom/vomit/Start(datum/disease/advance/A)
 	if(!..())
 		return
 	if(A.properties["stealth"] >= 4)
@@ -48,7 +48,7 @@ Bonus
 	if(A.properties["transmittable"] >= 7) //projectile vomit
 		proj_vomit = 5
 
-/datum/symptom/vomit/Activate(datum/disease/advance/A)
+/datum/disease_property/symptom/vomit/Activate(datum/disease/advance/A)
 	if(!..())
 		return
 	var/mob/living/M = A.affected_mob
@@ -59,5 +59,5 @@ Bonus
 		else
 			vomit(M)
 
-/datum/symptom/vomit/proc/vomit(mob/living/carbon/M)
+/datum/disease_property/symptom/vomit/proc/vomit(mob/living/carbon/M)
 	M.vomit(20, vomit_blood, distance = proj_vomit)

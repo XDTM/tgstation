@@ -14,7 +14,7 @@ BONUS
 //////////////////////////////////////
 */
 
-/datum/symptom/vitiligo
+/datum/disease_property/symptom/vitiligo
 
 	name = "Vitiligo"
 	desc = "The virus destroys skin pigment cells, causing rapid loss of pigmentation in the host."
@@ -27,7 +27,7 @@ BONUS
 	symptom_delay_min = 25
 	symptom_delay_max = 75
 
-/datum/symptom/vitiligo/Activate(datum/disease/advance/A)
+/datum/disease_property/symptom/vitiligo/Activate(datum/disease/advance/A)
 	if(!..())
 		return
 	var/mob/living/M = A.affected_mob
@@ -59,7 +59,7 @@ BONUS
 //////////////////////////////////////
 */
 
-/datum/symptom/revitiligo
+/datum/disease_property/symptom/revitiligo
 
 	name = "Revitiligo"
 	desc = "The virus causes increased production of skin pigment cells, making the host's skin grow darker over time."
@@ -72,7 +72,7 @@ BONUS
 	symptom_delay_min = 7
 	symptom_delay_max = 14
 
-/datum/symptom/revitiligo/Activate(datum/disease/advance/A)
+/datum/disease_property/symptom/revitiligo/Activate(datum/disease/advance/A)
 	if(!..())
 		return
 	var/mob/living/M = A.affected_mob

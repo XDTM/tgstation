@@ -13,7 +13,7 @@
 	resistance_flags = ACID_PROOF
 	var/wait
 	var/mode = MAIN_SCREEN
-	var/datum/symptom/selected_symptom
+	var/datum/disease_property/symptom/selected_symptom
 	var/obj/item/reagent_containers/beaker
 
 /obj/machinery/computer/pandemic/Initialize()
@@ -79,7 +79,7 @@
 			this["symptoms"] = list()
 			var/symptom_index = 1
 			for(var/symptom in A.symptoms)
-				var/datum/symptom/S = symptom
+				var/datum/disease_property/symptom/S = symptom
 				var/list/this_symptom = list()
 				this_symptom["name"] = S.name
 				this_symptom["sym_index"] = symptom_index
@@ -239,7 +239,7 @@
 			var/picked_symptom_index = text2num(params["picked_symptom"])
 			var/index = text2num(params["index"])
 			var/datum/disease/advance/A = get_by_index("viruses", index)
-			var/datum/symptom/S = A.symptoms[picked_symptom_index]
+			var/datum/disease_property/symptom/S = A.symptoms[picked_symptom_index]
 			mode = SYMPTOM_DETAILS
 			selected_symptom = S
 			. = TRUE

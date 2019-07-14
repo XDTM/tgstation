@@ -14,7 +14,7 @@ BONUS
 //////////////////////////////////////
 */
 
-/datum/symptom/shedding
+/datum/disease_property/symptom/shedding
 	name = "Alopecia"
 	desc = "The virus causes rapid shedding of head and body hair."
 	stealth = 0
@@ -27,7 +27,7 @@ BONUS
 	symptom_delay_min = 45
 	symptom_delay_max = 90
 
-/datum/symptom/shedding/Activate(datum/disease/advance/A)
+/datum/disease_property/symptom/shedding/Activate(datum/disease/advance/A)
 	if(!..())
 		return
 
@@ -46,7 +46,7 @@ BONUS
 					to_chat(H, "<span class='warning'>Your hair starts to fall out in clumps...</span>")
 					addtimer(CALLBACK(src, .proc/Shed, H, TRUE), 50)
 
-/datum/symptom/shedding/proc/Shed(mob/living/carbon/human/H, fullbald)
+/datum/disease_property/symptom/shedding/proc/Shed(mob/living/carbon/human/H, fullbald)
 	if(fullbald)
 		H.facial_hair_style = "Shaved"
 		H.hair_style = "Bald"

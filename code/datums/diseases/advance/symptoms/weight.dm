@@ -16,7 +16,7 @@ Bonus
 //////////////////////////////////////
 */
 
-/datum/symptom/weight_loss
+/datum/disease_property/symptom/weight_loss
 
 	name = "Weight Loss"
 	desc = "The virus mutates the host's metabolism, making it almost unable to gain nutrition from food."
@@ -31,13 +31,13 @@ Bonus
 	symptom_delay_max = 45
 	threshold_desc = "<b>Stealth 4:</b> The symptom is less noticeable."
 
-/datum/symptom/weight_loss/Start(datum/disease/advance/A)
+/datum/disease_property/symptom/weight_loss/Start(datum/disease/advance/A)
 	if(!..())
 		return
 	if(A.properties["stealth"] >= 4) //warn less often
 		base_message_chance = 25
 
-/datum/symptom/weight_loss/Activate(datum/disease/advance/A)
+/datum/disease_property/symptom/weight_loss/Activate(datum/disease/advance/A)
 	if(!..())
 		return
 	var/mob/living/M = A.affected_mob

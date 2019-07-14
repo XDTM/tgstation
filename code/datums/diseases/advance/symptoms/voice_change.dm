@@ -15,7 +15,7 @@ Bonus
 //////////////////////////////////////
 */
 
-/datum/symptom/voice_change
+/datum/disease_property/symptom/voice_change
 
 	name = "Voice Change"
 	desc = "The virus alters the pitch and tone of the host's vocal cords, changing how their voice sounds."
@@ -36,7 +36,7 @@ Bonus
 					  <b>Stage Speed 7:</b> Changes voice more often.<br>\
 					  <b>Stealth 3:</b> The symptom remains hidden until active."
 
-/datum/symptom/voice_change/Start(datum/disease/advance/A)
+/datum/disease_property/symptom/voice_change/Start(datum/disease/advance/A)
 	if(!..())
 		return
 	if(A.properties["stealth"] >= 3)
@@ -51,7 +51,7 @@ Bonus
 		mob_language = M.get_language_holder()
 		original_language = mob_language.copy()
 
-/datum/symptom/voice_change/Activate(datum/disease/advance/A)
+/datum/disease_property/symptom/voice_change/Activate(datum/disease/advance/A)
 	if(!..())
 		return
 	var/mob/living/carbon/M = A.affected_mob
@@ -70,7 +70,7 @@ Bonus
 					mob_language = H.get_language_holder()
 					mob_language.only_speaks_language = current_language
 
-/datum/symptom/voice_change/End(datum/disease/advance/A)
+/datum/disease_property/symptom/voice_change/End(datum/disease/advance/A)
 	..()
 	if(ishuman(A.affected_mob))
 		var/mob/living/carbon/human/H = A.affected_mob

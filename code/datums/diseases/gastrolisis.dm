@@ -6,7 +6,8 @@
 	cure_text = "Salt and mutadone"
 	agent = "Agent S and DNA restructuring"
 	viable_mobtypes = list(/mob/living/carbon/human)
-	stage_prob = 1
+	stage_time_min = 1200
+	stage_time_max = 2400
 	disease_flags = CURABLE
 	cures = list(/datum/reagent/consumable/sodiumchloride,  /datum/reagent/medicine/mutadone)
 

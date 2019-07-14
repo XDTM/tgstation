@@ -5,7 +5,6 @@
 	cures = list(/datum/reagent/medicine/spaceacillin)
 	agent = "XY-rhinovirus"
 	viable_mobtypes = list(/mob/living/carbon/human, /mob/living/carbon/monkey)
-	permeability_mod = 0.5
 	desc = "If left untreated the subject will contract the flu."
 	severity = DISEASE_SEVERITY_NONTHREAT
 

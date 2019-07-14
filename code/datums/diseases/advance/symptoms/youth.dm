@@ -15,7 +15,7 @@ BONUS
 //////////////////////////////////////
 */
 
-/datum/symptom/youth
+/datum/disease_property/symptom/youth
 
 	name = "Eternal Youth"
 	desc = "The virus becomes symbiotically connected to the cells in the host's body, preventing and reversing aging. \
@@ -29,7 +29,7 @@ BONUS
 	symptom_delay_min = 25
 	symptom_delay_max = 50
 
-/datum/symptom/youth/Activate(datum/disease/advance/A)
+/datum/disease_property/symptom/youth/Activate(datum/disease/advance/A)
 	if(!..())
 		return
 	var/mob/living/M = A.affected_mob

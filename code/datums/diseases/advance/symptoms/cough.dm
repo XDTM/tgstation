@@ -1,75 +1,51 @@
-/*
-//////////////////////////////////////
-
-Coughing
-
-	Noticable.
-	Little Resistance.
-	Doesn't increase stage speed much.
-	Transmissibile.
-	Low Level.
-
-BONUS
-	Will force the affected mob to drop small items!
-
-//////////////////////////////////////
+/*!
+	Causes the host mob to cough, also spreading the disease if airborne
 */
-
-/datum/symptom/cough
-
+/datum/disease_property/symptom/cough
 	name = "Cough"
 	desc = "The virus irritates the throat of the host, causing occasional coughing."
-	stealth = -1
-	resistance = 3
-	stage_speed = 1
-	transmittable = 2
 	level = 1
-	severity = 1
-	base_message_chance = 15
 	symptom_delay_min = 2
 	symptom_delay_max = 15
-	var/infective = FALSE
-	threshold_desc = "<b>Resistance 3:</b> Host will drop small items when coughing.<br>\
-					  <b>Resistance 10:</b> Occasionally causes coughing fits that stun the host.<br>\
-					  <b>Stage Speed 6:</b> Increases cough frequency.<br>\
-					  <b>If Airborne:</b> Coughing will infect bystanders.<br>\
-					  <b>Stealth 4:</b> The symptom remains hidden until active."
+	var/drop_items = FALSE
+	var/cough_fits = FALSE
+	threshold_desc = "<b>ALPHA:</b> Host will drop small items when coughing.<br>\
+					  <b>BETA:</b> Increases cough frequency.<br>\
+					  <b>GAMMA:</b> Occasionally causes coughing fits that stun the host."
 
-/datum/symptom/cough/Start(datum/disease/advance/A)
-	if(!..())
-		return
-	if(A.properties["stealth"] >= 4)
-		suppress_warning = TRUE
-	if(A.spread_flags & DISEASE_SPREAD_AIRBORNE) //infect bystanders
-		infective = TRUE
-	if(A.properties["resistance"] >= 3) //strong enough to drop items
-		power = 1.5
-	if(A.properties["resistance"] >= 10) //strong enough to stun (rarely)
-		power = 2
-	if(A.properties["stage_rate"] >= 6) //cough more often
+/datum/disease_property/symptom/cough/update_mutators()
+	if(disease.mutators[DISEASE_MUTATOR_ALPHA])
+		drop_items = TRUE
+	else
+		drop_items = FALSE
+	if(disease.mutators[DISEASE_MUTATOR_BETA])
 		symptom_delay_max = 10
+	else
+		symptom_delay_max = initial(symptom_delay_max)
+	if(disease.mutators[DISEASE_MUTATOR_GAMMA])
+		cough_fits = TRUE
+	else
+		cough_fits = FALSE
 
-/datum/symptom/cough/Activate(datum/disease/advance/A)
-	if(!..())
-		return
-	var/mob/living/M = A.affected_mob
-	switch(A.stage)
+/datum/disease_property/symptom/cough/activate()
+	var/mob/living/M = disease.affected_mob
+	switch(disease.stage)
 		if(1, 2, 3)
-			if(prob(base_message_chance) && !suppress_warning)
-				to_chat(M, "<span notice='warning'>[pick("You swallow excess mucus.", "You lightly cough.")]</span>")
+			if(message_cooldown())
+				to_chat(M, "<span class='warning'>[pick("You swallow excess mucus.", "You lightly cough.")]</span>")
 		else
 			M.emote("cough")
-			if(power >= 1.5)
+			if(drop_items)
 				var/obj/item/I = M.get_active_held_item()
 				if(I && I.w_class == WEIGHT_CLASS_TINY)
 					M.dropItemToGround(I)
-			if(power >= 2 && prob(10))
-				to_chat(M, "<span notice='userdanger'>[pick("You have a coughing fit!", "You can't stop coughing!")]</span>")
+			if(cough_fits && prob(10))
+				M.visible_message("<span class='warning'>[M] has a coughing fit!</span>", "<span class='userdanger'>[pick("You have a coughing fit!", "You can't stop coughing!")]</span>")
 				M.Immobilize(20)
 				M.emote("cough")
 				addtimer(CALLBACK(M, /mob/.proc/emote, "cough"), 6)
 				addtimer(CALLBACK(M, /mob/.proc/emote, "cough"), 12)
 				addtimer(CALLBACK(M, /mob/.proc/emote, "cough"), 18)
-			if(infective && M.CanSpreadAirborneDisease())
-				A.spread(1)
+			if(M.CanSpreadAirborneDisease())
+				disease.spread(1)
 
