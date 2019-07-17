@@ -39,16 +39,18 @@
 /datum/disease/Destroy()
 	. = ..()
 	if(affected_mob)
-		remove_disease()
+		affected_mob.diseases -= src		//remove the datum from the list
+		affected_mob.med_hud_set_status()
+		affected_mob = null
 	SSdisease.active_diseases.Remove(src)
 
 //add this disease if the host does not already have too many
-/datum/disease/proc/try_infect(var/mob/living/infectee, make_copy = TRUE)
+/datum/disease/proc/try_infect(mob/living/infectee, make_copy = TRUE)
 	infect(infectee, make_copy)
 	return TRUE
 
 //add the disease with no checks
-/datum/disease/proc/infect(var/mob/living/infectee, make_copy = TRUE)
+/datum/disease/proc/infect(mob/living/infectee, make_copy = TRUE)
 	var/datum/disease/D = make_copy ? Copy() : src
 	infectee.diseases += D
 	D.affected_mob = infectee
@@ -153,11 +155,6 @@
 
 /datum/disease/proc/get_disease_id()
 	return "[type]"
-
-/datum/disease/proc/remove_disease()
-	affected_mob.diseases -= src		//remove the datum from the list
-	affected_mob.med_hud_set_status()
-	affected_mob = null
 
 //Use this to compare severities
 /proc/get_disease_severity_value(severity)

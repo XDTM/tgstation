@@ -393,15 +393,31 @@
 	desc = "The virus uses radiation to fix damage through local cellular mutations."
 	level = 6
 	passive_message = "<span class='notice'>Your skin glows faintly.</span>"
-	var/cellular_damage = FALSE
-	threshold_desc = "<b>Transmission 6:</b> Additionally heals cellular damage.<br>\
-					  <b>Resistance 7:</b> Increases healing speed."
+	var/glow = FALSE
+	var/obj/effect/dummy/viral_glow/glow_object
+	threshold_desc = "<b>ALPHA:</b> Makes the host glow while active."
 
 /datum/disease_property/symptom/heal/radiation/update_mutators()
-	if(A.properties["resistance"] >= 7)
-		power = 2
-	if(A.properties["transmittable"] >= 6)
-		cellular_damage = TRUE
+	if(disease.mutators[DISEASE_MUTATOR_ALPHA])
+		glow = TRUE
+	else
+		glow = FALSE
+
+/datum/disease_property/symptom/heal/radiation/on_process()
+	..()
+	if(glow)
+		var/light_power = CEILING(can_heal() * 3)
+		if(light_power)
+			if(!glow_object)
+				glow_object = new(disease.affected_mob)
+			glow_object.light_range = light_power
+		else
+			if(glow_object)
+				qdel(glow_object)
+
+/datum/disease_property/symptom/heal/radiation/on_end()
+	if(glow_object)
+		qdel(glow_object)
 
 /datum/disease_property/symptom/heal/radiation/can_heal()
 	var/mob/living/M = disease.affected_mob
@@ -437,4 +453,15 @@
 	for(var/obj/item/bodypart/L in parts)
 		if(L.heal_damage(heal_amt/parts.len, heal_amt/parts.len, null, BODYPART_ORGANIC))
 			M.update_damage_overlays()
-	return 1
+
+/obj/effect/dummy/viral_glow
+	name = "viral glow"
+	desc = "Tell a coder if you're seeing this."
+	icon_state = "nothing"
+	light_color = "#5DCA31"
+	light_range = 0
+
+/obj/effect/dummy/viral_glow/Initialize()
+	. = ..()
+	if(!isliving(loc))
+		return INITIALIZE_HINT_QDEL
