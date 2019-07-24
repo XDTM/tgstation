@@ -470,7 +470,7 @@
 
 /datum/reagent/toxin/itching_powder
 	name = "Itching Powder"
-	description = "A powder that induces itching upon contact with the skin. Causes the victim to scratch at their itches and has a very low chance to decay into Histamine."
+	description = "A powder that induces itching upon contact with the skin."
 	silent_toxin = TRUE
 	reagent_state = LIQUID
 	color = "#C8C8C8"
@@ -482,22 +482,8 @@
 		M.reagents?.add_reagent(/datum/reagent/toxin/itching_powder, reac_volume)
 
 /datum/reagent/toxin/itching_powder/on_mob_life(mob/living/carbon/M)
-	if(prob(15))
-		to_chat(M, "You scratch at your head.")
-		M.adjustBruteLoss(0.2*REM, 0)
-		. = 1
-	if(prob(15))
-		to_chat(M, "You scratch at your leg.")
-		M.adjustBruteLoss(0.2*REM, 0)
-		. = 1
-	if(prob(15))
-		to_chat(M, "You scratch at your arm.")
-		M.adjustBruteLoss(0.2*REM, 0)
-		. = 1
-	if(prob(3))
-		M.reagents.add_reagent(/datum/reagent/toxin/histamine,rand(1,3))
-		M.reagents.remove_reagent(/datum/reagent/toxin/itching_powder,1.2)
-		return
+	if(prob(5))
+		M.apply_status_effect(/datum/status_effect/itching, null, 600)
 	..()
 
 /datum/reagent/toxin/initropidril

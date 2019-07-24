@@ -11,7 +11,7 @@
 	threshold_desc = "<b>DELTA:</b> Causes permanent deafness, instead of intermittent."
 
 /datum/disease_property/symptom/deafness/update_mutators()
-	if(disease.mutators[DISEASE_MUTATOR_DELTA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_DELTA))
 		permanent = TRUE
 	else
 		permanent = FALSE

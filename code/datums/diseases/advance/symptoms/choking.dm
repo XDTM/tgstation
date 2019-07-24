@@ -12,7 +12,7 @@
 	threshold_desc = "<b>GAMMA:</b> Doubles the duration of choking episodes."
 
 /datum/disease_property/symptom/choking/update_mutators()
-	if(disease.mutators[DISEASE_MUTATOR_GAMMA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_GAMMA))
 		multiplier = 2
 	else
 		multiplier = 1

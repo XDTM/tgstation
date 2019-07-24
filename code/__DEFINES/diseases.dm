@@ -21,10 +21,12 @@
 #define DISEASE_SPREAD_AIRBORNE			(1<<5)
 
 //Mutator Defines
-#define DISEASE_MUTATOR_ALPHA		"alpha"
-#define DISEASE_MUTATOR_BETA		"beta"
-#define DISEASE_MUTATOR_GAMMA		"gamma"
-#define DISEASE_MUTATOR_DELTA		"delta"
+#define DISEASE_MUTATOR_ALPHA		"alpha"		//mild effects, usually a small +1 to the symptom.
+#define DISEASE_MUTATOR_BETA		"beta"		//medium level effects, an addition to the symptom but still doesn't stray far from its core concept.
+#define DISEASE_MUTATOR_GAMMA		"gamma"		//high level effects, adds a new aspect to the symptom which can range up to stuns and temporary debuffs.
+#define DISEASE_MUTATOR_DELTA		"delta"		//very high level effects, adds a new aspect to the symptom which generally is permanent or lasts until cured.
+#define DISEASE_MUTATOR_EPSILON		"epsilon"	//high threat effects: gives a symptom the potential to kill
+#define DISEASE_MUTATOR_THETA		"theta"		//weird stuff: interaction with magic, quantum or bluespace is activated by this mutator
 
 //Severity Defines
 #define DISEASE_SEVERITY_POSITIVE	"Positive"  //Diseases that buff, heal, or at least do nothing at all
@@ -34,3 +36,7 @@
 #define DISEASE_SEVERITY_HARMFUL	"Harmful"   //Diseases that can do significant harm, or severe disruption (brainrot)
 #define DISEASE_SEVERITY_DANGEROUS 	"Dangerous" //Diseases that can kill or maim if left untreated (flesh eating, blindness)
 #define DISEASE_SEVERITY_BIOHAZARD	"BIOHAZARD" //Diseases that can quickly kill an unprepared victim (fungal tb, gbs)
+
+//Property class defines
+#define DISEASE_CLASS_NONE "None"
+#define DISEASE_CLASS_STATS "Stats"

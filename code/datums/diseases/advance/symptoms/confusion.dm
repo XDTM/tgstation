@@ -1,22 +1,34 @@
 /*!
-	Makes the affected mob confused for short periods of time.
+	Makes the affected mob confused and dizzy for short periods of time.
 */
 /datum/disease_property/symptom/confusion
-	name = "Confusion"
-	desc = "The virus interferes with the proper function of the neural system, leading to bouts of confusion and erratic movement."
-	level = 4
+	name = "Auricolar Burst"
+	desc = "The virus causes occasional bursts of air in the ear's labyrinth, causing dizziness and lack of balance."
 	symptom_delay_min = 10
 	symptom_delay_max = 30
-	var/brain_damage = FALSE
-	var/
-	threshold_desc = "<b>ALPHA:</b> Increases confusion duration.<br>\
-					  <b>BETA:</b> Causes brain damage over time."
+	var/stumble = FALSE
+	threshold_desc = "<b>ALPHA:</b> Increases duration.<br>\
+					  <b>BETA:</b> Causes more severe loss of balance, leading to stumbling and falling."
 
 /datum/disease_property/symptom/confusion/update_mutators()
-	if(disease.mutators[DISEASE_MUTATOR_ALPHA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_ALPHA))
 		multiplier = 1.5
-	if(disease.mutators[DISEASE_MUTATOR_BETA])
-		brain_damage = TRUE
+	else
+		multiplier = 1
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_BETA))
+		stumble = TRUE
+	else
+		stumble = FALSE
+
+/datum/disease_property/symptom/confusion/on_process()
+	..()
+	if(!stumble)
+		return
+	var/mob/living/carbon/M = disease.affected_mob
+	if(M.confused && (M.mobility_flags & MOBILITY_MOVE) && prob(M.confused))
+		to_chat(M, "<span class='warning'>[pick("You trip on your own feet!","You lose your balance!","You trip and fall!","You lose your balance in your confusion!")]</span>")
+		step(M, M.dir)
+		M.Knockdown(20)
 
 /datum/disease_property/symptom/confusion/activate()
 	var/mob/living/carbon/M = disease.affected_mob
@@ -25,8 +37,6 @@
 			if(message_cooldown())
 				to_chat(M, "<span class='warning'>[pick("Your head hurts.", "Your mind blanks for a moment.", "You feel dizzy.")]</span>")
 		else
-			to_chat(M, "<span class='userdanger'>You can't think straight!</span>")
-			M.confused = min(M.confused + (8 * multiplier), 100)
-			if(brain_damage)
-				M.adjustBrainLoss(3 * multiplier, 80)
-				M.updatehealth()
+			to_chat(M, "<span class='warning'>[pick("You feel a pop in your ear, and a wave of dizziness hits you!")]</span>")
+			M.confused = min(M.confused + (10 * multiplier), 100)
+			M.dizziness = min(M.dizziness + (10 * multiplier), 100)

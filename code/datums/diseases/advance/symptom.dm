@@ -36,26 +36,18 @@
 
 /// Called when processing of the advance disease, which holds this symptom, starts.
 /datum/disease_property/symptom/on_start()
-	if(!..())
-		return FALSE
 	next_activation = world.time + rand(symptom_delay_min * 10, symptom_delay_max * 10) //so it doesn't instantly activate on infection
-	return TRUE
 
 // Called when the advance disease is going to be deleted or when the advance disease stops processing.
 /datum/disease_property/symptom/on_end()
-	if(!..())
-		return FALSE
-	return TRUE
+	return
 
 /datum/disease_property/symptom/on_process()
-	if(!..())
-		return FALSE
 	if(world.time < next_activation)
-		return FALSE
+		return
 	else
 		next_activation = world.time + rand(symptom_delay_min * 10, symptom_delay_max * 10)
 		activate()
-		return TRUE
 
 /// Activates the symptom, called every rand(symptom_delay_min, symptom_delay_max) seconds
 /datum/disease_property/symptom/proc/activate()

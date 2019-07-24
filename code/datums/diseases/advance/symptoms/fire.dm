@@ -11,19 +11,14 @@
 	var/explosive = FALSE
 	var/next_explosion = 0
 	threshold_desc = "<b>BETA:</b> Host will spread the virus through skin flakes when bursting into flame.<br>\
-					  <b>GAMMA:</b> Increases the intensity of the flames.<br>\
 					  <b>DELTA:</b> Host will cause an explosive reaction when in contact with water."
 
 /datum/disease_property/symptom/fire/update_mutators()
-	if(disease.mutators[DISEASE_MUTATOR_BETA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_BETA))
 		infective = TRUE
 	else
 		infective = FALSE
-	if(disease.mutators[DISEASE_MUTATOR_GAMMA])
-		multiplier = 2
-	else
-		multiplier = 1
-	if(disease.mutators[DISEASE_MUTATOR_DELTA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_DELTA))
 		explosive = TRUE
 	else
 		explosive = FALSE

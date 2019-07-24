@@ -20,7 +20,7 @@
 			C.randmut(possible_mutations)
 
 /datum/disease_property/symptom/genetic_mutation/update_mutators()
-	if(disease.mutators[DISEASE_MUTATOR_BETA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_BETA))
 		no_reset = TRUE
 	else
 		no_reset = FALSE

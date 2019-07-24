@@ -4,6 +4,7 @@
 	resistance = 3
 	speed = -3
 	infectivity = 3
+	class = DISEASE_CLASS_STATS
 
 /datum/disease_property/symptom/resistance_speed
 	name = "Synergetic Rooting"
@@ -11,6 +12,7 @@
 	resistance = 3
 	speed = 3
 	infectivity = -3
+	class = DISEASE_CLASS_STATS
 
 /datum/disease_property/symptom/infection_speed
 	name = "Auto-Mitosis"
@@ -18,3 +20,4 @@
 	resistance = -3
 	speed = 3
 	infectivity = 3
+	class = DISEASE_CLASS_STATS

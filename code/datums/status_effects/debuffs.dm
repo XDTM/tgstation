@@ -152,20 +152,75 @@
 			to_chat(mob_viewer, "<span class='notice'>You succesfuly remove the durathread strand.</span>")
 			L.remove_status_effect(STATUS_EFFECT_CHOKINGSTRAND)
 
+//OTHER DEBUFFS
 
-/datum/status_effect/pacify/on_creation(mob/living/new_owner, set_duration)
-	if(isnum(set_duration))
+///Causes a mood debuff until scratched by clicking the alert.
+/datum/status_effect/itching
+	id = "itching"
+	status_type = STATUS_EFFECT_REPLACE
+	alert_type = /obj/screen/alert/status_effect/itching
+	var/severe = FALSE //doubles the mood debuff
+
+/datum/status_effect/itching/on_creation(mob/living/new_owner, body_zone, _severe)
+	if(isnum(duration))
 		duration = set_duration
 	. = ..()
+	if(.)
+		if(_severe)
+			severe = _severe
+		if(!body_zone)
+			body_zone = pick(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_R_ARM, BODY_ZONE_L_ARM, BODY_ZONE_R_LEG, BODY_ZONE_L_LEG)
+		var/obj/item/bodypart/bodypart = new_owner.get_bodypart(picked_bodypart)
+		if(!bodypart || bodypart.status != BODYPART_ORGANIC || bodypart.is_pseudopart)
+			qdel(src)
+			return
+		else 
+			linked_alert.desc = "You've got a terribly annoying itch on your [bodypart.name]! Click here to scratch it."
 
-/datum/status_effect/pacify/on_apply()
-	ADD_TRAIT(owner, TRAIT_PACIFISM, "status_effect")
+/datum/status_effect/itching/on_apply()
+	if(!severe)
+		SEND_SIGNAL(new_owner, COMSIG_ADD_MOOD_EVENT, "itching", /datum/mood_event/itching, bodypart.name)
+	else
+		SEND_SIGNAL(new_owner, COMSIG_ADD_MOOD_EVENT, "itching", /datum/mood_event/itching/severe, bodypart.name)
 	return ..()
 
-/datum/status_effect/pacify/on_remove()
-	REMOVE_TRAIT(owner, TRAIT_PACIFISM, "status_effect")
+/datum/status_effect/itching/on_remove()
+	SEND_SIGNAL(new_owner, COMSIG_CLEAR_MOOD_EVENT, "itching")
+	return ..()
 
-//OTHER DEBUFFS
+/obj/screen/alert/status_effect/itching
+	name = "Itching"
+	desc = "You've got a terribly annoying itch! Click here to scratch it."
+	icon_state = "itching"
+
+/obj/screen/alert/status_effect/itching/Click()
+	var/mob/living/carbon/C = usr
+	if(!istype(C))
+		return
+	if(C.incapacitated())
+		to_chat(C, "<span class='warning'>You can't scratch yourself!</span>")
+		return
+	if(HAS_TRAIT(C, TRAIT_PIERCEIMMUNE))
+		to_chat(C, "<span class='warning'>Your skin is unscratchable!</span>")
+		return
+	if(ishuman(C))
+		var/mob/living/carbon/human/H = C
+		if(itching_area == BODY_ZONE_HEAD)
+			if(H.head && istype(H.head, /obj/item/clothing))
+				var/obj/item/clothing/CH = H.head
+				if (CH.clothing_flags & THICKMATERIAL)
+					to_chat(C, "<span class='warning'>[CH] is preventing you from scratching yourself!</span>")
+					return
+		else 
+			if(H.wear_suit  && istype(H.wear_suit , /obj/item/clothing))
+				var/obj/item/clothing/CH = H.wear_suit 
+				if (CH.clothing_flags & THICKMATERIAL)
+					to_chat(C, "<span class='warning'>[CH] is preventing you from scratching yourself!</span>")
+					return
+	if(do_after(C, 15, target = C))
+		to_chat(C, "<span class='notice'>You scratch yourself, and immediately feel better!</span>")
+		qdel(attached_effect)
+
 /datum/status_effect/pacify
 	id = "pacify"
 	status_type = STATUS_EFFECT_REPLACE

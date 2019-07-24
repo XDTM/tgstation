@@ -14,15 +14,15 @@
 					  <b>GAMMA:</b> Occasionally causes coughing fits that stun the host."
 
 /datum/disease_property/symptom/cough/update_mutators()
-	if(disease.mutators[DISEASE_MUTATOR_ALPHA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_ALPHA))
 		drop_items = TRUE
 	else
 		drop_items = FALSE
-	if(disease.mutators[DISEASE_MUTATOR_BETA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_BETA))
 		symptom_delay_max = 10
 	else
 		symptom_delay_max = initial(symptom_delay_max)
-	if(disease.mutators[DISEASE_MUTATOR_GAMMA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_GAMMA))
 		cough_fits = TRUE
 	else
 		cough_fits = FALSE

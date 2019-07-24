@@ -1,92 +1,55 @@
-
-/*
-//////////////////////////////////////
-Narcolepsy
-	Noticeable.
-	Lowers resistance
-	Decreases stage speed tremendously.
-	Decreases transmittablity tremendously.
-
-Bonus
-	Causes drowsiness and sleep.
-
-//////////////////////////////////////
+/*!Causes a constant buildup of sleepiness, which results in an increasing chance of falling asleep on the spot when the symptom activates.
+Sleepiness only decreases when asleep, and won't simply reset when the sleep triggers; therefore, trying to "skip" the sleep by getting shaken awake or by drinking coffee
+will also result in falling asleep more often and for longer.
 */
 /datum/disease_property/symptom/narcolepsy
 	name = "Narcolepsy"
 	desc = "The virus causes a hormone imbalance, making the host sleepy and narcoleptic."
-	stealth = -1
-	resistance = -2
-	stage_speed = -3
-	transmittable = -4
-	level = 6
-	symptom_delay_min = 15
-	symptom_delay_max = 80
-	severity = 4
-	var/sleep_level = 0
-	var/sleepy_ticks = 0
-	var/stamina = FALSE
-	threshold_desc = "<b>Transmission 7:</b> Also relaxes the muscles, weakening and slowing the host.<br>\
-					  <b>Resistance 10:</b> Causes narcolepsy more often, increasing the chance of the host falling asleep."
+	symptom_delay_min = 60
+	symptom_delay_max = 120
+	var/sleepiness = 0
+	var/rapid_sleep = FALSE
+	threshold_desc = "<b>GAMMA:</b> Additionally causes brief episodes of unconsciousness."
 
-/datum/disease_property/symptom/narcolepsy/Start(datum/disease/advance/A)
-	if(!..())
-		return
-	if(A.properties["transmittable"] >= 7) //stamina damage
-		stamina = TRUE
-	if(A.properties["resistance"] >= 10) //act more often
-		symptom_delay_min = 10
-		symptom_delay_max = 60
-
-/datum/disease_property/symptom/narcolepsy/Activate(var/datum/disease/advance/A)
-	var/mob/living/M = A.affected_mob
-	//this ticks even when on cooldown
-	switch(sleep_level) //Works sorta like morphine
-		if(10 to 19)
-			M.drowsyness += 1
-		if(20 to INFINITY)
-			M.Sleeping(30, 0)
-			sleep_level = 0
-			sleepy_ticks = 0
-
-	if(sleepy_ticks && A.stage>=5)
-		sleep_level++
-		sleepy_ticks--
+/datum/disease_property/symptom/narcolepsy/update_mutators()
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_GAMMA))
+		rapid_sleep = TRUE
 	else
-		sleep_level = 0
+		rapid_sleep = FALSE
 
-	if(!..())
+/datum/disease_property/symptom/narcolepsy/on_process()
+	..()
+	if(disease.stage < 5)
 		return
+	var/mob/living/M = disease.affected_mob
+	if(M.IsSleeping())
+		sleepiness = max(sleepiness - 5, 0)
+	else
+		sleepiness = min(sleepiness + 1, 120)
 
-	switch(A.stage)
-		if(1)
-			if(prob(10))
-				to_chat(M, "<span class='warning'>You feel tired.</span>")
-		if(2)
-			if(prob(10))
-				to_chat(M, "<span class='warning'>You feel very tired.</span>")
-				sleepy_ticks += rand(10,14)
-				if(stamina)
-					M.adjustStaminaLoss(10)
-		if(3)
-			if(prob(15))
-				to_chat(M, "<span class='warning'>You try to focus on staying awake.</span>")
-				sleepy_ticks += rand(10,14)
-				if(stamina)
-					M.adjustStaminaLoss(15)
-		if(4)
-			if(prob(20))
-				to_chat(M, "<span class='warning'>You nod off for a moment.</span>")
-				sleepy_ticks += rand(10,14)
-				if(stamina)
-					M.adjustStaminaLoss(20)
-		if(5)
-			if(prob(25))
-				to_chat(M, "<span class='warning'>[pick("So tired...","You feel very sleepy.","You have a hard time keeping your eyes open.","You try to stay awake.")]</span>")
-				M.drowsyness = max(M.drowsyness, 2)
-				sleepy_ticks += rand(10,14)
-				if(stamina)
-					M.adjustStaminaLoss(30)
+/datum/disease_property/symptom/narcolepsy/activate()
+	var/mob/living/M = disease.affected_mob
+	if(HAS_TRAIT(M, TRAIT_SLEEPIMMUNE))
+		return
+	if(disease.stage < 5)
+		if(disease.stage > 2 && message_cooldown())
+			to_chat(M, "<span class='warning'>[pick("You feel tired.","You feel sleepy.","You have a hard time keeping your eyes open.","You try to stay awake.")]</span>")
+		return
+	if(prob(sleepiness))
+		fall_asleep(M)
+	else
+		if(rapid_sleep)
+			to_chat(M, "<span class='warning'>[pick("You black out for a moment.","You nod off for a second.")]</span>")
+			M.Sleeping(20)
+		else
+			to_chat(M, "<span class='warning'>[pick("So tired...","You feel very sleepy.","You have a hard time keeping your eyes open.","You try to stay awake.")]</span>")
+			M.drowsyness += (sleepiness * 0.2)
+
+///The mob falls asleep after 5 seconds of the warning, for a duration based on the sleepiness counter.
+/datum/disease_property/symptom/narcolepsy/proc/fall_asleep(mob/living/M)
+	to_chat(M, "<span class='warning'>[pick("Your vision starts fading to black...","You can't stay awake anymore...")]</span>")
+	M.drowsyness += 5
+	addtimer(CALLBACK(M, .proc/Sleeping, sleepiness * 10), 50)
 
 
 

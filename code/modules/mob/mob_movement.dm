@@ -136,7 +136,11 @@
 		move_delay = old_move_delay
 	else
 		move_delay = world.time
-
+	
+	var/datum/status_effect/confusion/confusion = has_status_effect(STATUS_EFFECT_CONFUSION)
+	if(confusion)
+		var/newdir = null
+		if(confusion)
 	if(L.confused)
 		var/newdir = 0
 		if(L.confused > 40)

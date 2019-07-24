@@ -26,7 +26,6 @@
 	var/list/stats = list()
 	var/list/symptoms = list() // The symptoms of the disease.
 	var/list/disease_traits = list() // The traits of the disease.
-	var/list/mutators = list(DISEASE_MUTATOR_ALPHA = FALSE, DISEASE_MUTATOR_BETA = FALSE, DISEASE_MUTATOR_GAMMA = FALSE, DISEASE_MUTATOR_DELTA = FALSE)
 	var/id = ""
 	var/processing = FALSE
 	var/mutable = TRUE //set to FALSE to prevent most in-game methods of altering the disease via virology
@@ -123,8 +122,14 @@
 
 /// Procs the symptoms' stage change effects
 /datum/disease/advance/update_stage(new_stage)
+	if(new_stage == stage)
+		return
+	var/is_increase = (new_stage >= stage)
 	for(var/datum/disease_property/D in symptoms)
-		D.on_stage_change(new_stage, stage)
+		if(is_increase)
+			D.on_stage_increase(new_stage, stage)
+		else
+			D.on_stage_decrease(new_stage, stage)
 	..()
 	
 

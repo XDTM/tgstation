@@ -13,11 +13,11 @@
 					  <b>DELTA:</b> Rarely causes hypnotic trances on the host."
 
 /datum/disease_property/symptom/hallucinations/update_mutators()
-	if(disease.mutators[DISEASE_MUTATOR_ALPHA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_ALPHA))
 		multiplier = 2
 	else
 		multiplier = 1
-	if(disease.mutators[DISEASE_MUTATOR_DELTA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_DELTA))
 		hypnosis = TRUE
 	else
 		hypnosis = FALSE

@@ -111,7 +111,7 @@
 		D.try_infect(src)
 
 /mob/living/proc/AirborneContractDisease(datum/disease/D)
-	if((D.spread_flags & DISEASE_SPREAD_AIRBORNE) && prob(D.infectivity * 0.50)
+	if((D.spread_flags & DISEASE_SPREAD_AIRBORNE) && prob(D.infectivity * 0.50))
 		ForceContractDisease(D)
 
 /mob/living/carbon/AirborneContractDisease(datum/disease/D)

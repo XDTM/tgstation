@@ -4,20 +4,24 @@
 
 /datum/disease_property/symptom/fever
 	name = "Fever"
-	desc = "The virus causes a febrile response from the host, raising its body temperature."
+	desc = "The disease causes a febrile response from the host, raising its body temperature."
 	level = 2
 	symptom_delay_min = 10
 	symptom_delay_max = 30
 	var/unsafe = FALSE //over the heat threshold
-	threshold_desc = "<b>BETA:</b> Increases fever intensity.<br>\
-					  <b>GAMMA:</b> Increases fever intensity, fever can overheat and harm the host."
+	threshold_desc = "<b>ALPHA:</b> Increases fever intensity.<br>\
+					  <b>BETA:</b> Increases fever intensity, fever can overheat and harm the host.<br>\
+					  <b>EPSILON:</b> The disease causes extreme amount of heat, boling the host from the inside."
 
 /datum/disease_property/symptom/fever/update_mutators()
 	multiplier = 1
-	if(disease.mutators[DISEASE_MUTATOR_BETA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_ALPHA))
 		multiplier += 0.5
-	if(disease.mutators[DISEASE_MUTATOR_GAMMA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_BETA))
 		multiplier += 1
+		unsafe = TRUE
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_EPSILON))
+		multiplier += 10
 		unsafe = TRUE
 
 /datum/disease_property/symptom/fever/activate()

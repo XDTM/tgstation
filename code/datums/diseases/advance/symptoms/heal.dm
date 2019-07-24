@@ -1,8 +1,8 @@
 /datum/disease_property/symptom/heal
 	name = "Basic Healing (does nothing)" //warning for adminspawn viruses
 	desc = "You should not be seeing this."
-	level = 0 //not obtainable
-	var/passive_message = "" //random message to infected but not actively healing people
+	level = 0
+	var/passive_message = "" //Random message to the host warning them that the symptom exists
 	threshold_desc = "<b>Stage Speed 6:</b> Doubles healing speed.<br>\
 					  <b>Stealth 4:</b> Healing will no longer be visible to onlookers."
 
@@ -24,13 +24,15 @@
 /datum/disease_property/symptom/heal/proc/can_heal()
 	return multiplier
 
+///Applies the symptom healing effect, multiplied by actual_power
 /datum/disease_property/symptom/heal/proc/heal(mob/living/M, actual_power)
 	return TRUE
 
+///The condition that has to be met to trigger the passive message
 /datum/disease_property/symptom/heal/proc/passive_message_condition(mob/living/M)
 	return TRUE
 
-
+///Heals people close to or in space
 /datum/disease_property/symptom/heal/starlight
 	name = "Starlight Condensation"
 	desc = "The virus reacts to direct starlight, producing regenerative chemicals. Works best against toxin-based damage."
@@ -41,7 +43,7 @@
 					  <b>Transmission 6:</b> Removes penalty for only being close to space."
 
 /datum/disease_property/symptom/heal/starlight/update_mutators()
-	if(disease.mutators[DISEASE_MUTATOR_BETA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_BETA])
 		nearspace_penalty = 1
 	else
 		nearspace_penalty = initial(nearspace_penalty)
@@ -79,60 +81,48 @@
 		return TRUE
 	return FALSE
 
+///Removes chems from the body
 /datum/disease_property/symptom/heal/chem
-	name = "Toxolysis"
-	stealth = 0
-	resistance = -2
-	stage_speed = 2
-	transmittable = -2
-	level = 7
+	name = "Phagocyte"
 	var/food_conversion = FALSE
 	desc = "The virus rapidly breaks down any foreign chemicals in the bloodstream."
-	threshold_desc = "<b>Resistance 7:</b> Increases chem removal speed.<br>\
-					  <b>Stage Speed 6:</b> Consumed chemicals nourish the host."
+	threshold_desc = "<b>BETA:</b> Converts reagents into nutrition for the host."
 
-/datum/disease_property/symptom/heal/chem/Start(datum/disease/advance/A)
-	if(!..())
-		return
-	if(A.properties["stage_rate"] >= 6)
+/datum/disease_property/symptom/heal/chem/update_mutators()
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_BETA])
 		food_conversion = TRUE
-	if(A.properties["resistance"] >= 7)
-		power = 2
+	else
+		food_conversion = FALSE
 
-/datum/disease_property/symptom/heal/chem/Heal(mob/living/M, datum/disease/advance/A, actual_power)
+/datum/disease_property/symptom/heal/chem/heal(mob/living/M, actual_power)
 	for(var/datum/reagent/R in M.reagents.reagent_list) //Not just toxins!
 		M.reagents.remove_reagent(R.type, actual_power)
 		if(food_conversion)
 			M.adjust_nutrition(0.3)
-		if(prob(2))
+		if(message_cooldown())
 			to_chat(M, "<span class='notice'>You feel a mild warmth as your blood purifies itself.</span>")
-	return 1
 
-
-
+///Independently processes reagents as if it was a second liver
 /datum/disease_property/symptom/heal/metabolism
-	name = "Metabolic Boost"
-	stealth = -1
-	resistance = -2
-	stage_speed = 2
-	transmittable = 1
-	level = 7
+	name = "Parallel Metabolization"
 	var/triple_metabolism = FALSE
 	var/reduced_hunger = FALSE
-	desc = "The virus causes the host's metabolism to accelerate rapidly, making them process chemicals twice as fast,\
+	desc = "The virus causes the host's metabolism to accelerate rapidly, making them metabolize twice as fast,\
 	 but also causing increased hunger."
-	threshold_desc = "<b>Stealth 3:</b> Reduces hunger rate.<br>\
-					  <b>Stage Speed 10:</b> Chemical metabolization is tripled instead of doubled."
+	threshold_desc = "<b>ALPA:</b> Reduces hunger caused by the symptom.<br>\
+					  <b>GAMMA:</b> Chemical metabolization is tripled instead of doubled."
 
-/datum/disease_property/symptom/heal/metabolism/Start(datum/disease/advance/A)
-	if(!..())
-		return
-	if(A.properties["stage_rate"] >= 10)
+/datum/disease_property/symptom/heal/metabolism/update_mutators()
+	if(disease.properties[DISEASE_MUTATOR_GAMMA])
 		triple_metabolism = TRUE
-	if(A.properties["stealth"] >= 3)
+	else
+		triple_metabolism = FALSE
+	if(disease.properties[DISEASE_MUTATOR_ALPHA])
 		reduced_hunger = TRUE
+	else
+		reduced_hunger = FALSE
 
-/datum/disease_property/symptom/heal/metabolism/Heal(mob/living/carbon/C, datum/disease/advance/A, actual_power)
+/datum/disease_property/symptom/heal/metabolism/heal(mob/living/carbon/C, actual_power)
 	if(!istype(C))
 		return
 	C.reagents.metabolize(C, can_overdose=TRUE) //this works even without a liver; it's intentional since the virus is metabolizing by itself
@@ -140,38 +130,45 @@
 		C.reagents.metabolize(C, can_overdose=TRUE)
 	C.overeatduration = max(C.overeatduration - 2, 0)
 	var/lost_nutrition = 9 - (reduced_hunger * 5)
-	C.adjust_nutrition(-lost_nutrition * HUNGER_FACTOR) //Hunger depletes at 10x the normal speed
-	if(prob(2))
-		to_chat(C, "<span class='notice'>You feel an odd gurgle in your stomach, as if it was working much faster than normal.</span>")
-	return 1
+	C.adjust_nutrition(-lost_nutrition * HUNGER_FACTOR) //Hunger depletes at 10x the normal speed, 5x with the mutator
+	if(message_cooldown())
+		to_chat(C, "<span class='notice'>You feel an odd gurgle coming from near your stomach.</span>")
 
 /datum/disease_property/symptom/heal/darkness
 	name = "Nocturnal Regeneration"
 	desc = "The virus is able to mend the host's flesh when in conditions of low light, repairing physical damage. More effective against brute damage."
-	stealth = 2
-	resistance = -1
-	stage_speed = -2
-	transmittable = -1
-	level = 6
 	passive_message = "<span class='notice'>You feel tingling on your skin as light passes over it.</span>"
-	threshold_desc = "<b>Stage Speed 8:</b> Doubles healing speed."
+	threshold_desc = "<b>GAMMA:</b> Additionally gives night vision to the host."
+	var/night_vision = FALSE
 
-/datum/disease_property/symptom/heal/darkness/Start(datum/disease/advance/A)
-	if(!..())
-		return
-	if(A.properties["stage_rate"] >= 8)
-		power = 2
+/datum/disease_property/symptom/heal/darkness/update_mutators()
+	if(disease.properties[DISEASE_MUTATOR_GAMMA])
+		night_vision = TRUE
+	else
+		night_vision = FALSE
 
-/datum/disease_property/symptom/heal/darkness/CanHeal(datum/disease/advance/A)
-	var/mob/living/M = A.affected_mob
+
+/datum/disease_property/symptom/heal/darkness/on_stage_increase(new_stage, prev_stage)
+	if(night_vision && new_stage >= 5)
+		ADD_TRAIT(disease.affected_mob, TRAIT_NIGHT_VISION, NOCTURNAL_REGEN_TRAIT)
+
+/datum/disease_property/symptom/heal/darkness/on_stage_decrease(new_stage, prev_stage)
+	if(new_stage <= 4)
+		REMOVE_TRAIT(disease.affected_mob, TRAIT_NIGHT_VISION, NOCTURNAL_REGEN_TRAIT)
+
+/datum/disease_property/symptom/heal/darkness/on_end()
+	REMOVE_TRAIT(disease.affected_mob, TRAIT_NIGHT_VISION, NOCTURNAL_REGEN_TRAIT)
+
+/datum/disease_property/symptom/heal/darkness/can_heal()
+	var/mob/living/M = disease.affected_mob
 	var/light_amount = 0
 	if(isturf(M.loc)) //else, there's considered to be no light
 		var/turf/T = M.loc
 		light_amount = min(1,T.get_lumcount()) - 0.5
 		if(light_amount < SHADOW_SPECIES_LIGHT_THRESHOLD)
-			return power
+			return multiplier
 
-/datum/disease_property/symptom/heal/darkness/Heal(mob/living/carbon/M, datum/disease/advance/A, actual_power)
+/datum/disease_property/symptom/heal/darkness/heal(mob/living/carbon/M, actual_power)
 	var/heal_amt = 2 * actual_power
 
 	var/list/parts = M.get_damaged_bodyparts(1,1, null, BODYPART_ORGANIC)
@@ -179,13 +176,12 @@
 	if(!parts.len)
 		return
 
-	if(prob(5))
+	if(message_cooldown())
 		to_chat(M, "<span class='notice'>The darkness soothes and mends your wounds.</span>")
 
 	for(var/obj/item/bodypart/L in parts)
 		if(L.heal_damage(heal_amt/parts.len, heal_amt/parts.len * 0.5, null, BODYPART_ORGANIC)) //more effective on brute
 			M.update_damage_overlays()
-	return 1
 
 /datum/disease_property/symptom/heal/darkness/passive_message_condition(mob/living/M)
 	if(M.getBruteLoss() || M.getFireLoss())
@@ -195,7 +191,6 @@
 /datum/disease_property/symptom/heal/coma
 	name = "Regenerative Coma"
 	desc = "The virus causes the host to fall into a coma when severely damaged, then rapidly fixes the damage."
-	level = 8
 	passive_message = "<span class='notice'>The pain from your wounds makes you feel oddly sleepy...</span>"
 	var/fake_death = FALSE
 	var/active_coma = FALSE //to prevent multiple coma procs
@@ -203,7 +198,7 @@
 					  <b>Stage Speed 7:</b> Increases healing speed."
 
 /datum/disease_property/symptom/heal/coma/update_mutators()
-	if(disease.mutators[DISEASE_MUTATOR_GAMMA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_GAMMA])
 		fake_death = TRUE
 	else
 		fake_death = FALSE
@@ -273,7 +268,7 @@
 	threshold_desc = "<b>ALPHA:</b> Water is consumed more efficiently."
 
 /datum/disease_property/symptom/heal/water/update_mutators()
-	if(disease.mutators[DISEASE_MUTATOR_ALPHA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_ALPHA])
 		absorption_coeff = 0.25
 	else
 		absorption_coeff = initial(absorption_coeff)
@@ -324,11 +319,11 @@
 					  <b>GAMMA:</b> Grants immunity from heat and cold while in contact with plasma."
 
 /datum/disease_property/symptom/heal/plasma/update_mutators()
-	if(disease.mutators[DISEASE_MUTATOR_BETA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_BETA))
 		temp_immune = TRUE
 	else
 		temp_immune = FALSE
-	if(disease.mutators[DISEASE_MUTATOR_GAMMA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_GAMMA))
 		tox_immune = TRUE
 	else
 		tox_immune = FALSE
@@ -398,15 +393,15 @@
 	threshold_desc = "<b>ALPHA:</b> Makes the host glow while active."
 
 /datum/disease_property/symptom/heal/radiation/update_mutators()
-	if(disease.mutators[DISEASE_MUTATOR_ALPHA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_ALPHA])
 		glow = TRUE
 	else
 		glow = FALSE
 
 /datum/disease_property/symptom/heal/radiation/on_process()
 	..()
-	if(glow)
-		var/light_power = CEILING(can_heal() * 3)
+	if(glow && disease.stage >= 5)
+		var/light_power = CEILING(can_heal() * 3, 1)
 		if(light_power)
 			if(!glow_object)
 				glow_object = new(disease.affected_mob)

@@ -10,31 +10,37 @@
 	var/headache_active = FALSE
 	var/strong_headache = FALSE
 	var/cluster_headache = FALSE
+	var/brain_hemorrhage = FALSE
 	threshold_desc = "<b>BETA:</b> Makes headaches more painful.<br>\
-					  <b>GAMMA:</b> Rarely causes cluster headaches, which blind and disable the host for a while."
+					  <b>GAMMA:</b> Rarely causes cluster headaches, which blind and disable the host for a while.<br>\
+					  <b>EPSILON:</b> Causes severe brain hemorrhage, eventually leading to death if untreated."
 
 /datum/disease_property/symptom/headache/update_mutators()
-	if(disease.mutators[DISEASE_MUTATOR_BETA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_BETA))
 		strong_headache = TRUE
 	else
 		strong_headache = FALSE
-	if(disease.mutators[DISEASE_MUTATOR_GAMMA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_GAMMA))
 		cluster_headache = TRUE
 	else
 		cluster_headache = FALSE
-
-/datum/disease_property/symptom/headache/on_stage_change(new_stage, prev_stage)
-	if(new_stage > prev_stage)
-		if(new_stage >= 4 && !headache_active)
-			if(!strong_headache)
-				SEND_SIGNAL(disease.affected_mob, COMSIG_ADD_MOOD_EVENT, "headache", /datum/mood_event/headache)
-			else
-				SEND_SIGNAL(disease.affected_mob, COMSIG_ADD_MOOD_EVENT, "headache", /datum/mood_event/headache/strong)
-			headache_active = TRUE
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_EPSILON))
+		brain_hemorrhage = TRUE
 	else
-		if(new_stage <= 3 && headache_active)
-			SEND_SIGNAL(disease.affected_mob, COMSIG_CLEAR_MOOD_EVENT, "headache")
-			headache_active = FALSE
+		brain_hemorrhage = FALSE
+
+/datum/disease_property/symptom/headache/on_stage_increase(new_stage, prev_stage)
+	if(new_stage >= 4 && !headache_active)
+		if(!strong_headache)
+			SEND_SIGNAL(disease.affected_mob, COMSIG_ADD_MOOD_EVENT, "headache", /datum/mood_event/headache)
+		else
+			SEND_SIGNAL(disease.affected_mob, COMSIG_ADD_MOOD_EVENT, "headache", /datum/mood_event/headache/strong)
+		headache_active = TRUE
+
+/datum/disease_property/symptom/headache/on_stage_decrease(new_stage, prev_stage)
+	if(new_stage <= 3 && headache_active)
+		SEND_SIGNAL(disease.affected_mob, COMSIG_CLEAR_MOOD_EVENT, "headache")
+		headache_active = FALSE
 
 /datum/disease_property/symptom/headache/on_end()
 	SEND_SIGNAL(disease.affected_mob, COMSIG_CLEAR_MOOD_EVENT, "headache")
@@ -45,6 +51,8 @@
 	if(prob(25) && cluster_headache && disease.stage >= 5)
 		to_chat(M, "<span class='userdanger'>[pick("You feel a burning knife inside your brain!", "A wave of pain fills your head!")]</span>")
 		M.Unconscious(60) //Simulates being in too much pain to focus on anything else
+	if(brain_hemorrhage && prob(40))
+		M.adjustBrainLoss(rand(10,25), BRAIN_DAMAGE_DEATH)
 	if(disease.stage < 4)
 		if(message_cooldown())
 			to_chat(M, "<span class='warning'>[pick("Your head aches.", "Your head pounds.")]</span>")

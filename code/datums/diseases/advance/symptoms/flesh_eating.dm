@@ -8,10 +8,10 @@
 	symptom_delay_min = 3
 	symptom_delay_max = 6
 	var/pain = FALSE
-	threshold_desc = "<b>BETA:</b>Causes stabs extreme pain to the host, weakening them."
+	threshold_desc = "<b>BETA:</b>Causes stabs of extreme pain to the host, weakening them."
 
 /datum/disease_property/symptom/flesh_eating/update_mutators()
-	if(disease.mutators[DISEASE_MUTATOR_BETA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_BETA))
 		pain = TRUE
 	else
 		pain = FALSE
