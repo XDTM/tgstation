@@ -49,9 +49,9 @@
 /datum/disease_property/trait/mutator_epsilon
 	name = "Epsilon Cell"
 	desc = "The disease hosts a mutable sub-disease, allowing it to specialize for different tasks when reproducing, therefore enabling far more powerful symptom effects. \
-	However, the cost of hosting the cell reduces its efficiency."
+	However, the cost of hosting and replicating the cell reduces its speed significantly, as well as reducing resistance and infectivity."
 	resistance = -2
-	speed = -2
+	speed = -6
 	infectivity = -2
 
 /datum/disease_property/trait/mutator_epsilon/on_add()

@@ -1,14 +1,13 @@
 /datum/disease/fake_gbs
 	name = "GBS"
 	max_stages = 5
-	spread_text = "On contact"
-	spread_flags = DISEASE_SPREAD_BLOOD | DISEASE_SPREAD_CONTACT_SKIN | DISEASE_SPREAD_CONTACT_FLUIDS
 	cure_text = "Synaptizine & Sulfur"
 	cures = list(/datum/reagent/medicine/synaptizine,/datum/reagent/sulfur)
 	agent = "Gravitokinetic Bipotential SADS-"
 	viable_mobtypes = list(/mob/living/carbon/human, /mob/living/carbon/monkey)
 	desc = "If left untreated death will occur."
 	severity = DISEASE_SEVERITY_BIOHAZARD
+	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_SKIN, DISEASE_SPREAD_CONTACT_FLUIDS)
 
 /datum/disease/fake_gbs/stage_act()
 	..()

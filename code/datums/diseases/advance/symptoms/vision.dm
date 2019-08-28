@@ -1,72 +1,117 @@
-/*
-//////////////////////////////////////
+///When the host's eyes are damaged or missing, gradually restores them.
+/datum/disease_property/symptom/ocular_regrowth
+	name = "Ocular Regrowth"
+	desc = "The disease stimulates the production and replacement of sensory tissues, causing the host to regenerate their eyes if damaged."
+	var/regrowth_progress = 0
+	var/thermal_vision = FALSE
+	var/flash_proof = FALSE
+	threshold_desc = "<b>BETA:</b> The disease prevents bright lights from damaging the retina.<br>
+					  <b>DELTA:</b> The disease forms a heat-sensitive membrane in front of the retina, granting thermal vision to the host."
 
-Hyphema (Eye bleeding)
+/datum/disease_property/symptom/ocular_regrowth/update_mutators()
+	if(HAS_TRAIT(disease, DISEASE_MUTATOR_BETA))
+		flash_proof = TRUE
+	else
+		flash_proof = FALSE
+	if(HAS_TRAIT(disease, DISEASE_MUTATOR_DELTA))
+		thermal_vision = TRUE
+	else
+		thermal_vision = FALSE
 
-	Slightly noticable.
-	Lowers resistance tremendously.
-	Decreases stage speed tremendously.
-	Decreases transmittablity.
-	Critical Level.
+/datum/disease_property/symptom/ocular_regrowth/on_stage_increase(new_stage, prev_stage)
+	if(new_stage == 5)
+		if(thermal_vision)
+			ADD_TRAIT(disease.affected_mob, TRAIT_THERMAL_VISION, OCULAR_REGROWTH_TRAIT)
+		if(flash_proof)
+			ADD_TRAIT(disease.affected_mob, TRAIT_FLASH_PROOF, OCULAR_REGROWTH_TRAIT)
 
-Bonus
-	Causes blindness.
+/datum/disease_property/symptom/ocular_regrowth/on_stage_decrease(new_stage, prev_stage)
+	if(new_stage == 4)
+		if(thermal_vision)
+			REMOVE_TRAIT(disease.affected_mob, TRAIT_THERMAL_VISION, OCULAR_REGROWTH_TRAIT)
+		if(flash_proof)
+			REMOVE_TRAIT(disease.affected_mob, TRAIT_FLASH_PROOF, OCULAR_REGROWTH_TRAIT)
 
-//////////////////////////////////////
-*/
+/datum/disease_property/symptom/ocular_regrowth/on_end(new_stage, prev_stage)
+	REMOVE_TRAIT(disease.affected_mob, TRAIT_THERMAL_VISION, OCULAR_REGROWTH_TRAIT)
+	REMOVE_TRAIT(disease.affected_mob, TRAIT_FLASH_PROOF, OCULAR_REGROWTH_TRAIT)
+
+/datum/disease_property/symptom/ocular_regrowth/on_process()
+	..()
+	var/mob/living/carbon/C = disease.affected_mob
+	var/obj/item/organ/eyes/eyes = C.getorganslot(ORGAN_SLOT_EYES)
+	switch(disease.stage)
+		if(4, 5)
+			regrowth_progress += 4
+			if(!eyes)
+				if(regrowth_progress >= 100)
+					var/obj/item/organ/eyes/new_eyes = new
+					new_eyes.Insert(C)
+					to_chat(C, "<span class='notice'>You feel a pressure behind your eye sockets... then you realize that you have a new pair of eyes!</span>")
+					regrowth_progress = 0
+				return
+			if(HAS_TRAIT_FROM(M, TRAIT_BLIND, EYE_DAMAGE))
+				if(regrowth_progress >= 75)
+					to_chat(M, "<span class='notice'>Your vision slowly returns...</span>")
+					M.cure_blind(EYE_DAMAGE)
+					M.cure_nearsighted(EYE_DAMAGE)
+					M.blur_eyes(35)
+					regrowth_progress = 0
+			else if(HAS_TRAIT_FROM(M, TRAIT_NEARSIGHT, EYE_DAMAGE))
+				if(regrowth_progress >= 40)
+					to_chat(M, "<span class='notice'>You can finally focus your eyes on distant objects.</span>")
+					M.cure_nearsighted(EYE_DAMAGE)
+					M.blur_eyes(10)
+					regrowth_progress = 0
+			else if(M.eye_blind || M.eye_blurry)
+				if(regrowth_progress >= 20)
+					M.set_blindness(0)
+					M.set_blurriness(0)
+					regrowth_progress = 0
+			else if(eyes.damage > 0)
+				if(regrowth_progress >= 8)
+					eyes.applyOrganDamage(-2)
+					regrowth_progress = 0
+			else
+				regrowth_progress = 0 //Won't store regrowth for the next damage
+		else
+			if(message_cooldown())
+				to_chat(M, "<span class='notice'>[pick("Your eyes feel great.","You feel like your eyes can focus more clearly.", "You don't feel the need to blink.")]</span>")
 
 /datum/disease_property/symptom/visionloss
-
 	name = "Hyphema"
 	desc = "The virus causes inflammation of the retina, leading to eye damage and eventually blindness."
-	stealth = -1
-	resistance = -4
-	stage_speed = -4
-	transmittable = -3
-	level = 5
-	severity = 5
-	base_message_chance = 50
-	symptom_delay_min = 25
+	symptom_delay_min = 40
 	symptom_delay_max = 80
 	var/remove_eyes = FALSE
-	threshold_desc = "<b>Resistance 12:</b> Weakens extraocular muscles, eventually leading to complete detachment of the eyes.<br>\
+	threshold_desc = "<b>DELTA:</b> Weakens extraocular muscles, eventually leading to complete detachment of the eyes.<br>\
 					  <b>Stealth 4:</b> The symptom remains hidden until active."
 
-/datum/disease_property/symptom/visionloss/Start(datum/disease/advance/A)
-	if(!..())
-		return
+/datum/disease_property/symptom/visionloss/update_mutators()
 	if(A.properties["stealth"] >= 4)
 		suppress_warning = TRUE
 	if(A.properties["resistance"] >= 12) //goodbye eyes
 		remove_eyes = TRUE
 
-/datum/disease_property/symptom/visionloss/Activate(datum/disease/advance/A)
-	if(!..())
-		return
+/datum/disease_property/symptom/visionloss/activate()
 	var/mob/living/carbon/M = A.affected_mob
 	var/obj/item/organ/eyes/eyes = M.getorganslot(ORGAN_SLOT_EYES)
 	if(istype(eyes))
 		switch(A.stage)
 			if(1, 2)
-				if(prob(base_message_chance) && !suppress_warning)
+				if(message_cooldown())
 					to_chat(M, "<span class='warning'>Your eyes itch.</span>")
 			if(3, 4)
 				to_chat(M, "<span class='warning'><b>Your eyes burn!</b></span>")
 				M.blur_eyes(10)
-				eyes.applyOrganDamage(1)
+				eyes.applyOrganDamage(3)
 			else
 				M.blur_eyes(20)
-				eyes.applyOrganDamage(5)
-				if(eyes.damage >= 10)
-					M.become_nearsighted(EYE_DAMAGE)
-				if(prob(eyes.damage - 10 + 1))
-					if(!remove_eyes)
-						if(!HAS_TRAIT(M, TRAIT_BLIND))
-							to_chat(M, "<span class='userdanger'>You go blind!</span>")
-							eyes.applyOrganDamage(eyes.maxHealth)
-					else
-						M.visible_message("<span class='warning'>[M]'s eyes fall out of their sockets!</span>", "<span class='userdanger'>Your eyes fall out of their sockets!</span>")
-						eyes.Remove(M)
-						eyes.forceMove(get_turf(M))
-				else
+				eyes.applyOrganDamage(rand(8, 13))
+				if(!remove_eyes)
 					to_chat(M, "<span class='userdanger'>Your eyes burn horrifically!</span>")
+				else if(eyes.organ_flags & ORGAN_FAILING)
+					M.visible_message("<span class='warning'>[M]'s eyes fall out of their sockets!</span>", "<span class='userdanger'>Your eyes fall out of their sockets!</span>")
+					M.emote("scream")
+					eyes.Remove(M)
+					eyes.forceMove(get_turf(M))

@@ -49,7 +49,7 @@ will also result in falling asleep more often and for longer.
 /datum/disease_property/symptom/narcolepsy/proc/fall_asleep(mob/living/M)
 	to_chat(M, "<span class='warning'>[pick("Your vision starts fading to black...","You can't stay awake anymore...")]</span>")
 	M.drowsyness += 5
-	addtimer(CALLBACK(M, .proc/Sleeping, sleepiness * 10), 50)
+	addtimer(CALLBACK(M, /mob/living.proc/Sleeping, sleepiness * 10), 50)
 
 
 

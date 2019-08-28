@@ -438,7 +438,7 @@
 			SSblackbox.record_feedback("nested tally", "admin_secrets_fun_used", 1, list("Virus Outbreak"))
 			switch(alert("Do you want this to be a random disease or do you have something in mind?",,"Make Your Own","Random","Choose"))
 				if("Make Your Own")
-					AdminCreateVirus(usr.client)
+					// AdminCreateVirus(usr.client)
 				if("Random")
 					E = new /datum/round_event/disease_outbreak()
 				if("Choose")

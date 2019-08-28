@@ -199,7 +199,7 @@
 ///Caused by the itching status effect, cleared when the status effect is removed
 /datum/mood_event/itching
 	description = "<span class='warning'>My limb is itching, how annoying!</span>\n"
-	mood_change = -4
+	mood_change = -6
 
 /datum/mood_event/itching/add_effects(bodypart_name)
 	description = "<span class='warning'>My [bodypart_name] is itching, how annoying!</span>\n"
@@ -207,7 +207,7 @@
 ///More severe version of itching, causes a worse mood debuff
 /datum/mood_event/itching/severe
 	description = "<span class='warning'>My limb is itching, it's driving me crazy!</span>\n"
-	mood_change = -8
+	mood_change = -12
 
 /datum/mood_event/itching/severe/add_effects(bodypart_name)
 	description = "<span class='warning'>My [bodypart_name] is itching, it's driving me crazy!</span>\n"

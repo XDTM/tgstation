@@ -26,6 +26,8 @@
 	var/list/stats = list()
 	var/list/symptoms = list() // The symptoms of the disease.
 	var/list/disease_traits = list() // The traits of the disease.
+	var/symptom_limit = 6
+	var/trait_limit = 6
 	var/id = ""
 	var/processing = FALSE
 	var/mutable = TRUE //set to FALSE to prevent most in-game methods of altering the disease via virology
@@ -96,7 +98,7 @@
 		sortTim(advance_diseases, /proc/cmp_advdisease_resistance_asc)
 		for(var/i in 1 to replace_num)
 			var/datum/disease/advance/competition = advance_diseases[i]
-			if(totalTransmittable() > competition.totalResistance())
+			if(stats["infectivity"] > competition.stats["resistance"])
 				competition.cure(FALSE)
 			else
 				return FALSE //we are not strong enough to bully our way in
@@ -134,8 +136,7 @@
 	
 
 /// Compares type then ID.
-/datum/disease/advance/is_same(datum/disease/advance/D)
-
+/datum/disease/advance/proc/is_same(datum/disease/advance/D)
 	if(!(istype(D, /datum/disease/advance)))
 		return FALSE
 
@@ -161,7 +162,7 @@
 	var/list/name_symptoms = list()
 	for(var/datum/disease_property/symptom/S in symptoms)
 		name_symptoms += S.name
-	return "[name] sym:[english_list(name_symptoms)] r:[totalResistance()] s:[totalStealth()] ss:[totalStageSpeed()] t:[totalTransmittable()]"
+	return "[name] sym:[english_list(name_symptoms)] r:[stats["resistance"]] s:[stats["speed"]] i:[stats["infectivity"]]"
 
 /*
 
@@ -197,9 +198,9 @@
 			continue
 		if(!trait && ispath(P, /datum/disease_property/trait))
 			continue
-		if(initial(S.naturally_occuring) && initial(S.level) >= level_min && initial(S.level) <= level_max)
-			if(!has_property(S))
-				possible_properties += S
+		if(initial(P.naturally_occuring) && initial(P.level) >= level_min && initial(P.level) <= level_max)
+			if(!has_property(P))
+				possible_properties += P
 
 	if(!possible_properties.len)
 		return
@@ -261,6 +262,9 @@
 	//Generated a cure based on resistance
 	generate_cure(stats["resistance"])
 
+/datum/disease/advance/proc/update_mutators()
+	for(var/datum/disease_property/symptom/S in symptoms)
+		S.update_mutators()
 
 // Assign the spread type and give it the correct description.
 /datum/disease/advance/proc/SetSpread(spread_id)
@@ -343,7 +347,7 @@
 	if(properties.len > 1)
 		var/datum/disease_property/P = pick(properties)
 		if(P)
-			R.remove()
+			P.remove()
 			refresh(TRUE)
 
 // Name the disease.
@@ -362,39 +366,10 @@
 
 /// Calls add_symptom or add_trait based on the property type
 /datum/disease/advance/proc/add_property(datum/disease_property/P, overwrite = TRUE)
-	if(istype(P, /datum/disease_property/symptom))
-		add_symptom(P, overwrite)
-	else if(istype(P, /datum/disease_property/trait))
-		add_trait(P, overwrite)
+	P.add_to(src, overwrite)
 
 /datum/disease/advance/proc/remove_property(datum/disease_property/P)
 	P.remove()
-
-/// Add a symptom, if it is over the limit we take a random symptom away and add the new one.
-/datum/disease/advance/proc/add_symptom(datum/disease_property/symptom/S, overwrite = TRUE)
-
-	if(has_symptom(S))
-		return
-
-	if(symptoms.len < (symptom_limit - 1))
-		symptoms += S
-	else
-		if(overwrite)
-			remove_symptom(pick(symptoms))
-			symptoms += S
-
-/// Add a trait, if it is over the limit we take a random trait away and add the new one.
-/datum/disease/advance/proc/add_trait(datum/disease_trait/T, overwrite = TRUE)
-
-	if(has_trait(T))
-		return
-
-	if(disease_traits.len < (trait_limit - 1))
-		disease_traits += S
-	else
-		if(overwrite)
-			remove_trait(pick(disease_traits))
-			disease_traits += S
 
 /datum/disease/advance/proc/get_properties()
 	var/list/properties = symptoms + disease_traits
@@ -405,8 +380,8 @@
 
 */
 
-// Mix a list of advance diseases and return the mixed result.
-/proc/Advance_Mix(var/list/D_list)
+/// Mix a list of advance diseases and return the mixed result.
+/proc/disease_multi_mix(list/D_list)
 	var/list/diseases = list()
 
 	for(var/datum/disease/advance/A in D_list)
@@ -427,11 +402,11 @@
 		diseases -= D1
 
 		var/datum/disease/advance/D2 = pick(diseases)
-		D2.Mix(D1)
+		D2.mix(D1)
 
 	 // Should be only 1 entry left, but if not let's only return a single entry
 	var/datum/disease/advance/to_return = pick(diseases)
-	to_return.Refresh(1)
+	to_return.refresh(TRUE)
 	return to_return
 
 /proc/SetViruses(datum/reagent/R, list/data)
@@ -444,63 +419,50 @@
 		if(preserve.len)
 			R.data["viruses"] = preserve
 
-/proc/AdminCreateVirus(client/user)
+// /proc/AdminCreateVirus(client/user)
 
-	if(!user)
-		return
+// 	if(!user)
+// 		return
 
-	var/i = VIRUS_SYMPTOM_LIMIT
+// 	var/i = VIRUS_SYMPTOM_LIMIT
 
-	var/datum/disease/advance/D = new()
-	D.symptoms = list()
+// 	var/datum/disease/advance/D = new()
+// 	D.symptoms = list()
 
-	var/list/symptoms = list()
-	symptoms += "Done"
-	symptoms += SSdisease.list_symptoms.Copy()
-	do
-		if(user)
-			var/symptom = input(user, "Choose a symptom to add ([i] remaining)", "Choose a Symptom") in symptoms
-			if(isnull(symptom))
-				return
-			else if(istext(symptom))
-				i = 0
-			else if(ispath(symptom))
-				var/datum/disease_property/symptom/S = new symptom
-				if(!D.HasSymptom(S))
-					D.symptoms += S
-					i -= 1
-	while(i > 0)
+// 	var/list/symptoms = list()
+// 	symptoms += "Done"
+// 	symptoms += SSdisease.list_symptoms.Copy()
+// 	do
+// 		if(user)
+// 			var/symptom = input(user, "Choose a symptom to add ([i] remaining)", "Choose a Symptom") in symptoms
+// 			if(isnull(symptom))
+// 				return
+// 			else if(istext(symptom))
+// 				i = 0
+// 			else if(ispath(symptom))
+// 				var/datum/disease_property/symptom/S = new symptom
+// 				if(!D.HasSymptom(S))
+// 					D.symptoms += S
+// 					i -= 1
+// 	while(i > 0)
 
-	if(D.symptoms.len > 0)
+// 	if(D.symptoms.len > 0)
 
-		var/new_name = stripped_input(user, "Name your new disease.", "New Name")
-		if(!new_name)
-			return
-		D.AssignName(new_name)
-		D.Refresh()
+// 		var/new_name = stripped_input(user, "Name your new disease.", "New Name")
+// 		if(!new_name)
+// 			return
+// 		D.AssignName(new_name)
+// 		D.Refresh()
 
-		for(var/mob/living/carbon/human/H in shuffle(GLOB.alive_mob_list))
-			if(!is_station_level(H.z))
-				continue
-			if(!H.HasDisease(D))
-				H.ForceContractDisease(D)
-				break
+// 		for(var/mob/living/carbon/human/H in shuffle(GLOB.alive_mob_list))
+// 			if(!is_station_level(H.z))
+// 				continue
+// 			if(!H.HasDisease(D))
+// 				H.ForceContractDisease(D)
+// 				break
 
-		var/list/name_symptoms = list()
-		for(var/datum/disease_property/symptom/S in D.symptoms)
-			name_symptoms += S.name
-		message_admins("[key_name_admin(user)] has triggered a custom virus outbreak of [D.admin_details()]")
-		log_virus("[key_name(user)] has triggered a custom virus outbreak of [D.admin_details()]!")
-
-
-/datum/disease/advance/proc/totalStageSpeed()
-	return properties["stage_rate"]
-
-/datum/disease/advance/proc/totalStealth()
-	return properties["stealth"]
-
-/datum/disease/advance/proc/totalResistance()
-	return properties["resistance"]
-
-/datum/disease/advance/proc/totalTransmittable()
-	return properties["transmittable"]
+// 		var/list/name_symptoms = list()
+// 		for(var/datum/disease_property/symptom/S in D.symptoms)
+// 			name_symptoms += S.name
+// 		message_admins("[key_name_admin(user)] has triggered a custom virus outbreak of [D.admin_details()]")
+// 		log_virus("[key_name(user)] has triggered a custom virus outbreak of [D.admin_details()]!")

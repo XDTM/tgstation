@@ -1,52 +1,34 @@
-/*
-//////////////////////////////////////
-
-Sneezing
-
-	Very Noticable.
-	Increases resistance.
-	Doesn't increase stage speed.
-	Very transmissible.
-	Low Level.
-
-Bonus
-	Forces a spread type of AIRBORNE
-	with extra range!
-
-//////////////////////////////////////
-*/
-
 /datum/disease_property/symptom/sneeze
 	name = "Sneezing"
-	desc = "The virus causes irritation of the nasal cavity, making the host sneeze occasionally."
-	stealth = -2
-	resistance = 3
-	stage_speed = 0
-	transmittable = 4
-	level = 1
-	severity = 1
+	desc = "The virus causes irritation of the nasal cavity, making the host sneeze occasionally, spreading the disease in a cone if airborne."
 	symptom_delay_min = 5
 	symptom_delay_max = 35
-	threshold_desc = "<b>Transmission 9:</b> Increases sneezing range, spreading the virus over a larger area.<br>\
-					  <b>Stealth 4:</b> The symptom remains hidden until active."
+	var/fluid_spread = FALSE
+	threshold_desc = "<b>ALPHA:</b> Increases sneezing range, spreading the virus over a larger area.<br>\
+					  <b>BETA:</b> Makes the fluids expelled through sneezing thicker, carrying fluid-infecting diseases as well."
 
-/datum/disease_property/symptom/sneeze/Start(datum/disease/advance/A)
-	if(!..())
-		return
-	if(A.properties["transmittable"] >= 9) //longer spread range
-		power = 2
-	if(A.properties["stealth"] >= 4)
-		suppress_warning = TRUE
+/datum/disease_property/symptom/sneeze/update_mutators()
+	multiplier = 1
+	if(HAS_TRAIT(disease, DISEASE_MUTATOR_ALPHA))
+		multiplier = 2
+	if(HAS_TRAIT(disease, DISEASE_MUTATOR_BETA))
+		fluid_spread = TRUE
+	else
+		fluid_spread = FALSE
 
-/datum/disease_property/symptom/sneeze/Activate(datum/disease/advance/A)
-	if(!..())
-		return
-	var/mob/living/M = A.affected_mob
-	switch(A.stage)
+/datum/disease_property/symptom/sneeze/activate()
+	var/mob/living/M = disease.affected_mob
+	switch(disease.stage)
 		if(1, 2, 3)
-			if(!suppress_warning)
-				M.emote("sniff")
+			M.emote("sniff")
 		else
 			M.emote("sneeze")
 			if(M.CanSpreadAirborneDisease()) //don't spread germs if they covered their mouth
-				A.airborne_spread(4 + power)
+				range = 2 * multiplier
+				var/turf/T = affected_mob.loc
+				if(istype(T))
+					for(var/mob/living/target in oview(range, M))
+						if(is_A_facing_B(M, target) && disease_air_spread_walk(get_turf(M), get_turf(target)))
+							target.airborne_contract_disease(disease)
+							if(fluid_spread && HAS_TRAIT(disease, DISEASE_SPREAD_CONTACT_FLUIDS))
+								target.contact_contract_disease(disease)

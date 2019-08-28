@@ -6,9 +6,7 @@
 
 /datum/bounty/virus/New()
 	..()
-	stat_value = rand(4, 11)
-	if(rand(3) == 1)
-		stat_value *= -1
+	stat_value = rand(1, 10)
 	name = "Virus ([stat_name] of [stat_value])"
 	description = "Nanotrasen is interested in a virus with a [stat_name] stat of exactly [stat_value]. Central Command will pay handsomely for such a virus."
 	reward += rand(0, 4) * 500
@@ -56,26 +54,19 @@
 
 /datum/bounty/virus/resistance/accepts_virus(V)
 	var/datum/disease/advance/A = V
-	return A.totalResistance() == stat_value
+	return A.stats["resistance"] == stat_value
 
 /datum/bounty/virus/stage_speed
 	stat_name = "stage speed"
 
 /datum/bounty/virus/stage_speed/accepts_virus(V)
 	var/datum/disease/advance/A = V
-	return A.totalStageSpeed() == stat_value
-
-/datum/bounty/virus/stealth
-	stat_name = "stealth"
-
-/datum/bounty/virus/stealth/accepts_virus(V)
-	var/datum/disease/advance/A = V
-	return A.totalStealth() == stat_value
+	return A.stats["speed"] == stat_value
 
 /datum/bounty/virus/transmit
 	stat_name = "transmissible"
 
 /datum/bounty/virus/transmit/accepts_virus(V)
 	var/datum/disease/advance/A = V
-	return A.totalTransmittable() == stat_value
+	return A.stats["infectivity"] == stat_value
 

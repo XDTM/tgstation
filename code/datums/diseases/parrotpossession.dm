@@ -1,8 +1,6 @@
 /datum/disease/parrot_possession
 	name = "Parrot Possession"
 	max_stages = 1
-	spread_text = "Paranormal"
-	spread_flags = DISEASE_SPREAD_SPECIAL
 	disease_flags = CURABLE
 	cure_text = "Holy Water."
 	cures = list(/datum/reagent/water/holywater)
@@ -14,6 +12,7 @@
 	infectable_biotypes = list(MOB_ORGANIC, MOB_UNDEAD, MOB_INORGANIC, MOB_ROBOTIC)
 	bypasses_immunity = TRUE //2spook
 	var/mob/living/simple_animal/parrot/Poly/ghost/parrot
+	inherent_traits = list(DISEASE_SPREAD_NON_CONTAGIOUS, DISEASE_ABSTRACT)
 
 /datum/disease/parrot_possession/stage_act()
 	..()

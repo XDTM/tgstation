@@ -1,7 +1,8 @@
 /datum/disease/revblight
 	name = "Unnatural Wasting"
 	max_stages = 5
-	stage_prob = 10
+	stage_time_min = 60
+	stage_time_max = 140
 	spread_flags = DISEASE_SPREAD_NON_CONTAGIOUS
 	cure_text = "Holy water or extensive rest."
 	spread_text = "A burst of unholy energy"
@@ -10,7 +11,6 @@
 	agent = "Unholy Forces"
 	viable_mobtypes = list(/mob/living/carbon/human)
 	disease_flags = CURABLE
-	permeability_mod = 1
 	severity = DISEASE_SEVERITY_HARMFUL
 	var/stagedamage = 0 //Highest stage reached.
 	var/finalstage = 0 //Because we're spawning off the cure in the final stage, we need to check if we've done the final stage's effects.

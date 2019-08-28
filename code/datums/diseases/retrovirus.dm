@@ -1,8 +1,6 @@
 /datum/disease/dna_retrovirus
 	name = "Retrovirus"
 	max_stages = 4
-	spread_text = "Contact"
-	spread_flags = DISEASE_SPREAD_BLOOD | DISEASE_SPREAD_CONTACT_SKIN | DISEASE_SPREAD_CONTACT_FLUIDS
 	cure_text = "Rest or an injection of mutadone"
 	cure_chance = 6
 	agent = ""
@@ -13,6 +11,7 @@
 	stage_time_min = 1000
 	stage_time_max = 2000
 	var/restcure = 0
+	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_CONTACT_SKIN)
 
 /datum/disease/dna_retrovirus/New()
 	..()

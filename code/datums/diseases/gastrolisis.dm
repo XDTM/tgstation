@@ -2,7 +2,6 @@
 	name = "Invasive Gastrolosis"
 	max_stages = 4
 	spread_text = "Degenerative Virus"
-	spread_flags = DISEASE_SPREAD_SPECIAL
 	cure_text = "Salt and mutadone"
 	agent = "Agent S and DNA restructuring"
 	viable_mobtypes = list(/mob/living/carbon/human)
@@ -10,6 +9,7 @@
 	stage_time_max = 2400
 	disease_flags = CURABLE
 	cures = list(/datum/reagent/consumable/sodiumchloride,  /datum/reagent/medicine/mutadone)
+	inherent_traits = list(DISEASE_SPREAD_SPECIAL, DISEASE_ABSTRACT)
 
 /datum/disease/gastrolosis/stage_act()
 	..()

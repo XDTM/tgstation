@@ -14,12 +14,13 @@
 	var/datum/disease/advance/disease
 
 /// Adds the property to a disease. Managed more specifically in symptoms and traits.
-/datum/disease_property/proc/add_to(datum/disease/advance/A)
+/datum/disease_property/proc/add_to(datum/disease/advance/A, overwrite)
 	disease = A
 
 /// Removes the property from a disease. Managed more specifically in symptoms and traits.
 /datum/disease_property/proc/remove()
 	disease = null
+	qdel(src)
 
 /// Called when added to a disease.
 /datum/disease_property/proc/on_add()

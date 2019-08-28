@@ -3,7 +3,6 @@
 	form = "Infection"
 	max_stages = 4
 	spread_text = "On contact"
-	spread_flags = DISEASE_SPREAD_BLOOD | DISEASE_SPREAD_CONTACT_SKIN | DISEASE_SPREAD_CONTACT_FLUIDS
 	cure_text = "Sugar"
 	cures = list(/datum/reagent/consumable/sugar)
 	agent = "Apidae Infection"
@@ -11,6 +10,7 @@
 	desc = "If left untreated subject will regurgitate bees."
 	severity = DISEASE_SEVERITY_MEDIUM
 	infectable_biotypes = list(MOB_ORGANIC, MOB_UNDEAD) //bees nesting in corpses
+	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_SKIN, DISEASE_SPREAD_CONTACT_FLUIDS)
 
 /datum/disease/beesease/stage_act()
 	..()

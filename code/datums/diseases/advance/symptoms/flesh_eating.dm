@@ -26,7 +26,7 @@
 			flesheat(M)
 
 /datum/disease_property/symptom/flesh_eating/proc/flesheat(mob/living/M)
-	var/get_damage = rand(2,4) * power
+	var/get_damage = rand(2,4) * multiplier
 	M.take_overall_damage(brute = get_damage, required_status = BODYPART_ORGANIC)
 	if(pain && prob(7))
 		M.adjustStaminaLoss(rand(15, 30))

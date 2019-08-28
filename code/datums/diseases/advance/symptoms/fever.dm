@@ -1,41 +1,58 @@
-/*!
-	Heats up the host's body.
-*/
-
+///
 /datum/disease_property/symptom/fever
 	name = "Fever"
-	desc = "The disease causes a febrile response from the host, raising its body temperature."
-	level = 2
-	symptom_delay_min = 10
-	symptom_delay_max = 30
-	var/unsafe = FALSE //over the heat threshold
-	threshold_desc = "<b>ALPHA:</b> Increases fever intensity.<br>\
-					  <b>BETA:</b> Increases fever intensity, fever can overheat and harm the host.<br>\
-					  <b>EPSILON:</b> The disease causes extreme amount of heat, boling the host from the inside."
+	desc = "The disease causes a febrile response from the host, raising its natural body temperature."
+	symptom_delay_min = 5
+	symptom_delay_max = 10
+	var/prevent_cooling = FALSE
+	var/fevering = FALSE
+	threshold_desc = "<b>BETA:</b> Prevents the host from cooling down on their own.<br>\
+					  <b>EPSILON:</b> The disease causes extreme amount of heat, boiling the host from the inside."
 
-/datum/disease_property/symptom/fever/update_mutators()
-	multiplier = 1
-	if(HAS_TRAIT(disease,DISEASE_MUTATOR_ALPHA))
-		multiplier += 0.5
+/datum/disease_property/symptom/fever/update_mutators()	
 	if(HAS_TRAIT(disease,DISEASE_MUTATOR_BETA))
-		multiplier += 1
-		unsafe = TRUE
+		prevent_cooling = TRUE
+	else
+		prevent_cooling = FALSE
+	multiplier = 1
 	if(HAS_TRAIT(disease,DISEASE_MUTATOR_EPSILON))
-		multiplier += 10
-		unsafe = TRUE
+		multiplier += 9
 
 /datum/disease_property/symptom/fever/activate()
 	var/mob/living/carbon/M = disease.affected_mob
-	if(!unsafe || disease.stage < 4)
-		to_chat(M, "<span class='warning'>[pick("You feel hot.", "You feel like you're burning.")]</span>")
-	else
-		to_chat(M, "<span class='warning'>[pick("You feel too hot.", "You feel like your blood is boiling.")]</span>")
-	if((M.bodytemperature < BODYTEMP_HEAT_DAMAGE_LIMIT) || unsafe)
-		heat(M)
+	if(message_cooldown())
+		if(!prevent_cooling || disease.stage < 4)
+			to_chat(M, "<span class='warning'>[pick("You feel hot.", "You feel like you're burning.")]</span>")
+		else
+			to_chat(M, "<span class='warning'>[pick("You feel too hot.", "You feel like your blood is boiling.")]</span>")
+	heat(M)
+
+/datum/disease_property/symptom/fever/on_stage_increase(new_stage, prev_stage)
+	var/mob/living/carbon/M = disease.affected_mob
+	if(new_stage == 4)
+		if(!fevering)
+			M.natural_bodytemperature += (40 * multiplier)
+			fevering = TRUE
+		if(prevent_cooling)
+			ADD_TRAIT(M, TRAIT_NO_STABILIZE_HEAT, FEVER_TRAIT)
+
+/datum/disease_property/symptom/fever/on_stage_decrease(new_stage, prev_stage)
+	var/mob/living/carbon/M = disease.affected_mob
+	if(new_stage == 3)
+		if(fevering)
+			M.natural_bodytemperature -= (40 * multiplier)
+			fevering = FALSE
+		if(prevent_cooling)
+			REMOVE_TRAIT(M, TRAIT_NO_STABILIZE_HEAT, FEVER_TRAIT)
+
+/datum/disease_property/symptom/fever/on_end()
+	var/mob/living/carbon/M = disease.affected_mob
+	if(fevering)
+		M.natural_bodytemperature -= (40 * multiplier)
+		fevering = FALSE
+	if(prevent_cooling)
+		REMOVE_TRAIT(M, TRAIT_NO_STABILIZE_HEAT, FEVER_TRAIT)
 
 /datum/disease_property/symptom/fever/proc/heat(mob/living/M)
-	var/get_heat = 6 * multiplier
-	if(!unsafe)
-		M.adjust_bodytemperature(get_heat * disease.stage, 0, BODYTEMP_HEAT_DAMAGE_LIMIT - 1)
-	else
-		M.adjust_bodytemperature(get_heat * disease.stage)
+	var/get_heat = 40 * multiplier
+	M.adjust_bodytemperature(get_heat)

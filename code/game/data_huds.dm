@@ -94,7 +94,7 @@
 	var/severity
 	for(var/thing in diseases)
 		var/datum/disease/D = thing
-		if(!(D.visibility_flags & HIDDEN_SCANNER))
+		if(!(HAS_TRAIT(D, DISEASE_HIDDEN_HUD)))
 			if(!threat || get_disease_severity_value(D.severity) > threat) //a buffing virus gets an icon
 				threat = get_disease_severity_value(D.severity)
 				severity = D.severity

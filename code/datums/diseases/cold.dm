@@ -6,7 +6,8 @@
 	agent = "XY-rhinovirus"
 	viable_mobtypes = list(/mob/living/carbon/human, /mob/living/carbon/monkey)
 	desc = "If left untreated the subject will contract the flu."
-	severity = DISEASE_SEVERITY_NONTHREAT
+	severity = DISEASE_SEVERITY_NONTHREAT	
+	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_AIRBORNE)
 
 /datum/disease/cold/stage_act()
 	..()

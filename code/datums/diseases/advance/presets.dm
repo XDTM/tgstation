@@ -4,7 +4,7 @@
 
 /datum/disease/advance/cold/New()
 	name = "Cold"
-	symptoms = list(new/datum/disease_property/symptom/sneeze)
+	// symptoms = list(new/datum/disease_property/symptom/sneeze)
 	..()
 
 // Flu
@@ -37,6 +37,6 @@
 		if(chosen_symptom)
 			var/datum/disease_property/symptom/S = new chosen_symptom
 			symptoms += S
-	Refresh()
+	refresh()
 
 	name = "Sample #[rand(1,10000)]"

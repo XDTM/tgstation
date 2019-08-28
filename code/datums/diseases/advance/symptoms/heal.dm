@@ -42,22 +42,22 @@
 	threshold_desc = "<b>Stage Speed 6:</b> Increases healing speed.<br>\
 					  <b>Transmission 6:</b> Removes penalty for only being close to space."
 
-/datum/disease_property/symptom/heal/starlight/update_mutators()
-	if(HAS_TRAIT(disease,DISEASE_MUTATOR_BETA])
-		nearspace_penalty = 1
-	else
-		nearspace_penalty = initial(nearspace_penalty)
-	if(A.properties["stage_rate"] >= 6)
-		power = 2
+// /datum/disease_property/symptom/heal/starlight/update_mutators()
+// 	if(HAS_TRAIT(disease,DISEASE_MUTATOR_BETA))
+// 		nearspace_penalty = 1
+// 	else
+// 		nearspace_penalty = initial(nearspace_penalty)
+// 	if(disease.properties["stage_rate"] >= 6)
+// 		power = 2
 
 /datum/disease_property/symptom/heal/starlight/can_heal()
 	var/mob/living/M = disease.affected_mob
 	if(istype(get_turf(M), /turf/open/space))
-		return power
+		return multiplier
 	else
 		for(var/turf/T in view(M, 2))
 			if(istype(T, /turf/open/space))
-				return power * nearspace_penalty
+				return multiplier * nearspace_penalty
 
 /datum/disease_property/symptom/heal/starlight/heal(mob/living/carbon/M, actual_power)
 	var/heal_amt = actual_power
@@ -89,7 +89,7 @@
 	threshold_desc = "<b>BETA:</b> Converts reagents into nutrition for the host."
 
 /datum/disease_property/symptom/heal/chem/update_mutators()
-	if(HAS_TRAIT(disease,DISEASE_MUTATOR_BETA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_BETA))
 		food_conversion = TRUE
 	else
 		food_conversion = FALSE
@@ -113,11 +113,11 @@
 					  <b>GAMMA:</b> Chemical metabolization is tripled instead of doubled."
 
 /datum/disease_property/symptom/heal/metabolism/update_mutators()
-	if(disease.properties[DISEASE_MUTATOR_GAMMA])
+	if(HAS_TRAIT(disease, DISEASE_MUTATOR_GAMMA))
 		triple_metabolism = TRUE
 	else
 		triple_metabolism = FALSE
-	if(disease.properties[DISEASE_MUTATOR_ALPHA])
+	if(HAS_TRAIT(disease, DISEASE_MUTATOR_ALPHA))
 		reduced_hunger = TRUE
 	else
 		reduced_hunger = FALSE
@@ -142,7 +142,7 @@
 	var/night_vision = FALSE
 
 /datum/disease_property/symptom/heal/darkness/update_mutators()
-	if(disease.properties[DISEASE_MUTATOR_GAMMA])
+	if(HAS_TRAIT(disease, DISEASE_MUTATOR_GAMMA))
 		night_vision = TRUE
 	else
 		night_vision = FALSE
@@ -198,7 +198,7 @@
 					  <b>Stage Speed 7:</b> Increases healing speed."
 
 /datum/disease_property/symptom/heal/coma/update_mutators()
-	if(HAS_TRAIT(disease,DISEASE_MUTATOR_GAMMA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_GAMMA))
 		fake_death = TRUE
 	else
 		fake_death = FALSE
@@ -268,7 +268,7 @@
 	threshold_desc = "<b>ALPHA:</b> Water is consumed more efficiently."
 
 /datum/disease_property/symptom/heal/water/update_mutators()
-	if(HAS_TRAIT(disease,DISEASE_MUTATOR_ALPHA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_ALPHA))
 		absorption_coeff = 0.25
 	else
 		absorption_coeff = initial(absorption_coeff)
@@ -330,7 +330,7 @@
 
 /datum/disease_property/symptom/heal/plasma/on_process()
 	..()
-	if(can_heal)
+	if(can_heal())
 		if(temp_immune)
 			ADD_TRAIT(disease.affected_mob, TRAIT_RESISTHEAT, "plasma_fixation")
 			ADD_TRAIT(disease.affected_mob, TRAIT_RESISTCOLD, "plasma_fixation")
@@ -393,7 +393,7 @@
 	threshold_desc = "<b>ALPHA:</b> Makes the host glow while active."
 
 /datum/disease_property/symptom/heal/radiation/update_mutators()
-	if(HAS_TRAIT(disease,DISEASE_MUTATOR_ALPHA])
+	if(HAS_TRAIT(disease,DISEASE_MUTATOR_ALPHA))
 		glow = TRUE
 	else
 		glow = FALSE

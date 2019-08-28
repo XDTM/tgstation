@@ -159,9 +159,10 @@
 	id = "itching"
 	status_type = STATUS_EFFECT_REPLACE
 	alert_type = /obj/screen/alert/status_effect/itching
+	var/obj/item/bodypart/itching_bodypart
 	var/severe = FALSE //doubles the mood debuff
 
-/datum/status_effect/itching/on_creation(mob/living/new_owner, body_zone, _severe)
+/datum/status_effect/itching/on_creation(mob/living/new_owner, set_duration, body_zone, _severe)
 	if(isnum(duration))
 		duration = set_duration
 	. = ..()
@@ -170,28 +171,30 @@
 			severe = _severe
 		if(!body_zone)
 			body_zone = pick(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_R_ARM, BODY_ZONE_L_ARM, BODY_ZONE_R_LEG, BODY_ZONE_L_LEG)
-		var/obj/item/bodypart/bodypart = new_owner.get_bodypart(picked_bodypart)
+		var/obj/item/bodypart/bodypart = new_owner.get_bodypart(body_zone)
 		if(!bodypart || bodypart.status != BODYPART_ORGANIC || bodypart.is_pseudopart)
 			qdel(src)
 			return
 		else 
-			linked_alert.desc = "You've got a terribly annoying itch on your [bodypart.name]! Click here to scratch it."
-
-/datum/status_effect/itching/on_apply()
-	if(!severe)
-		SEND_SIGNAL(new_owner, COMSIG_ADD_MOOD_EVENT, "itching", /datum/mood_event/itching, bodypart.name)
-	else
-		SEND_SIGNAL(new_owner, COMSIG_ADD_MOOD_EVENT, "itching", /datum/mood_event/itching/severe, bodypart.name)
-	return ..()
+			itching_bodypart = bodypart
+			var/obj/screen/alert/status_effect/itching/alert = linked_alert
+			to_chat(owner,"<span class='warning'>Your [bodypart.name] starts itching!</span>")
+			alert.itching_bodyzone = body_zone
+			alert.desc = "You've got a terribly annoying itch on your [bodypart.name]! Click here to scratch it."
+			if(!severe)
+				SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "itching", /datum/mood_event/itching, itching_bodypart.name)
+			else
+				SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "itching", /datum/mood_event/itching/severe, itching_bodypart.name)
 
 /datum/status_effect/itching/on_remove()
-	SEND_SIGNAL(new_owner, COMSIG_CLEAR_MOOD_EVENT, "itching")
+	SEND_SIGNAL(owner, COMSIG_CLEAR_MOOD_EVENT, "itching")
 	return ..()
 
 /obj/screen/alert/status_effect/itching
 	name = "Itching"
 	desc = "You've got a terribly annoying itch! Click here to scratch it."
 	icon_state = "itching"
+	var/itching_bodyzone
 
 /obj/screen/alert/status_effect/itching/Click()
 	var/mob/living/carbon/C = usr
@@ -205,7 +208,7 @@
 		return
 	if(ishuman(C))
 		var/mob/living/carbon/human/H = C
-		if(itching_area == BODY_ZONE_HEAD)
+		if(itching_bodyzone == BODY_ZONE_HEAD)
 			if(H.head && istype(H.head, /obj/item/clothing))
 				var/obj/item/clothing/CH = H.head
 				if (CH.clothing_flags & THICKMATERIAL)

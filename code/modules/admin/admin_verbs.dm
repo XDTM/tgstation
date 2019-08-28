@@ -595,7 +595,17 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 	var/datum/disease/D = input("Choose the disease to give to that guy", "ACHOO") as null|anything in SSdisease.diseases
 	if(!D)
 		return
-	T.ForceContractDisease(new D, FALSE, TRUE)
+	var/disease = new D
+	to_chat(world, "[disease]")
+	if(istype(disease, /datum/disease/advance))
+		var/datum/disease/advance/A = disease
+		var/datum/disease_property/DP = null
+		while(TRUE)
+			DP = input("Choose a property to add to the disease.", "ACHOO") as null|anything in SSdisease.list_properties
+			if(!DP)
+				break
+			A.add_property(new DP)
+	T.ForceContractDisease(disease, FALSE, TRUE)
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Give Disease") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	log_admin("[key_name(usr)] gave [key_name(T)] the disease [D].")
 	message_admins("<span class='adminnotice'>[key_name_admin(usr)] gave [key_name_admin(T)] the disease [D].</span>")

@@ -1,7 +1,6 @@
 /datum/disease/fluspanish
 	name = "Spanish inquisition Flu"
 	max_stages = 3
-	spread_text = "Airborne"
 	cure_text = "Spaceacillin & Anti-bodies to the common flu"
 	cures = list(/datum/reagent/medicine/spaceacillin)
 	cure_chance = 10
@@ -10,6 +9,7 @@
 	base_infect_chance = 35
 	desc = "If left untreated the subject will burn to death for being a heretic."
 	severity = DISEASE_SEVERITY_DANGEROUS
+	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_AIRBORNE)
 
 /datum/disease/fluspanish/stage_act()
 	..()

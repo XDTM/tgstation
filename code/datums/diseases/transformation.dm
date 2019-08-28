@@ -1,15 +1,13 @@
 /datum/disease/transformation
 	name = "Transformation"
 	max_stages = 5
-	spread_text = "Acute"
-	spread_flags = DISEASE_SPREAD_SPECIAL
 	cure_text = "A coder's love (theoretical)."
 	agent = "Shenanigans"
 	viable_mobtypes = list(/mob/living/carbon/human, /mob/living/carbon/monkey, /mob/living/carbon/alien)
 	severity = DISEASE_SEVERITY_BIOHAZARD
 	stage_time_min = 200
 	stage_time_max = 300
-	visibility_flags = HIDDEN_SCANNER|HIDDEN_PANDEMIC
+	visibility_flags = HIDDEN_SCANNER
 	disease_flags = CURABLE
 	var/list/stage1 = list("You feel unremarkable.")
 	var/list/stage2 = list("You feel boring.")
@@ -18,6 +16,7 @@
 	var/list/stage5 = list("Oh the humanity!")
 	var/new_form = /mob/living/carbon/human
 	var/bantype
+	inherent_traits = list(DISEASE_SPREAD_SPECIAL)
 
 /datum/disease/transformation/Copy()
 	var/datum/disease/transformation/D = ..()
@@ -48,7 +47,7 @@
 			do_disease_transformation(affected_mob)
 
 
-/datum/disease/transformation/on_process()
+/datum/disease/transformation/stage_act()
 	if(stage == 5)
 		do_disease_transformation(affected_mob) //in case it didnt proc on stage change, keep trying
 
@@ -101,20 +100,17 @@
 	name = "Jungle Fever"
 	cure_text = "Death."
 	cures = list(/datum/reagent/medicine/adminordrazine)
-	spread_text = "Monkey Bites"
-	spread_flags = DISEASE_SPREAD_SPECIAL
 	viable_mobtypes = list(/mob/living/carbon/monkey, /mob/living/carbon/human)
-	permeability_mod = 1
 	cure_chance = 1
 	disease_flags = CAN_CARRY|CAN_RESIST
 	desc = "Monkeys with this disease will bite humans, causing humans to mutate into a monkey."
 	severity = DISEASE_SEVERITY_BIOHAZARD
-	stage_prob = 4
+	stage_time_min = 300
+	stage_time_max = 700
 	visibility_flags = 0
 	agent = "Kongey Vibrion M-909"
 	new_form = /mob/living/carbon/monkey
 	bantype = ROLE_MONKEY
-
 
 	stage1	= list()
 	stage2	= list()
@@ -150,10 +146,11 @@
 	..()
 
 /datum/disease/transformation/jungle_fever/monkeymode
-	visibility_flags = HIDDEN_SCANNER|HIDDEN_PANDEMIC
+	inherent_traits = list(DISEASE_SPREAD_SPECIAL, DISEASE_HIDDEN_HUD, DISEASE_HIDDEN_SCANNER)
 	disease_flags = CAN_CARRY //no vaccines! no cure!
 
 /datum/disease/transformation/jungle_fever/monkeymode/after_add()
+	..()
 	if(affected_mob && !is_monkey_leader(affected_mob.mind))
 		visibility_flags = NONE
 

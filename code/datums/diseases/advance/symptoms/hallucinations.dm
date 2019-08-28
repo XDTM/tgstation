@@ -33,7 +33,7 @@
 				to_chat(M, "<span class='danger'>[pick("Something is following you.", "You are being watched.", "You hear a whisper in your ear.", "Thumping footsteps slam toward you from nowhere.")]</span>")
 		else
 			if(hypnosis && prob(15))
-				owner.apply_status_effect(/datum/status_effect/trance, rand(100,200), FALSE)
+				M.apply_status_effect(/datum/status_effect/trance, rand(100,200), FALSE)
 			else
 				if(message_cooldown())
 					to_chat(M, "<span class='userdanger'>[pick("Oh, your head...", "Your head pounds rhytmically.", "They're watching.", "Something in the shadows... wriggling...", "Thumping footsteps slam toward you from nowhere.")]</span>")

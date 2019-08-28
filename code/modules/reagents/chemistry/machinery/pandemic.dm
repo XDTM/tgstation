@@ -56,7 +56,7 @@
 /obj/machinery/computer/pandemic/proc/get_virus_id_by_index(index)
 	var/datum/disease/D = get_by_index("viruses", index)
 	if(D)
-		return D.GetDiseaseID()
+		return D.get_disease_id()
 
 /obj/machinery/computer/pandemic/proc/get_viruses_data(datum/reagent/blood/B)
 	. = list()
@@ -71,7 +71,7 @@
 		this["name"] = D.name
 		if(istype(D, /datum/disease/advance))
 			var/datum/disease/advance/A = D
-			var/disease_name = SSdisease.get_disease_name(A.GetDiseaseID())
+			var/disease_name = SSdisease.get_disease_name(A.get_disease_id())
 			if((disease_name == "Unknown") && A.mutable)
 				this["can_rename"] = TRUE
 			this["name"] = disease_name
@@ -85,10 +85,9 @@
 				this_symptom["sym_index"] = symptom_index
 				symptom_index++
 				this["symptoms"] += list(this_symptom)
-			this["resistance"] = A.totalResistance()
-			this["stealth"] = A.totalStealth()
-			this["stage_speed"] = A.totalStageSpeed()
-			this["transmission"] = A.totalTransmittable()
+			this["resistance"] = A.stats["resistance"]
+			this["speed"] = A.stats["speed"]
+			this["infectivity"] = A.stats["infectivity"]
 		this["index"] = index++
 		this["agent"] = D.agent
 		this["description"] = D.desc || "none"
@@ -97,18 +96,15 @@
 
 		. += list(this)
 
-/obj/machinery/computer/pandemic/proc/get_symptom_data(datum/symptom/S)
+/obj/machinery/computer/pandemic/proc/get_property_data(datum/disease_property/P)
 	. = list()
 	var/list/this = list()
-	this["name"] = S.name
-	this["desc"] = S.desc
-	this["stealth"] = S.stealth
-	this["resistance"] = S.resistance
-	this["stage_speed"] = S.stage_speed
-	this["transmission"] = S.transmittable
-	this["level"] = S.level
-	this["neutered"] = S.neutered
-	this["threshold_desc"] = S.threshold_desc
+	this["name"] = P.name
+	this["desc"] = P.desc
+	this["level"] = P.level
+	if(istype(P, /datum/disease_property/symptom))
+		var/datum/disease_property/symptom/S = P
+		this["threshold_desc"] = S.threshold_desc
 	. += this
 
 /obj/machinery/computer/pandemic/proc/get_resistance_data(datum/reagent/blood/B)
@@ -172,7 +168,7 @@
 					data["viruses"] = get_viruses_data(B)
 					data["resistances"] = get_resistance_data(B)
 		if(SYMPTOM_DETAILS)
-			data["symptom"] = get_symptom_data(selected_symptom)
+			data["property"] = get_property_data(selected_symptom)
 
 	return data
 
@@ -201,7 +197,7 @@
 				var/new_name = stripped_input(usr, "Name the disease", "New name", "", MAX_NAME_LEN)
 				if(!new_name || ..())
 					return
-				A.AssignName(new_name)
+				A.assign_name(new_name)
 				. = TRUE
 		if("create_culture_bottle")
 			if (wait)

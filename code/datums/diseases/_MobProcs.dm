@@ -1,17 +1,17 @@
 
-/mob/living/proc/HasDisease(datum/disease/D)
+/mob/living/proc/has_disease(datum/disease/D)
 	for(var/thing in diseases)
 		var/datum/disease/DD = thing
-		if(D.IsSame(DD))
+		if(D.is_same(DD))
 			return TRUE
 	return FALSE
 
 
-/mob/living/proc/CanContractDisease(datum/disease/D)
+/mob/living/proc/can_contract_disease(datum/disease/D)
 	if(stat == DEAD && !D.process_dead)
 		return FALSE
 
-	if(D.GetDiseaseID() in disease_resistances)
+	if(D.get_disease_id() in disease_resistances)
 		return FALSE
 
 	if(HasDisease(D))
@@ -31,14 +31,14 @@
 	return TRUE
 
 
-/mob/living/proc/ContactContractDisease(datum/disease/D)
-	if(!CanContractDisease(D))
+/mob/living/proc/contact_contract_disease(datum/disease/D)
+	if(!can_contract_disease(D))
 		return FALSE
 	D.try_infect(src)
 
 
-/mob/living/carbon/ContactContractDisease(datum/disease/D, target_zone)
-	if(!CanContractDisease(D))
+/mob/living/carbon/contact_contract_disease(datum/disease/D, target_zone)
+	if(!can_contract_disease(D))
 		return FALSE
 
 	var/obj/item/clothing/Cl = null
@@ -110,11 +110,11 @@
 	if(passed)
 		D.try_infect(src)
 
-/mob/living/proc/AirborneContractDisease(datum/disease/D)
+/mob/living/proc/airborne_contract_disease(datum/disease/D)
 	if((D.spread_flags & DISEASE_SPREAD_AIRBORNE) && prob(D.infectivity * 0.50))
 		ForceContractDisease(D)
 
-/mob/living/carbon/AirborneContractDisease(datum/disease/D)
+/mob/living/carbon/airborne_contract_disease(datum/disease/D)
 	if(internal)
 		return
 	if(HAS_TRAIT(src, TRAIT_NOBREATH))
@@ -124,7 +124,7 @@
 
 //Proc to use when you 100% want to try to infect someone (ignoreing protective clothing and such), as long as they aren't immune
 /mob/living/proc/ForceContractDisease(datum/disease/D, make_copy = TRUE, del_on_fail = FALSE)
-	if(!CanContractDisease(D))
+	if(!can_contract_disease(D))
 		if(del_on_fail)
 			qdel(D)
 		return FALSE
@@ -135,7 +135,7 @@
 	return TRUE
 
 
-/mob/living/carbon/human/CanContractDisease(datum/disease/D)
+/mob/living/carbon/human/can_contract_disease(datum/disease/D)
 	if(dna)
 		if(HAS_TRAIT(src, TRAIT_VIRUSIMMUNE) && !D.bypasses_immunity)
 			return FALSE

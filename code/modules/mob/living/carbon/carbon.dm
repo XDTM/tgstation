@@ -573,7 +573,7 @@
 		if(!isnull(G.lighting_alpha))
 			lighting_alpha = min(lighting_alpha, G.lighting_alpha)
 
-	if(HAS_TRAIT(HMN, TRAIT_NIGHT_VISION_WEAK))
+	if(HAS_TRAIT(src, TRAIT_NIGHT_VISION_WEAK))
 		lighting_alpha = min(lighting_alpha, LIGHTING_PLANE_ALPHA_NV_TRAIT)
 
 	if(HAS_TRAIT(src, TRAIT_NIGHT_VISION))

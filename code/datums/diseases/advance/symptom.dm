@@ -18,9 +18,18 @@
 	var/list/thresholds
 
 /// Adds the symptom to a disease.
-/datum/disease_property/symptom/add_to(datum/disease/advance/A)
+/datum/disease_property/symptom/add_to(datum/disease/advance/A, overwrite)
 	..()
-	disease.symptoms += src
+	if(disease.symptoms.len < (disease.symptom_limit - 1))
+		disease.symptoms += src
+	else
+		if(overwrite)
+			disease.remove_property(pick(disease.symptoms))
+			disease.symptoms += src
+		else
+			qdel(src)
+			return
+
 	on_add(disease)
 	update_mutators()
 
@@ -51,9 +60,6 @@
 
 /// Activates the symptom, called every rand(symptom_delay_min, symptom_delay_max) seconds
 /datum/disease_property/symptom/proc/activate()
-	return
-
-/datum/disease_property/symptom/on_stage_change(new_stage, prev_stage)
 	return
 
 /datum/disease_property/symptom/proc/message_cooldown()

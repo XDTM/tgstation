@@ -53,7 +53,7 @@
 			for(var/datum/disease/advance/AD in mix2)
 				to_mix += AD
 
-			var/datum/disease/advance/AD = Advance_Mix(to_mix)
+			var/datum/disease/advance/AD = disease_multi_mix(to_mix)
 			if(AD)
 				var/list/preserve = list(AD)
 				for(var/D in data["viruses"])
@@ -98,7 +98,7 @@
 	if(islist(data) && (method == INGEST || method == INJECT))
 		for(var/thing in L.diseases)
 			var/datum/disease/D = thing
-			if(D.GetDiseaseID() in data)
+			if(D.get_disease_id() in data)
 				D.cure()
 		L.disease_resistances |= data
 

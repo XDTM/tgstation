@@ -14,4 +14,4 @@
 
 /datum/disease_property/symptom/itching/activate()
 	var/mob/living/carbon/M = disease.affected_mob
-	M.apply_status_effect(/datum/status_effect/itching, null, 450, severe)
+	M.apply_status_effect(/datum/status_effect/itching, 450, null, severe)

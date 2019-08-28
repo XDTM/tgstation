@@ -1,7 +1,6 @@
 /datum/disease/magnitis
 	name = "Magnitis"
 	max_stages = 4
-	spread_text = "Airborne"
 	cure_text = "Iron"
 	cures = list(/datum/reagent/iron)
 	agent = "Fukkos Miracos"
@@ -12,6 +11,7 @@
 	severity = DISEASE_SEVERITY_MEDIUM
 	infectable_biotypes = list(MOB_ORGANIC, MOB_ROBOTIC)
 	process_dead = TRUE
+	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_AIRBORNE)
 
 /datum/disease/magnitis/stage_act()
 	..()

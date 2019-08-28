@@ -389,7 +389,7 @@
 		for(var/thing in C.diseases)
 			var/datum/disease/D = thing
 			//the medibot can't detect viruses that are undetectable to Health Analyzers or Pandemic machines.
-			if(!(D.visibility_flags & HIDDEN_SCANNER || D.visibility_flags & HIDDEN_PANDEMIC) \
+			if(!HAS_TRAIT(D, DISEASE_HIDDEN_HUD) \
 			&& D.severity != DISEASE_SEVERITY_POSITIVE \
 			&& (D.stage > 1 || (D.spread_flags & DISEASE_SPREAD_AIRBORNE))) // medibot can't detect a virus in its initial stage unless it spreads airborne.
 				return TRUE //STOP DISEASE FOREVER

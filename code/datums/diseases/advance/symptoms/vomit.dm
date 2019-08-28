@@ -1,41 +1,12 @@
-/*
-//////////////////////////////////////
-
-Vomiting
-
-	Very Very Noticable.
-	Decreases resistance.
-	Doesn't increase stage speed.
-	Little transmissibility.
-	Medium Level.
-
-Bonus
-	Forces the affected mob to vomit!
-	Meaning your disease can spread via
-	people walking on vomit.
-	Makes the affected mob lose nutrition and
-	heal toxin damage.
-
-//////////////////////////////////////
-*/
-
 /datum/disease_property/symptom/vomit
-
 	name = "Vomiting"
-	desc = "The virus causes nausea and irritates the stomach, causing occasional vomit."
-	stealth = -2
-	resistance = -1
-	stage_speed = 0
-	transmittable = 1
-	level = 3
-	severity = 3
-	base_message_chance = 100
+	desc = "The disease causes nausea and irritates the stomach, causing occasional vomiting."
 	symptom_delay_min = 25
 	symptom_delay_max = 80
-	var/vomit_blood = FALSE
-	var/proj_vomit = 0
-	threshold_desc = "<b>Resistance 7:</b> Host will vomit blood, causing internal damage.<br>\
-					  <b>Transmission 7:</b> Host will projectile vomit, increasing vomiting range.<br>\
+	var/vomit_slip = FALSE
+	var/vomit_distance = 0
+	threshold_desc = "<b>ALPHA:</b> Makes the vomiting reflex more severe, causing projectile vomiting.<br>\
+					  <b>BETA:</b> Makes the vomit slippery.<br>\
 					  <b>Stealth 4:</b> The symptom remains hidden until active."
 
 /datum/disease_property/symptom/vomit/Start(datum/disease/advance/A)
@@ -44,9 +15,9 @@ Bonus
 	if(A.properties["stealth"] >= 4)
 		suppress_warning = TRUE
 	if(A.properties["resistance"] >= 7) //blood vomit
-		vomit_blood = TRUE
+		vomit_slip = TRUE
 	if(A.properties["transmittable"] >= 7) //projectile vomit
-		proj_vomit = 5
+		vomit_distance = 4
 
 /datum/disease_property/symptom/vomit/Activate(datum/disease/advance/A)
 	if(!..())
@@ -60,4 +31,4 @@ Bonus
 			vomit(M)
 
 /datum/disease_property/symptom/vomit/proc/vomit(mob/living/carbon/M)
-	M.vomit(20, vomit_blood, distance = proj_vomit)
+	M.vomit(20, FALSE, distance = vomit_distance)

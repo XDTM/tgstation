@@ -42,20 +42,21 @@
 
 /datum/disease_property/symptom/fire/on_process()
 	..()
+	var/mob/living/M = disease.affected_mob
 	if(M.fire_stacks < -1 && explosive && (next_explosion > world.time))
 		M.visible_message("<span class='warning'>[M]'s sweat detonates on contact with water!</span>")
 		M.fire_stacks = 0
-		explosion(get_turf(M),0,0,2 * explosion_power)
+		explosion(get_turf(M),0,0,2)
 		next_explosion = world.time + 200
 
 /datum/disease_property/symptom/fire/proc/firestacks_minor(mob/living/M)
 	M.adjust_fire_stacks(1 * multiplier)
 	M.take_overall_damage(burn = 3 * multiplier, required_status = BODYPART_ORGANIC)
 	if(infective)
-		A.airborne_spread(2, DISEASE_SPREAD_CONTACT_SKIN)
+		disease.airborne_spread(2, DISEASE_SPREAD_CONTACT_SKIN)
 
 /datum/disease_property/symptom/fire/proc/firestacks(mob/living/M)
 	M.adjust_fire_stacks(3 * multiplier)
 	M.take_overall_damage(burn = 5 * multiplier, required_status = BODYPART_ORGANIC)
 	if(infective)
-		A.airborne_spread(4, DISEASE_SPREAD_CONTACT_SKIN)
+		disease.airborne_spread(4, DISEASE_SPREAD_CONTACT_SKIN)

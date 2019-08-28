@@ -47,5 +47,5 @@
 				addtimer(CALLBACK(M, /mob/.proc/emote, "cough"), 12)
 				addtimer(CALLBACK(M, /mob/.proc/emote, "cough"), 18)
 			if(M.CanSpreadAirborneDisease())
-				disease.spread(1)
+				disease.airborne_spread(1)
 

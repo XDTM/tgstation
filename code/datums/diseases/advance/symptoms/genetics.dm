@@ -28,7 +28,7 @@
 // Archive their DNA before they were infected.
 /datum/disease_property/symptom/genetic_mutation/on_start()
 	possible_mutations = (GLOB.bad_mutations | GLOB.not_good_mutations) - GLOB.all_mutations[RACEMUT]
-	var/mob/living/carbon/M = A.affected_mob
+	var/mob/living/carbon/M = disease.affected_mob
 	if(M)
 		if(!M.has_dna())
 			return

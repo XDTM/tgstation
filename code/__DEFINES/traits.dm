@@ -140,6 +140,11 @@
 #define TRAIT_UNINTELLIGIBLE_SPEECH "unintelligible-speech"
 #define TRAIT_UNSTABLE			"unstable"
 #define TRAIT_OIL_FRIED			"oil_fried"
+#define TRAIT_NO_STABILIZE_HEAT	"no_stabilize_heat" ///The mob won't naturally stabilize when too hot
+#define TRAIT_NO_STABILIZE_COLD	"no_stabilize_cold" ///The mob won't naturally stabilize when too cold
+#define TRAIT_NO_DISEASE_SPREAD "no_disease_spread" ///The mob won't spread its diseases to others
+#define TRAIT_FLASH_PROOF		"flash_proof" ///The mob is immune to flashing
+#define TRAIT_FORCEWHISPER		"force_whisper" ///The mob can only speak by whispering
 
 //non-mob traits
 #define TRAIT_PARALYSIS			"paralysis" //Used for limb-based paralysis, where replacing the limb will fix it
@@ -148,6 +153,8 @@
 #define TRAIT_NODROP            "nodrop"
 #define TRAIT_T_RAY_VISIBLE     "t-ray-visible" // Visible on t-ray scanners if the atom/var/level == 1
 #define TRAIT_NO_TELEPORT		"no-teleport" //you just can't
+
+// disease traits
 
 //quirk traits
 #define TRAIT_ALCOHOL_TOLERANCE	"alcohol_tolerance"
@@ -172,6 +179,7 @@
 #define TRAIT_GRABWEAKNESS		"grab_weakness"
 
 // common trait sources
+#define INHERENT_TRAIT	"inherent_trait" //inherent to the datum at creation
 #define TRAIT_GENERIC "generic"
 #define EYE_DAMAGE "eye_damage"
 #define GENETIC_MUTATION "genetic"
@@ -230,4 +238,7 @@
 #define ANTI_DROP_IMPLANT_TRAIT "anti-drop-implant"
 #define HIVEMIND_ONE_MIND_TRAIT "one_mind"
 #define VR_ZONE_TRAIT "vr_zone_trait"
-#define NOCTURNAL_REGEN_TRAIT "nocturnal_regen"
+#define NOCTURNAL_REGEN_TRAIT "nocturnal_regen_trait"
+#define FEVER_TRAIT "fever_trait"
+#define OCULAR_REGROWTH_TRAIT "ocular_regrowth_trait"
+#define VOICE_CHANGE_TRAIT "voice_change_trait"

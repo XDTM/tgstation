@@ -9,6 +9,7 @@
 	viable_mobtypes = list(/mob/living/carbon/human)
 	desc = "If left untreated the subject will probably drive others to insanity."
 	severity = DISEASE_SEVERITY_MEDIUM
+	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_AIRBORNE)
 
 /datum/disease/pierrot_throat/stage_act()
 	..()
@@ -27,6 +28,7 @@
 				affected_mob.say( pick( list("HONK!", "Honk!", "Honk.", "Honk?", "Honk!!", "Honk?!", "Honk...") ) , forced = "pierrot's throat")
 
 /datum/disease/pierrot_throat/after_add()
+	..()
 	RegisterSignal(affected_mob, COMSIG_MOB_SAY, .proc/handle_speech)
 
 
@@ -48,9 +50,5 @@
 
 
 /datum/disease/pierrot_throat/Destroy()
-	UnregisterSignal(affected_mob, COMSIG_MOB_SAY)
-	return ..()
-
-/datum/disease/pierrot_throat/remove_disease()
 	UnregisterSignal(affected_mob, COMSIG_MOB_SAY)
 	return ..()

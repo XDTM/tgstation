@@ -81,6 +81,8 @@
 
 	/// Default body temperature
 	var/bodytemperature = BODYTEMP_NORMAL	//310.15K / 98.6F
+	///The temperature the mob will naturally stabilize towards
+	var/natural_bodytemperature  = BODYTEMP_NORMAL 
 	/// Drowsyness level of the mob
 	var/drowsyness = 0//Carbon
 	/// Dizziness level of the mob

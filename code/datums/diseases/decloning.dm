@@ -2,7 +2,8 @@
 	form = "Virus"
 	name = "Cellular Degeneration"
 	max_stages = 5
-	stage_prob = 1
+	stage_time_min = 1200
+	stage_time_max = 2400
 	cure_text = "Rezadone or death."
 	agent = "Severe Genetic Damage"
 	viable_mobtypes = list(/mob/living/carbon/human)
@@ -10,8 +11,7 @@
 	severity = "Dangerous!"
 	cures = list(/datum/reagent/medicine/rezadone)
 	disease_flags = CAN_CARRY|CAN_RESIST
-	spread_flags = DISEASE_SPREAD_NON_CONTAGIOUS
-	process_dead = TRUE
+	inherent_traits = list(DISEASE_SPREAD_NON_CONTAGIOUS, DISEASE_ABSTRACT, DISEASE_PROCESS_DEAD)
 
 /datum/disease/decloning/stage_act()
 	..()

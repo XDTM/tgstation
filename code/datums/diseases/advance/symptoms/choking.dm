@@ -6,7 +6,6 @@
 	name = "Choking"
 	desc = "The virus causes inflammation of the host's air conduits, leading to intermittent choking."
 	level = 3
-	base_message_chance = 15
 	symptom_delay_min = 30
 	symptom_delay_max = 120
 	threshold_desc = "<b>GAMMA:</b> Doubles the duration of choking episodes."
@@ -18,8 +17,8 @@
 		multiplier = 1
 
 /datum/disease_property/symptom/choking/activate()
-	var/mob/living/M = A.affected_mob
-	switch(A.stage)
+	var/mob/living/M = disease.affected_mob
+	switch(disease.stage)
 		if(1, 2)
 			if(message_cooldown())
 				to_chat(M, "<span class='warning'>[pick("You're having difficulty breathing.", "Your breathing becomes heavy.")]</span>")

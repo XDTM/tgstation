@@ -169,7 +169,8 @@
 
 		for(var/thing in diseases)
 			var/datum/disease/D = thing
-			blood_data["viruses"] += D.Copy()
+			if(!HAS_TRAIT(D, DISEASE_ABSTRACT)) //Not an actual pathogen
+				blood_data["viruses"] += D.Copy()
 
 		blood_data["blood_DNA"] = copytext(dna.unique_enzymes,1,0)
 		if(disease_resistances && disease_resistances.len)

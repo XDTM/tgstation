@@ -1,7 +1,6 @@
 /datum/disease/flu
 	name = "The Flu"
 	max_stages = 3
-	spread_text = "Airborne"
 	cure_text = "Spaceacillin"
 	cures = list(/datum/reagent/medicine/spaceacillin)
 	cure_chance = 10
@@ -10,6 +9,7 @@
 	base_infect_chance = 75
 	desc = "If left untreated the subject will feel quite unwell."
 	severity = DISEASE_SEVERITY_MINOR
+	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_AIRBORNE)
 
 /datum/disease/flu/stage_act()
 	..()

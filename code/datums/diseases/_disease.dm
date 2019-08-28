@@ -1,8 +1,6 @@
 /datum/disease
 	//Flags
-	var/visibility_flags = 0
 	var/disease_flags = CURABLE|CAN_CARRY|CAN_RESIST
-	var/spread_flags = DISEASE_SPREAD_AIRBORNE | DISEASE_SPREAD_CONTACT_FLUIDS | DISEASE_SPREAD_CONTACT_SKIN
 
 	//Fluff
 	var/form = "Virus"
@@ -33,8 +31,13 @@
 	var/needs_all_cures = TRUE
 	var/list/strain_data = list() //dna_spread special bullshit
 	var/list/infectable_biotypes = list(MOB_ORGANIC) //if the disease can spread on organics, synthetics, or undead
-	var/process_dead = FALSE //if this ticks while the host is dead
 	var/copy_type = null //if this is null, copies will use the type of the instance being copied
+
+	var/inherent_traits = list(DISEASE_SPREAD_AIRBORNE, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_CONTACT_SKIN)
+
+/datum/disease/New()
+	for(var/trait in inherent_traits)
+		ADD_TRAIT(src, trait, INHERENT_TRAIT)
 
 /datum/disease/Destroy()
 	. = ..()
@@ -108,8 +111,9 @@
 	if(!(spread_flags & required_spread_flags) && !force)
 		return
 
-	if(HAS_TRAIT(affected_mob, NO_DISEASE_SPREAD))
+	if(HAS_TRAIT(affected_mob, TRAIT_NO_DISEASE_SPREAD))
 		return
+
 	if(affected_mob.reagents.has_reagent(/datum/reagent/medicine/spaceacillin) || (affected_mob.satiety > 0 && prob(affected_mob.satiety/10)))
 		return
 
@@ -146,10 +150,10 @@
 
 /datum/disease/proc/Copy()
 	var/datum/disease/D = new type()
-	D.id = id
 	return D
 
 /datum/disease/proc/after_add()
+	next_stage = world.time + rand(stage_time_min, stage_time_max)
 	return
 
 
