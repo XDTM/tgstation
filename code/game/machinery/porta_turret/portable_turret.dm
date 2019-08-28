@@ -295,7 +295,7 @@
 	if(obj_flags & EMAGGED)
 		return
 	to_chat(user, "<span class='warning'>You short out [src]'s threat assessment circuits.</span>")
-	visible_message("[src] hums oddly...")
+	visible_message("<span class='italics'>[src] hums oddly...</span>")
 	obj_flags |= EMAGGED
 	controllock = TRUE
 	on = FALSE //turns off the turret temporarily
@@ -958,7 +958,7 @@
 	desc = "Used for building turret control panels."
 	icon_state = "apc"
 	result_path = /obj/machinery/turretid
-	materials = list(MAT_METAL=MINERAL_MATERIAL_AMOUNT)
+	materials = list(/datum/material/iron=MINERAL_MATERIAL_AMOUNT)
 
 /obj/item/gun/proc/get_turret_properties()
 	. = list()

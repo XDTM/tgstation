@@ -37,7 +37,7 @@
 	one_use = TRUE
 
 /obj/item/borg/upgrade/rename/attack_self(mob/user)
-	heldname = stripped_input(user, "Enter new robot name", "Cyborg Reclassification", heldname, MAX_NAME_LEN)
+	heldname = sanitize_name(stripped_input(user, "Enter new robot name", "Cyborg Reclassification", heldname, MAX_NAME_LEN))
 
 /obj/item/borg/upgrade/rename/action(mob/living/silicon/robot/R)
 	. = ..()
@@ -398,8 +398,8 @@
 	desc = "An upgrade to the Medical module's hypospray, allowing it \
 		to treat a wider range of conditions and problems."
 	additional_reagents = list(/datum/reagent/medicine/mannitol, /datum/reagent/medicine/oculine, /datum/reagent/medicine/inacusiate,
-		/datum/reagent/medicine/mutadone, /datum/reagent/medicine/haloperidol, /datum/reagent/medicine/oxandrolone, /datum/reagent/medicine/sal_acid, /datum/reagent/medicine/rezadone,
-		/datum/reagent/medicine/pen_acid)
+		/datum/reagent/medicine/mutadone, /datum/reagent/medicine/haloperidol, /datum/reagent/medicine/oxandrolone, /datum/reagent/medicine/sal_acid, 
+		/datum/reagent/medicine/rezadone, /datum/reagent/medicine/pen_acid)
 
 /obj/item/borg/upgrade/piercing_hypospray
 	name = "cyborg piercing hypospray"

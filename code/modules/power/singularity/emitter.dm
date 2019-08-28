@@ -252,10 +252,12 @@
 			state = EMITTER_UNWRENCHED
 
 /obj/machinery/power/emitter/wrench_act(mob/living/user, obj/item/I)
+	..()
 	default_unfasten_wrench(user, I)
 	return TRUE
 
 /obj/machinery/power/emitter/welder_act(mob/living/user, obj/item/I)
+	. = ..()
 	if(active)
 		to_chat(user, "Turn \the [src] off first.")
 		return TRUE
@@ -266,7 +268,7 @@
 		if(EMITTER_WRENCHED)
 			if(!I.tool_start_check(user, amount=0))
 				return TRUE
-			user.visible_message("[user.name] starts to weld the [name] to the floor.", \
+			user.visible_message("<span class='notice'>[user.name] starts to weld the [name] to the floor.</span>", \
 				"<span class='notice'>You start to weld \the [src] to the floor...</span>", \
 				"<span class='italics'>You hear welding.</span>")
 			if(I.use_tool(src, user, 20, volume=50) && state == EMITTER_WRENCHED)
@@ -277,7 +279,7 @@
 		if(EMITTER_WELDED)
 			if(!I.tool_start_check(user, amount=0))
 				return TRUE
-			user.visible_message("[user.name] starts to cut the [name] free from the floor.", \
+			user.visible_message("<span class='notice'>[user.name] starts to cut the [name] free from the floor.</span>", \
 				"<span class='notice'>You start to cut \the [src] free from the floor...</span>", \
 				"<span class='italics'>You hear welding.</span>")
 			if(I.use_tool(src, user, 20, volume=50) && state == EMITTER_WELDED)
@@ -361,7 +363,7 @@
 	locked = FALSE
 	obj_flags |= EMAGGED
 	if(user)
-		user.visible_message("[user.name] emags [src].","<span class='notice'>You short out the lock.</span>")
+		user.visible_message("<span class='warning'>[user.name] emags [src].</span>", "<span class='notice'>You short out the lock.</span>")
 
 
 /obj/machinery/power/emitter/prototype

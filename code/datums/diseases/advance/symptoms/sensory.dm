@@ -32,7 +32,7 @@
 /datum/disease_property/symptom/neural_restoration/activate()
 	var/mob/living/M = disease.affected_mob
 	if(A.stage >= 5)
-		M.adjustBrainLoss(-2)
+		M.adjustOrganLoss(ORGAN_SLOT_BRAIN, -2)
 		if(iscarbon(M))
 			var/mob/living/carbon/C = M
 			if(prob(10))

@@ -194,7 +194,7 @@
 	STR.max_w_class = WEIGHT_CLASS_NORMAL
 	STR.max_combined_w_class = 100
 	STR.max_items = 100
-	STR.set_holdable(list(/obj/item/reagent_containers/food/snacks/grown, /obj/item/seeds, /obj/item/grown, /obj/item/reagent_containers/honeycomb))
+	STR.set_holdable(list(/obj/item/reagent_containers/food/snacks/grown, /obj/item/seeds, /obj/item/grown, /obj/item/reagent_containers/honeycomb, /obj/item/disk/plantgene))
 ////////
 
 /obj/item/storage/bag/plants/portaseeder
@@ -283,7 +283,7 @@
 	throw_range = 5
 	w_class = WEIGHT_CLASS_BULKY
 	flags_1 = CONDUCT_1
-	materials = list(MAT_METAL=3000)
+	materials = list(/datum/material/iron=3000)
 
 /obj/item/storage/bag/tray/ComponentInitialize()
 	. = ..()
@@ -298,11 +298,7 @@
 	STR.quick_empty()
 	// Make each item scatter a bit
 	for(var/obj/item/I in oldContents)
-		spawn()
-			for(var/i = 1, i <= rand(1,2), i++)
-				if(I)
-					step(I, pick(NORTH,SOUTH,EAST,WEST))
-					sleep(rand(2,4))
+		INVOKE_ASYNC(src, .proc/do_scatter, I)
 
 	if(prob(50))
 		playsound(M, 'sound/items/trayhit1.ogg', 50, 1)
@@ -313,6 +309,12 @@
 		if(prob(10))
 			M.Paralyze(40)
 	update_icon()
+
+/obj/item/storage/bag/tray/proc/do_scatter(obj/item/I)
+	for(var/i in 1 to rand(1,2))
+		if(I)
+			step(I, pick(NORTH,SOUTH,EAST,WEST))
+			sleep(rand(2,4))
 
 /obj/item/storage/bag/tray/update_icon()
 	cut_overlays()

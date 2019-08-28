@@ -133,7 +133,6 @@
 	name = "durathread beret"
 	desc =  "A beret made from durathread, its resilient fibres provide some protection to the wearer."
 	icon_state = "beretdurathread"
-	item_color = null
 	armor = list("melee" = 15, "bullet" = 5, "laser" = 15, "energy" = 5, "bomb" = 10, "bio" = 0, "rad" = 0, "fire" = 30, "acid" = 5)
 
 //Security
@@ -193,6 +192,7 @@
 	return TRUE
 
 /obj/item/clothing/head/warden/drill/wirecutter_act(mob/living/user, obj/item/I)
+	..()
 	if(mode != DRILL_CANADIAN)
 		to_chat(user, "<span class='danger'>You broke the voice circuit!</span>")
 		mode = DRILL_CANADIAN

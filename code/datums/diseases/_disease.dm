@@ -30,7 +30,7 @@
 	var/list/required_organs = list()
 	var/needs_all_cures = TRUE
 	var/list/strain_data = list() //dna_spread special bullshit
-	var/list/infectable_biotypes = list(MOB_ORGANIC) //if the disease can spread on organics, synthetics, or undead
+	var/infectable_biotypes = MOB_ORGANIC //if the disease can spread on organics, synthetics, or undead
 	var/copy_type = null //if this is null, copies will use the type of the instance being copied
 
 	var/inherent_traits = list(DISEASE_SPREAD_AIRBORNE, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_CONTACT_SKIN)
@@ -143,7 +143,7 @@
 	qdel(src)
 
 /datum/disease/proc/IsSame(datum/disease/D)
-	if(istype(src, D.type))
+	if(istype(D, type))
 		return TRUE
 	return FALSE
 

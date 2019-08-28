@@ -96,7 +96,7 @@
 /datum/disease_property/symptom/visionloss/activate()
 	var/mob/living/carbon/M = A.affected_mob
 	var/obj/item/organ/eyes/eyes = M.getorganslot(ORGAN_SLOT_EYES)
-	if(istype(eyes))
+	if(eyes)
 		switch(A.stage)
 			if(1, 2)
 				if(message_cooldown())

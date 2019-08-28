@@ -148,7 +148,7 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "burning",
 		else if(iscarbon(M))
 			var/mob/living/carbon/C = M
 			if(!istype(C.head, /obj/item/clothing/head/helmet))
-				C.adjustBrainLoss(5, 60)
+				C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 5, 60)
 				to_chat(C, "<span class='danger'>You feel dumber.</span>")
 
 		if(smack)
@@ -219,11 +219,13 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "burning",
 			for(var/mob/M in SS.contents)
 				if(M.mind)
 					SS.icon_state = "purified_soulstone2"
+					if(iscultist(M))
+						SSticker.mode.remove_cultist(M.mind, FALSE, FALSE)
 			for(var/mob/living/simple_animal/shade/EX in SS)
 				EX.icon_state = "ghost1"
-				EX.name = "Purified [initial(EX.name)]"				
+				EX.name = "Purified [initial(EX.name)]"
 			user.visible_message("<span class='notice'>[user] has purified [SS]!</span>")
-			
+
 /obj/item/storage/book/bible/booze
 	desc = "To be applied to the head repeatedly."
 
