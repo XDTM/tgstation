@@ -907,7 +907,6 @@
 	stage_time_min = 50
 	stage_time_max = 300
 	severity = DISEASE_SEVERITY_BIOHAZARD
-	visibility_flags = 0
 	stage1	= list("Your bones ache.")
 	stage2	= list("Your skin feels scaly.")
 	stage3	= list("<span class='danger'>You have an overwhelming urge to terrorize some peasants.</span>", "<span class='danger'>Your teeth feel sharper.</span>")

@@ -3,8 +3,6 @@
 	desc = "You should not be seeing this."
 	level = 0
 	var/passive_message = "" //Random message to the host warning them that the symptom exists
-	threshold_desc = "<b>Stage Speed 6:</b> Doubles healing speed.<br>\
-					  <b>Stealth 4:</b> Healing will no longer be visible to onlookers."
 
 /datum/disease_property/symptom/heal/on_process()
 	..()
@@ -146,6 +144,7 @@
 		night_vision = TRUE
 	else
 		night_vision = FALSE
+		REMOVE_TRAIT(disease.affected_mob, TRAIT_NIGHT_VISION, NOCTURNAL_REGEN_TRAIT)
 
 
 /datum/disease_property/symptom/heal/darkness/on_stage_increase(new_stage, prev_stage)
@@ -232,10 +231,7 @@
 	if(!active_coma)
 		return
 	active_coma = FALSE
-	if(fake_death)
-		M.cure_fakedeath("regenerative_coma")
-	else
-		REMOVE_TRAIT(M, TRAIT_DEATHCOMA, "regen_coma")
+	M.cure_fakedeath("regenerative_coma") //Always uses cure_fakedeath in case the mutator is lost during a coma
 	M.update_stat()
 	M.update_mobility()
 
@@ -323,10 +319,13 @@
 		temp_immune = TRUE
 	else
 		temp_immune = FALSE
+		REMOVE_TRAIT(disease.affected_mob, TRAIT_RESISTHEAT, "plasma_fixation")
+		REMOVE_TRAIT(disease.affected_mob, TRAIT_RESISTCOLD, "plasma_fixation")
 	if(HAS_TRAIT(disease,DISEASE_MUTATOR_GAMMA))
 		tox_immune = TRUE
 	else
 		tox_immune = FALSE
+		REMOVE_TRAIT(disease.affected_mob, TRAIT_TOXIMMUNE, "plasma_fixation")
 
 /datum/disease_property/symptom/heal/plasma/on_process()
 	..()
@@ -344,11 +343,9 @@
 			REMOVE_TRAIT(disease.affected_mob, TRAIT_TOXIMMUNE, "plasma_fixation")
 
 /datum/disease_property/symptom/heal/plasma/on_end()
-	if(temp_immune)
-		REMOVE_TRAIT(disease.affected_mob, TRAIT_RESISTHEAT, "plasma_fixation")
-		REMOVE_TRAIT(disease.affected_mob, TRAIT_RESISTCOLD, "plasma_fixation")
-	if(tox_immune)
-		REMOVE_TRAIT(disease.affected_mob, TRAIT_TOXIMMUNE, "plasma_fixation")
+	REMOVE_TRAIT(disease.affected_mob, TRAIT_RESISTHEAT, "plasma_fixation")
+	REMOVE_TRAIT(disease.affected_mob, TRAIT_RESISTCOLD, "plasma_fixation")
+	REMOVE_TRAIT(disease.affected_mob, TRAIT_TOXIMMUNE, "plasma_fixation")
 
 /datum/disease_property/symptom/heal/plasma/can_heal()
 	var/mob/living/M = disease.affected_mob
@@ -397,6 +394,8 @@
 		glow = TRUE
 	else
 		glow = FALSE
+		if(glow_object)
+			qdel(glow_object)
 
 /datum/disease_property/symptom/heal/radiation/on_process()
 	..()

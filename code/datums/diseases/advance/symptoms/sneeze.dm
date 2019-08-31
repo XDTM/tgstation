@@ -24,8 +24,8 @@
 		else
 			M.emote("sneeze")
 			if(M.CanSpreadAirborneDisease()) //don't spread germs if they covered their mouth
-				range = 2 * multiplier
-				var/turf/T = affected_mob.loc
+				var/range = 2 * multiplier
+				var/turf/T = M.loc
 				if(istype(T))
 					for(var/mob/living/target in oview(range, M))
 						if(is_A_facing_B(M, target) && disease_air_spread_walk(get_turf(M), get_turf(target)))

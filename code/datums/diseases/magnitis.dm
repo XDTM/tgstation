@@ -10,8 +10,7 @@
 	desc = "This disease disrupts the magnetic field of your body, making it act as if a powerful magnet. Injections of iron help stabilize the field."
 	severity = DISEASE_SEVERITY_MEDIUM
 	infectable_biotypes = MOB_ORGANIC|MOB_ROBOTIC
-	process_dead = TRUE
-	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_AIRBORNE)
+	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_AIRBORNE, DISEASE_PROCESS_DEAD)
 
 /datum/disease/magnitis/stage_act()
 	..()

@@ -110,13 +110,13 @@
 
 	for(var/thing in diseases)
 		var/datum/disease/D = thing
-		if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-			user.ContactContractDisease(D)
+		if(HAS_TRAIT(D, DISEASE_SPREAD_CONTACT_SKIN))
+			user.contact_contract_disease(D)
 
 	for(var/thing in user.diseases)
 		var/datum/disease/D = thing
-		if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-			ContactContractDisease(D)
+		if(HAS_TRAIT(D, DISEASE_SPREAD_CONTACT_SKIN))
+			contact_contract_disease(D)
 
 	for(var/datum/surgery/S in surgeries)
 		if(!(mobility_flags & MOBILITY_STAND) || !S.lying_required)
@@ -131,13 +131,13 @@
 	if(can_inject(M, TRUE))
 		for(var/thing in diseases)
 			var/datum/disease/D = thing
-			if((D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN) && prob(85))
-				M.ContactContractDisease(D)
+			if(HAS_TRAIT(D, DISEASE_SPREAD_CONTACT_SKIN) && prob(85))
+				M.contact_contract_disease(D)
 
 	for(var/thing in M.diseases)
 		var/datum/disease/D = thing
-		if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-			ContactContractDisease(D)
+		if(HAS_TRAIT(D, DISEASE_SPREAD_CONTACT_SKIN))
+			contact_contract_disease(D)
 
 	if(M.a_intent == INTENT_HELP)
 		help_shake_act(M)

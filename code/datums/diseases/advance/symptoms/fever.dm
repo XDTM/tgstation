@@ -14,6 +14,7 @@
 		prevent_cooling = TRUE
 	else
 		prevent_cooling = FALSE
+		REMOVE_TRAIT(disease.affected_mob, TRAIT_NO_STABILIZE_HEAT, FEVER_TRAIT)
 	multiplier = 1
 	if(HAS_TRAIT(disease,DISEASE_MUTATOR_EPSILON))
 		multiplier += 9
@@ -42,16 +43,14 @@
 		if(fevering)
 			M.natural_bodytemperature -= (40 * multiplier)
 			fevering = FALSE
-		if(prevent_cooling)
-			REMOVE_TRAIT(M, TRAIT_NO_STABILIZE_HEAT, FEVER_TRAIT)
+		REMOVE_TRAIT(M, TRAIT_NO_STABILIZE_HEAT, FEVER_TRAIT)
 
 /datum/disease_property/symptom/fever/on_end()
 	var/mob/living/carbon/M = disease.affected_mob
 	if(fevering)
 		M.natural_bodytemperature -= (40 * multiplier)
 		fevering = FALSE
-	if(prevent_cooling)
-		REMOVE_TRAIT(M, TRAIT_NO_STABILIZE_HEAT, FEVER_TRAIT)
+	REMOVE_TRAIT(M, TRAIT_NO_STABILIZE_HEAT, FEVER_TRAIT)
 
 /datum/disease_property/symptom/fever/proc/heat(mob/living/M)
 	var/get_heat = 40 * multiplier

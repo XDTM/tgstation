@@ -47,12 +47,12 @@
 	headache_active = FALSE
 
 /datum/disease_property/symptom/headache/activate()
-	var/mob/living/M = disease.affected_mob
+	var/mob/living/carbon/M = disease.affected_mob
 	if(prob(25) && cluster_headache && disease.stage >= 5)
 		to_chat(M, "<span class='userdanger'>[pick("You feel a burning knife inside your brain!", "A wave of pain fills your head!")]</span>")
 		M.Unconscious(60) //Simulates being in too much pain to focus on anything else
 	if(brain_hemorrhage && prob(40))
-		M.adjustBrainLoss(rand(10,25), BRAIN_DAMAGE_DEATH)
+		M.adjustOrganLoss(ORGAN_SLOT_BRAIN, rand(10,25))
 	if(disease.stage < 4)
 		if(message_cooldown())
 			to_chat(M, "<span class='warning'>[pick("Your head aches.", "Your head pounds.")]</span>")

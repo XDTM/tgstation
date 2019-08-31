@@ -23,7 +23,7 @@
 	owner.special_role = "Infected Monkey"
 
 	var/datum/disease/D = new /datum/disease/transformation/jungle_fever/monkeymode
-	if(!owner.current.HasDisease(D))
+	if(!owner.current.has_disease(D))
 		owner.current.ForceContractDisease(D)
 	else
 		QDEL_NULL(D)
@@ -133,7 +133,7 @@
 /datum/objective/monkey/check_completion()
 	var/datum/disease/D = new /datum/disease/transformation/jungle_fever()
 	for(var/mob/living/carbon/monkey/M in GLOB.alive_mob_list)
-		if (M.HasDisease(D) && (M.onCentCom() || M.onSyndieBase()))
+		if (M.has_disease(D) && (M.onCentCom() || M.onSyndieBase()))
 			escaped_monkeys++
 	if(escaped_monkeys >= monkeys_to_win)
 		return TRUE
@@ -151,28 +151,28 @@
 /datum/team/monkey/proc/infected_monkeys_alive()
 	var/datum/disease/D = new /datum/disease/transformation/jungle_fever()
 	for(var/mob/living/carbon/monkey/M in GLOB.alive_mob_list)
-		if(M.HasDisease(D))
+		if(M.has_disease(D))
 			return TRUE
 	return FALSE
 
 /datum/team/monkey/proc/infected_monkeys_escaped()
 	var/datum/disease/D = new /datum/disease/transformation/jungle_fever()
 	for(var/mob/living/carbon/monkey/M in GLOB.alive_mob_list)
-		if(M.HasDisease(D) && (M.onCentCom() || M.onSyndieBase()))
+		if(M.has_disease(D) && (M.onCentCom() || M.onSyndieBase()))
 			return TRUE
 	return FALSE
 
 /datum/team/monkey/proc/infected_humans_escaped()
 	var/datum/disease/D = new /datum/disease/transformation/jungle_fever()
 	for(var/mob/living/carbon/human/M in GLOB.alive_mob_list)
-		if(M.HasDisease(D) && (M.onCentCom() || M.onSyndieBase()))
+		if(M.has_disease(D) && (M.onCentCom() || M.onSyndieBase()))
 			return TRUE
 	return FALSE
 
 /datum/team/monkey/proc/infected_humans_alive()
 	var/datum/disease/D = new /datum/disease/transformation/jungle_fever()
 	for(var/mob/living/carbon/human/M in GLOB.alive_mob_list)
-		if(M.HasDisease(D))
+		if(M.has_disease(D))
 			return TRUE
 	return FALSE
 

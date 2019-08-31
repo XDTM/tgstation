@@ -670,7 +670,7 @@
 		return FALSE
 	var/datum/disease/D = new /datum/disease/transformation/jungle_fever()
 	for(var/mob/living/carbon/monkey/M in GLOB.alive_mob_list)
-		if (M.HasDisease(D))
+		if (M.has_disease(D))
 			if(M.onCentCom() || M.onSyndieBase())
 				escaped_monkeys++
 	if(escaped_monkeys >= monkeys_to_win)

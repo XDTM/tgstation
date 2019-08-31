@@ -213,6 +213,7 @@
 /// Refreshes the disease, updating stats and applying meta-effects from traits and symptoms. If new_strain is true, a new id and name will be generated as well.
 /datum/disease/advance/proc/refresh(new_strain = FALSE)
 	update_stats()
+	update_mutators()
 
 	if(new_strain)
 		id = null
@@ -265,28 +266,6 @@
 /datum/disease/advance/proc/update_mutators()
 	for(var/datum/disease_property/symptom/S in symptoms)
 		S.update_mutators()
-
-// Assign the spread type and give it the correct description.
-/datum/disease/advance/proc/SetSpread(spread_id)
-	switch(spread_id)
-		if(DISEASE_SPREAD_NON_CONTAGIOUS)
-			spread_flags = DISEASE_SPREAD_NON_CONTAGIOUS
-			spread_text = "None"
-		if(DISEASE_SPREAD_SPECIAL)
-			spread_flags = DISEASE_SPREAD_SPECIAL
-			spread_text = "None"
-		if(DISEASE_SPREAD_BLOOD)
-			spread_flags = DISEASE_SPREAD_BLOOD
-			spread_text = "Blood"
-		if(DISEASE_SPREAD_CONTACT_FLUIDS)
-			spread_flags = DISEASE_SPREAD_BLOOD | DISEASE_SPREAD_CONTACT_FLUIDS
-			spread_text = "Fluids"
-		if(DISEASE_SPREAD_CONTACT_SKIN)
-			spread_flags = DISEASE_SPREAD_BLOOD | DISEASE_SPREAD_CONTACT_FLUIDS | DISEASE_SPREAD_CONTACT_SKIN
-			spread_text = "On contact"
-		if(DISEASE_SPREAD_AIRBORNE)
-			spread_flags = DISEASE_SPREAD_BLOOD | DISEASE_SPREAD_CONTACT_FLUIDS | DISEASE_SPREAD_CONTACT_SKIN | DISEASE_SPREAD_AIRBORNE
-			spread_text = "Airborne"
 
 /datum/disease/advance/proc/SetSeverity(level_sev)
 

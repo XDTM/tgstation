@@ -256,3 +256,4 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define FEVER_TRAIT "fever_trait"
 #define OCULAR_REGROWTH_TRAIT "ocular_regrowth_trait"
 #define VOICE_CHANGE_TRAIT "voice_change_trait"
+#define COOLING_TRAIT "cooling_trait"

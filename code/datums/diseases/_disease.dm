@@ -104,12 +104,14 @@
 		return FALSE
 
 //Airborne spreading
-/datum/disease/proc/airborne_spread(spread_range = 2, required_spread_flags = DISEASE_SPREAD_AIRBORNE, force)
+/datum/disease/proc/airborne_spread(spread_range = 2, required_spread_types = list(DISEASE_SPREAD_AIRBORNE), force)
 	if(!affected_mob)
 		return
 
-	if(!(spread_flags & required_spread_flags) && !force)
-		return
+	if(!force)
+		for(var/spread_type in required_spread_types)
+			if(!(HAS_TRAIT(src, spread_type)))
+				return
 
 	if(HAS_TRAIT(affected_mob, TRAIT_NO_DISEASE_SPREAD))
 		return
@@ -122,7 +124,7 @@
 		for(var/mob/living/carbon/C in oview(spread_range, affected_mob))
 			var/turf/V = get_turf(C)
 			if(disease_air_spread_walk(T, V))
-				C.AirborneContractDisease(src)
+				C.airborne_contract_disease(src)
 
 /proc/disease_air_spread_walk(turf/start, turf/end)
 	if(!start || !end)

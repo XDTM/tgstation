@@ -265,6 +265,20 @@
 			. = "fff4e6"
 		if("orange")
 			. = "ffc905"
+		if("blue")
+			. = "3333cc"
+		if("red")
+			. = "dd3333"
+		if("green")
+			. = "33dd33"
+		if("yellow")
+			. = "dddd33"
+		if("cyan")
+			. = "33dddd"
+		if("pink")
+			. = "dd33dd"
+		if("camo")
+			. = "ffffff30"
 
 /mob/living/carbon/proc/Digitigrade_Leg_Swap(swap_back)
 	var/body_plan_changed = FALSE

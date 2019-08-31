@@ -14,37 +14,26 @@ BONUS
 //////////////////////////////////////
 */
 
-/datum/symptom/disfiguration
-
-	name = "Disfiguration"
-	desc = "The virus liquefies facial muscles, disfiguring the host."
-	stealth = 2
-	resistance = 0
-	stage_speed = 3
-	transmittable = 1
+/datum/disease_property/symptom/disfiguration
+	name = "Facial Contortion"
+	desc = "The disease causes the host's facial muscles to contract in unnatural shapes, distorting their features to the point of being unrecognizable."
 	level = 5
-	severity = 1
 	symptom_delay_min = 25
 	symptom_delay_max = 75
 
-/datum/symptom/disfiguration/Activate(datum/disease/advance/A)
-	. = ..()
-	if(!.)
+/datum/disease_property/symptom/disfiguration/activate()
+	var/mob/living/M = disease.affected_mob
+	if (HAS_TRAIT_FROM(M, TRAIT_DISFIGURED, DISEASE_TRAIT))
 		return
-	var/mob/living/M = A.affected_mob
-	if (HAS_TRAIT(M, TRAIT_DISFIGURED))
-		return
-	switch(A.stage)
+	switch(disease.stage)
 		if(5)
 			ADD_TRAIT(M, TRAIT_DISFIGURED, DISEASE_TRAIT)
-			M.visible_message("<span class='warning'>[M]'s face appears to cave in!</span>", "<span class='notice'>You feel your face crumple and cave in!</span>")
+			M.visible_message("<span class='warning'>[M]'s face contorts in an unrecognizable inhumane grimace!</span>", "<span class='warning'>You feel your face spasm, locking you into a painful grimace!</span>")
 		else
-			M.visible_message("<span class='warning'>[M]'s face begins to contort...</span>", "<span class='notice'>Your face feels wet and malleable...</span>")
+			M.visible_message("<span class='warning'>[M]'s face begins to contort...</span>", "<span class='warning'>You feel your facial muscles pulling on their own...</span>")
 
 
-/datum/symptom/disfiguration/End(datum/disease/advance/A)
-	. = ..()
-	if(!.)
-		return
-	if(A.affected_mob)
-		REMOVE_TRAIT(A.affected_mob, TRAIT_DISFIGURED, DISEASE_TRAIT)
+/datum/disease_property/symptom/disfiguration/on_end()
+	var/mob/living/M = disease.affected_mob
+	REMOVE_TRAIT(M, TRAIT_DISFIGURED, DISEASE_TRAIT)
+	M.visible_message("<span class='warning'>[M]'s contorted face relaxes and returns to their original shape!</span>", "<span class='notice'>You feel your contorted face finally relax and return to normal.</span>")

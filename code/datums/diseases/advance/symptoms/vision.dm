@@ -5,7 +5,7 @@
 	var/regrowth_progress = 0
 	var/thermal_vision = FALSE
 	var/flash_proof = FALSE
-	threshold_desc = "<b>BETA:</b> The disease prevents bright lights from damaging the retina.<br>
+	threshold_desc = "<b>BETA:</b> The disease prevents bright lights from damaging the retina.<br>\
 					  <b>DELTA:</b> The disease forms a heat-sensitive membrane in front of the retina, granting thermal vision to the host."
 
 /datum/disease_property/symptom/ocular_regrowth/update_mutators()
@@ -13,10 +13,12 @@
 		flash_proof = TRUE
 	else
 		flash_proof = FALSE
+		REMOVE_TRAIT(disease.affected_mob, TRAIT_FLASH_PROOF, OCULAR_REGROWTH_TRAIT)
 	if(HAS_TRAIT(disease, DISEASE_MUTATOR_DELTA))
 		thermal_vision = TRUE
 	else
 		thermal_vision = FALSE
+		REMOVE_TRAIT(disease.affected_mob, TRAIT_THERMAL_VISION, OCULAR_REGROWTH_TRAIT)
 
 /datum/disease_property/symptom/ocular_regrowth/on_stage_increase(new_stage, prev_stage)
 	if(new_stage == 5)
@@ -50,23 +52,23 @@
 					to_chat(C, "<span class='notice'>You feel a pressure behind your eye sockets... then you realize that you have a new pair of eyes!</span>")
 					regrowth_progress = 0
 				return
-			if(HAS_TRAIT_FROM(M, TRAIT_BLIND, EYE_DAMAGE))
+			if(HAS_TRAIT_FROM(C, TRAIT_BLIND, EYE_DAMAGE))
 				if(regrowth_progress >= 75)
-					to_chat(M, "<span class='notice'>Your vision slowly returns...</span>")
-					M.cure_blind(EYE_DAMAGE)
-					M.cure_nearsighted(EYE_DAMAGE)
-					M.blur_eyes(35)
+					to_chat(C, "<span class='notice'>Your vision slowly returns...</span>")
+					C.cure_blind(EYE_DAMAGE)
+					C.cure_nearsighted(EYE_DAMAGE)
+					C.blur_eyes(35)
 					regrowth_progress = 0
-			else if(HAS_TRAIT_FROM(M, TRAIT_NEARSIGHT, EYE_DAMAGE))
+			else if(HAS_TRAIT_FROM(C, TRAIT_NEARSIGHT, EYE_DAMAGE))
 				if(regrowth_progress >= 40)
-					to_chat(M, "<span class='notice'>You can finally focus your eyes on distant objects.</span>")
-					M.cure_nearsighted(EYE_DAMAGE)
-					M.blur_eyes(10)
+					to_chat(C, "<span class='notice'>You can finally focus your eyes on distant objects.</span>")
+					C.cure_nearsighted(EYE_DAMAGE)
+					C.blur_eyes(10)
 					regrowth_progress = 0
-			else if(M.eye_blind || M.eye_blurry)
+			else if(C.eye_blind || C.eye_blurry)
 				if(regrowth_progress >= 20)
-					M.set_blindness(0)
-					M.set_blurriness(0)
+					C.set_blindness(0)
+					C.set_blurriness(0)
 					regrowth_progress = 0
 			else if(eyes.damage > 0)
 				if(regrowth_progress >= 8)
@@ -76,28 +78,28 @@
 				regrowth_progress = 0 //Won't store regrowth for the next damage
 		else
 			if(message_cooldown())
-				to_chat(M, "<span class='notice'>[pick("Your eyes feel great.","You feel like your eyes can focus more clearly.", "You don't feel the need to blink.")]</span>")
+				to_chat(C, "<span class='notice'>[pick("Your eyes feel great.","You feel like your eyes can focus more clearly.", "You don't feel the need to blink.")]</span>")
 
+///Causes gradual eye damage
 /datum/disease_property/symptom/visionloss
 	name = "Hyphema"
 	desc = "The virus causes inflammation of the retina, leading to eye damage and eventually blindness."
 	symptom_delay_min = 40
 	symptom_delay_max = 80
 	var/remove_eyes = FALSE
-	threshold_desc = "<b>DELTA:</b> Weakens extraocular muscles, eventually leading to complete detachment of the eyes.<br>\
-					  <b>Stealth 4:</b> The symptom remains hidden until active."
+	threshold_desc = "<b>DELTA:</b> Weakens extraocular muscles, eventually leading to complete detachment of the eyes."
 
 /datum/disease_property/symptom/visionloss/update_mutators()
-	if(A.properties["stealth"] >= 4)
-		suppress_warning = TRUE
-	if(A.properties["resistance"] >= 12) //goodbye eyes
+	if(HAS_TRAIT(disease, DISEASE_MUTATOR_DELTA))
 		remove_eyes = TRUE
+	else
+		remove_eyes = FALSE
 
 /datum/disease_property/symptom/visionloss/activate()
-	var/mob/living/carbon/M = A.affected_mob
+	var/mob/living/carbon/M = disease.affected_mob
 	var/obj/item/organ/eyes/eyes = M.getorganslot(ORGAN_SLOT_EYES)
 	if(eyes)
-		switch(A.stage)
+		switch(disease.stage)
 			if(1, 2)
 				if(message_cooldown())
 					to_chat(M, "<span class='warning'>Your eyes itch.</span>")

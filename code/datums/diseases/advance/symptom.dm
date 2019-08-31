@@ -30,8 +30,12 @@
 			qdel(src)
 			return
 
+	//If the disease is already active, bring it up to date
+	if(disease.stage > 1)
+		for(var/i in 2 to disease.stage)
+			on_stage_increase(i, i-1)
 	on_add(disease)
-	update_mutators()
+	disease.refresh()
 
 /// Removes the symptom from a disease.
 /datum/disease_property/symptom/remove()

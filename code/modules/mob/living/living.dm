@@ -90,13 +90,13 @@
 		//Also spread diseases
 		for(var/thing in diseases)
 			var/datum/disease/D = thing
-			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-				L.ContactContractDisease(D)
+			if(HAS_TRAIT(D, DISEASE_SPREAD_CONTACT_SKIN))
+				L.contact_contract_disease(D)
 
 		for(var/thing in L.diseases)
 			var/datum/disease/D = thing
-			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-				ContactContractDisease(D)
+			if(HAS_TRAIT(D, DISEASE_SPREAD_CONTACT_SKIN))
+				contact_contract_disease(D)
 
 		//Should stop you pushing a restrained person out of the way
 		if(L.pulledby && L.pulledby != src && L.restrained())
@@ -288,13 +288,13 @@
 			//Share diseases that are spread by touch
 			for(var/thing in diseases)
 				var/datum/disease/D = thing
-				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-					L.ContactContractDisease(D)
+				if(HAS_TRAIT(D, DISEASE_SPREAD_CONTACT_SKIN))
+					L.contact_contract_disease(D)
 
 			for(var/thing in L.diseases)
 				var/datum/disease/D = thing
-				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-					ContactContractDisease(D)
+				if(HAS_TRAIT(D, DISEASE_SPREAD_CONTACT_SKIN))
+					contact_contract_disease(D)
 
 			if(iscarbon(L))
 				var/mob/living/carbon/C = L

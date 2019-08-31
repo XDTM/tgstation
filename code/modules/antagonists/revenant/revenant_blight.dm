@@ -3,7 +3,6 @@
 	max_stages = 5
 	stage_time_min = 60
 	stage_time_max = 140
-	spread_flags = DISEASE_SPREAD_NON_CONTAGIOUS
 	cure_text = "Holy water or extensive rest."
 	spread_text = "A burst of unholy energy"
 	cures = list(/datum/reagent/water/holywater)
@@ -14,6 +13,7 @@
 	severity = DISEASE_SEVERITY_HARMFUL
 	var/stagedamage = 0 //Highest stage reached.
 	var/finalstage = 0 //Because we're spawning off the cure in the final stage, we need to check if we've done the final stage's effects.
+	inherent_traits = list(DISEASE_SPREAD_NON_CONTAGIOUS)
 
 /datum/disease/revblight/cure()
 	if(affected_mob)

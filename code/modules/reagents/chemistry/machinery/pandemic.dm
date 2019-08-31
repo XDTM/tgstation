@@ -67,7 +67,7 @@
 	var/index = 1
 	for(var/virus in V)
 		var/datum/disease/D = virus
-		if(!istype(D) || D.visibility_flags & HIDDEN_PANDEMIC)
+		if(!istype(D))
 			continue
 
 		var/list/this = list()

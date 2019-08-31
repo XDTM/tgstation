@@ -17,6 +17,7 @@
 		whisper = TRUE
 	else
 		whisper = FALSE
+		REMOVE_TRAIT(disease.affected_mob, TRAIT_FORCEWHISPER, VOICE_CHANGE_TRAIT)
 
 /datum/disease_property/symptom/voice_change/on_end()
 	restore_voice()
@@ -27,9 +28,7 @@
 		if(message_cooldown())
 			to_chat(M, "<span class='warning'>[pick("Your throat itches.", "You clear your throat.")]</span>")
 	else if(repeat)
-		if(ishuman(M))
-			var/mob/living/carbon/human/H = M
-			H.SetSpecialVoice(H.dna.species.random_name(H.gender))
+		randomize_voice()
 
 /datum/disease_property/symptom/voice_change/on_stage_increase(new_stage, prev_stage)
 	if(new_stage == 5)
@@ -49,9 +48,8 @@
 		H.SetSpecialVoice(H.dna.species.random_name(H.gender))
 
 /datum/disease_property/symptom/voice_change/proc/restore_voice()	
-	if(ishuman(disease.affected_mob))
-		var/mob/living/carbon/human/H = disease.affected_mob
+	var/mob/living/carbon/M = disease.affected_mob
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
 		H.UnsetSpecialVoice()
-	if(whisper)
-		var/mob/living/carbon/M = disease.affected_mob
-		REMOVE_TRAIT(M, TRAIT_FORCEWHISPER, VOICE_CHANGE_TRAIT)
+	REMOVE_TRAIT(M, TRAIT_FORCEWHISPER, VOICE_CHANGE_TRAIT)

@@ -7,7 +7,6 @@
 	severity = DISEASE_SEVERITY_BIOHAZARD
 	stage_time_min = 200
 	stage_time_max = 300
-	visibility_flags = HIDDEN_SCANNER
 	disease_flags = CURABLE
 	var/list/stage1 = list("You feel unremarkable.")
 	var/list/stage2 = list("You feel boring.")
@@ -16,7 +15,7 @@
 	var/list/stage5 = list("Oh the humanity!")
 	var/new_form = /mob/living/carbon/human
 	var/bantype
-	inherent_traits = list(DISEASE_SPREAD_SPECIAL)
+	inherent_traits = list(DISEASE_SPREAD_SPECIAL, DISEASE_HIDDEN_SCANNER)
 
 /datum/disease/transformation/Copy()
 	var/datum/disease/transformation/D = ..()
@@ -107,7 +106,6 @@
 	severity = DISEASE_SEVERITY_BIOHAZARD
 	stage_time_min = 300
 	stage_time_max = 700
-	visibility_flags = 0
 	agent = "Kongey Vibrion M-909"
 	new_form = /mob/living/carbon/monkey
 	bantype = ROLE_MONKEY
@@ -152,7 +150,8 @@
 /datum/disease/transformation/jungle_fever/monkeymode/after_add()
 	..()
 	if(affected_mob && !is_monkey_leader(affected_mob.mind))
-		visibility_flags = NONE
+		REMOVE_TRAIT(src, DISEASE_HIDDEN_HUD, INHERENT_TRAIT)
+		REMOVE_TRAIT(src, DISEASE_HIDDEN_SCANNER, INHERENT_TRAIT)
 
 
 
@@ -163,8 +162,6 @@
 	cure_chance = 5
 	agent = "R2D2 Nanomachines"
 	desc = "This disease, actually acute nanomachine infection, converts the victim into a cyborg."
-	severity = DISEASE_SEVERITY_BIOHAZARD
-	visibility_flags = 0
 	stage1	= list()
 	stage2	= list("Your joints feel stiff.", "<span class='danger'>Beep...boop..</span>")
 	stage3	= list("<span class='danger'>Your joints feel very stiff.</span>", "Your skin feels loose.", "<span class='danger'>You can feel something move...inside.</span>")
@@ -196,7 +193,6 @@
 	agent = "Rip-LEY Alien Microbes"
 	desc = "This disease changes the victim into a xenomorph."
 	severity = DISEASE_SEVERITY_BIOHAZARD
-	visibility_flags = 0
 	stage1	= list()
 	stage2	= list("Your throat feels scratchy.", "<span class='danger'>Kill...</span>")
 	stage3	= list("<span class='danger'>Your throat feels very scratchy.</span>", "Your skin feels tight.", "<span class='danger'>You can feel something move...inside.</span>")
@@ -225,7 +221,6 @@
 	agent = "Advanced Mutation Toxin"
 	desc = "This highly concentrated extract converts anything into more of itself."
 	severity = DISEASE_SEVERITY_BIOHAZARD
-	visibility_flags = 0
 	stage1	= list("You don't feel very well.")
 	stage2	= list("Your skin feels a little slimy.")
 	stage3	= list("<span class='danger'>Your appendages are melting away.</span>", "<span class='danger'>Your limbs begin to lose their shape.</span>")
@@ -253,7 +248,6 @@
 	agent = "Fell Doge Majicks"
 	desc = "This disease transforms the victim into a corgi."
 	severity = DISEASE_SEVERITY_BIOHAZARD
-	visibility_flags = 0
 	stage1	= list("BARK.")
 	stage2	= list("You feel the need to wear silly hats.")
 	stage3	= list("<span class='danger'>Must... eat... chocolate....</span>", "<span class='danger'>YAP</span>")
@@ -278,7 +272,6 @@
 	agent = "Gluttony's Blessing"
 	desc = "A 'gift' from somewhere terrible."
 	severity = DISEASE_SEVERITY_BIOHAZARD
-	visibility_flags = 0
 	stage1	= list("Your stomach rumbles.")
 	stage2	= list("Your skin feels saggy.")
 	stage3	= list("<span class='danger'>Your appendages are melting away.</span>", "<span class='danger'>Your limbs begin to lose their shape.</span>")
@@ -295,7 +288,6 @@
 	agent = "Tranquility"
 	desc = "Consuming the flesh of a Gondola comes at a terrible price."
 	severity = DISEASE_SEVERITY_BIOHAZARD
-	visibility_flags = 0
 	stage1	= list("You seem a little lighter in your step.")
 	stage2	= list("You catch yourself smiling for no reason.")
 	stage3	= list("<span class='danger'>A cruel sense of calm overcomes you.</span>", "<span class='danger'>You can't feel your arms!</span>", "<span class='danger'>You let go of the urge to hurt clowns.</span>")

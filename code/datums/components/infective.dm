@@ -85,4 +85,4 @@
 
 /datum/component/infective/proc/try_infect(mob/living/L, target_zone)
 	for(var/V in diseases)
-		L.ContactContractDisease(V, target_zone)
+		L.contact_contract_disease(V, target_zone)

@@ -1,41 +1,41 @@
-/*
-//////////////////////////////////////
-Polyvitiligo
-
-	Noticeable.
-	Increases resistance.
-	Increases stage speed slightly.
-	Increases transmission.
-	Critical Level.
-
-BONUS
-	Makes the mob gain a random crayon powder colorful reagent.
-
-//////////////////////////////////////
-*/
-
-/datum/symptom/polyvitiligo
+/datum/disease_property/symptom/polyvitiligo
 	name = "Polyvitiligo"
-	desc = "The virus replaces the melanin in the skin with reactive pigment."
-	stealth = -1
-	resistance = 3
-	stage_speed = 1
-	transmittable = 2
-	level = 5
-	severity = 1
-	symptom_delay_min = 7
-	symptom_delay_max = 14
+	desc = "The virus replaces the melanin in the skin with a reactive pigment that regularly changes color."
+	symptom_delay_min = 10
+	symptom_delay_max = 20
+	var/camo_skin = FALSE
+	threshold_desc = "<b>GAMMA:</b> The skin pigment becomes mimetic, taking the color of whatever's behind the host."
 
-/datum/symptom/polyvitiligo/Activate(datum/disease/advance/A)
-	if(!..())
+/datum/disease_property/symptom/polyvitiligo/update_mutators()
+	if(HAS_TRAIT(disease, DISEASE_MUTATOR_GAMMA))
+		camo_skin = TRUE
+	else
+		camo_skin = FALSE
+		next_activation = 0 //refresh skin color
+
+/datum/disease_property/symptom/polyvitiligo/activate()
+	var/mob/living/carbon/human/M = disease.affected_mob
+	if(!istype(M))
 		return
-	var/mob/living/M = A.affected_mob
-	switch(A.stage)
+	switch(disease.stage)
 		if(5)
-			var/static/list/banned_reagents = list(/datum/reagent/colorful_reagent/crayonpowder/invisible, /datum/reagent/colorful_reagent/crayonpowder/white)
-			var/color = pick(subtypesof(/datum/reagent/colorful_reagent/crayonpowder) - banned_reagents)
-			if(M.reagents.total_volume <= (M.reagents.maximum_volume/10)) // no flooding humans with 1000 units of colorful reagent
-				M.reagents.add_reagent(color, 5)
+			if(camo_skin)
+				M.skin_tone = "camo"
+				if(message_cooldown())
+					to_chat(M, "<span class='notice'>Your skin tingles...</span>")
+				M.update_body_parts()
+				return
+			M.skin_tone = pick("orange","green","red","blue","cyan","yellow","pink")
+			M.visible_message("<span class='warning'>[M]'s skin shifts color!</span>", "<span class='notice'>Your skin tingles...</span>")
+			M.update_body_parts()
 		else
-			if (prob(50)) // spam
-				M.visible_message("<span class='warning'>[M] looks rather vibrant...</span>", "<span class='notice'>The colors, man, the colors...</span>")
+			if(message_cooldown())
+				M.visible_message("<span class='warning'>[M]'s skin pulses in vibrant colors...</span>", "<span class='notice'>Your skin tingles...</span>")
+
+/datum/disease_property/symptom/polyvitiligo/on_end()
+	var/mob/living/carbon/human/M = disease.affected_mob
+	if(!istype(M))
+		return
+	//Return skin tone to normal
+	M.skin_tone = GLOB.skin_tones[deconstruct_block(getblock(M.dna.uni_identity, DNA_SKIN_TONE_BLOCK), GLOB.skin_tones.len)]
+	M.update_body_parts()

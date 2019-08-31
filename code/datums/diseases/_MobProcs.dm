@@ -2,19 +2,19 @@
 /mob/living/proc/has_disease(datum/disease/D)
 	for(var/thing in diseases)
 		var/datum/disease/DD = thing
-		if(D.is_same(DD))
+		if(D.IsSame(DD))
 			return TRUE
 	return FALSE
 
 
 /mob/living/proc/can_contract_disease(datum/disease/D)
-	if(stat == DEAD && !D.process_dead)
+	if(stat == DEAD && HAS_TRAIT(D, DISEASE_PROCESS_DEAD))
 		return FALSE
 
 	if(D.get_disease_id() in disease_resistances)
 		return FALSE
 
-	if(HasDisease(D))
+	if(has_disease(D))
 		return FALSE
 
 	if(!(D.infectable_biotypes & mob_biotypes))
@@ -107,7 +107,7 @@
 		D.try_infect(src)
 
 /mob/living/proc/airborne_contract_disease(datum/disease/D)
-	if((D.spread_flags & DISEASE_SPREAD_AIRBORNE) && prob(D.infectivity * 0.50))
+	if(HAS_TRAIT(D, DISEASE_SPREAD_AIRBORNE) && prob(D.infectivity * 0.50))
 		ForceContractDisease(D)
 
 /mob/living/carbon/airborne_contract_disease(datum/disease/D)

@@ -4,10 +4,10 @@
 
 /datum/disease_property/trait/fluid_spreading/on_add()
 	..()
-	disease.spread_flags |= DISEASE_SPREAD_CONTACT_FLUIDS
+	ADD_TRAIT(disease, DISEASE_SPREAD_CONTACT_FLUIDS, type)
 
 /datum/disease_property/trait/fluid_spreading/on_remove()
-	disease.spread_flags &= ~DISEASE_SPREAD_CONTACT_FLUIDS
+	REMOVE_TRAIT(disease, DISEASE_SPREAD_CONTACT_FLUIDS, type)
 	..()
 
 /datum/disease_property/trait/contact_spreading
@@ -16,10 +16,10 @@
 
 /datum/disease_property/trait/contact_spreading/on_add()
 	..()
-	disease.spread_flags |= DISEASE_SPREAD_CONTACT_SKIN
+	ADD_TRAIT(disease, DISEASE_SPREAD_CONTACT_SKIN, type)
 
 /datum/disease_property/trait/contact_spreading/on_remove()
-	disease.spread_flags &= ~DISEASE_SPREAD_CONTACT_SKIN
+	REMOVE_TRAIT(disease, DISEASE_SPREAD_CONTACT_SKIN, type)
 	..()
 
 /datum/disease_property/trait/airborne_spreading
@@ -28,8 +28,8 @@
 
 /datum/disease_property/trait/airborne_spreading/on_add()
 	..()
-	disease.spread_flags |= DISEASE_SPREAD_AIRBORNE
+	ADD_TRAIT(disease, DISEASE_SPREAD_AIRBORNE, type)
 
 /datum/disease_property/trait/airborne_spreading/on_remove()
-	disease.spread_flags &= ~DISEASE_SPREAD_AIRBORNE
+	REMOVE_TRAIT(disease, DISEASE_SPREAD_AIRBORNE, type)
 	..()

@@ -5,7 +5,7 @@
 	symptom_delay_max = 6
 	var/restore_minor = FALSE
 	var/trauma_heal_severe = FALSE
-	threshold_desc = "<b>ALPHA:</b> The host recovers rapidly from minor ailments, like confusion.<br>
+	threshold_desc = "<b>ALPHA:</b> The host recovers rapidly from minor ailments, like confusion.<br>\
 					  <b>GAMMA:</b> Can regenerate severe and deep-rooted brain traumas."
 
 /datum/disease_property/symptom/neural_restoration/update_mutators()
@@ -20,18 +20,18 @@
 
 /datum/disease_property/symptom/neural_restoration/on_process()
 	..()
-	var/mob/living/M = disease.affected_mob
+	var/mob/living/carbon/M = disease.affected_mob
 	if(disease.stage >= 4 && restore_minor)
 		M.dizziness = max(0, M.dizziness - 1)
 		M.drowsyness = max(0, M.drowsyness - 1)
 		M.slurring = max(0, M.slurring - 1)
 		M.confused = max(0, M.confused - 1)
-		H.drunkenness = max(H.drunkenness - 2, 0)
+		M.drunkenness = max(M.drunkenness - 2, 0)
 		M.hallucination = max(0, M.hallucination - 2)
 
 /datum/disease_property/symptom/neural_restoration/activate()
 	var/mob/living/M = disease.affected_mob
-	if(A.stage >= 5)
+	if(disease.stage >= 5)
 		M.adjustOrganLoss(ORGAN_SLOT_BRAIN, -2)
 		if(iscarbon(M))
 			var/mob/living/carbon/C = M
