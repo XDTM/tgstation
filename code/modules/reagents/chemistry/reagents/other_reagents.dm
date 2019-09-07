@@ -15,7 +15,7 @@
 		for(var/thing in data["viruses"])
 			var/datum/disease/D = thing
 
-			if((HAS_TRAIT(D, DISEASE_SPREAD_SPECIAL)) || (HAS_TRAIT(D, DISEASE_SPREAD_NON_CONTAGIOUS)))
+			if(!HAS_TRAIT(D, DISEASE_SPREAD_BLOOD) && !HAS_TRAIT(D, DISEASE_SPREAD_CONTACT_FLUIDS))
 				continue
 
 			if((method == TOUCH || method == VAPOR) && (HAS_TRAIT(D, DISEASE_SPREAD_CONTACT_FLUIDS)))

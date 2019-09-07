@@ -14,7 +14,8 @@
 		prevent_heating = TRUE
 	else
 		prevent_heating = FALSE
-		REMOVE_TRAIT(disease.affected_mob, TRAIT_NO_STABILIZE_COLD, COOLING_TRAIT)
+		if(disease.processing)
+			REMOVE_TRAIT(disease.affected_mob, TRAIT_NO_STABILIZE_COLD, COOLING_TRAIT)
 	if(HAS_TRAIT(disease,DISEASE_MUTATOR_DELTA))
 		ice_cube = TRUE
 	else

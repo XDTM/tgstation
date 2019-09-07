@@ -9,7 +9,7 @@
 	stage_time_max = 2400
 	disease_flags = CURABLE
 	cures = list(/datum/reagent/consumable/sodiumchloride,  /datum/reagent/medicine/mutadone)
-	inherent_traits = list(DISEASE_SPREAD_SPECIAL, DISEASE_ABSTRACT)
+	inherent_traits = list(DISEASE_ABSTRACT)
 
 /datum/disease/gastrolosis/stage_act()
 	..()

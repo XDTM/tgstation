@@ -23,11 +23,10 @@
 	viable_mobtypes = list(/mob/living/carbon/human, /mob/living/carbon/monkey)
 
 	// NEW VARS
-	var/list/stats = list()
-	var/list/symptoms = list() // The symptoms of the disease.
-	var/list/disease_traits = list() // The traits of the disease.
-	var/symptom_limit = 6
-	var/trait_limit = 6
+	var/datum/pathogen/pathogen = null ///The pathogen defining the properties of the disease
+	var/list/stats = list()	///A list containing the current stats of the disease.
+	var/list/symptoms = list() /// The symptoms of the disease.
+	var/list/disease_traits = list() /// The traits of the disease.
 	var/id = ""
 	var/processing = FALSE
 	var/mutable = TRUE //set to FALSE to prevent most in-game methods of altering the disease via virology
@@ -76,18 +75,23 @@
 
  */
 
-/datum/disease/advance/New(is_copy = FALSE)
+/datum/disease/advance/New(is_copy = FALSE, pathogen_type = /datum/pathogen/ab_murion)
+	apply_pathogen(pathogen_type)
 	refresh(!is_copy)
 
 /datum/disease/advance/Destroy()
-	if(processing)
-		for(var/datum/disease_property/D in get_properties())
-			D.on_end()
 	for(var/datum/disease_property/D in get_properties())
 		D.remove()
+	QDEL_NULL(pathogen)
 	return ..()
 
-/datum/disease/advance/try_infect(var/mob/living/infectee, make_copy = TRUE)
+/datum/disease/advance/proc/apply_pathogen(pathogen_type)
+	var/datum/pathogen/P = new pathogen_type
+	pathogen = P
+	for(var/X in pathogen.default_traits)
+		ADD_TRAIT(src, X, INNATE_TRAIT)
+
+/datum/disease/advance/try_infect(mob/living/infectee, make_copy = TRUE)
 	//see if we are more transmittable than enough diseases to replace them
 	//diseases replaced in this way do not confer immunity
 	var/list/advance_diseases = list()
@@ -230,29 +234,16 @@
 /datum/disease/advance/proc/update_stats()
 	stats = list("resistance" = 1, "speed" = 1, "infectivity" = 1)
 
-	// Property modifiers are applied first
+	// Apply pathogen
+	stats["resistance"] = CLAMP(stats["resistance"] + pathogen.resistance, 1, 10)
+	stats["speed"] = CLAMP(stats["speed"] + pathogen.speed, 1, 10)
+	stats["infectivity"] = CLAMP(stats["infectivity"] + pathogen.infectivity, 1, 10)
+
+	// Apply symptom properties
 	for(var/datum/disease_property/P in get_properties())
 		stats["resistance"] = CLAMP(stats["resistance"] + P.resistance, 1, 10)
 		stats["speed"] = CLAMP(stats["speed"] + P.speed, 1, 10)
 		stats["infectivity"] = CLAMP(stats["infectivity"] + P.infectivity, 1, 10)
-
-	// Symptom count modifier
-	var/symptom_amount = LAZYLEN(symptoms)
-	var/symptom_modifier = 0
-	switch(symptom_amount)
-		if(1)
-			symptom_modifier = 2
-		if(2 to 3)
-			symptom_modifier = 1
-		if(4)
-			symptom_modifier = 0
-		if(5 to 6)
-			symptom_modifier = -1
-		if(7 to 8)
-			symptom_modifier = -2
-	stats["resistance"] = CLAMP(stats["resistance"] + symptom_modifier, 1, 10)
-	stats["speed"] = CLAMP(stats["speed"] + symptom_modifier, 1, 10)
-	stats["infectivity"] = CLAMP(stats["infectivity"] + symptom_modifier, 1, 10)
 
 	base_infect_chance = stats["infectivity"] * 10 //10% at infectivity 1, 100% at infectivity 10
 

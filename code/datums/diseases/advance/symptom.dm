@@ -20,7 +20,7 @@
 /// Adds the symptom to a disease.
 /datum/disease_property/symptom/add_to(datum/disease/advance/A, overwrite)
 	..()
-	if(disease.symptoms.len < (disease.symptom_limit - 1))
+	if(disease.symptoms.len < (disease.pathogen.max_symptoms - 1))
 		disease.symptoms += src
 	else
 		if(overwrite)
@@ -29,16 +29,20 @@
 		else
 			qdel(src)
 			return
-
-	//If the disease is already active, bring it up to date
-	if(disease.stage > 1)
-		for(var/i in 2 to disease.stage)
-			on_stage_increase(i, i-1)
 	on_add(disease)
 	disease.refresh()
+	//If the disease is already active, bring it up to speed
+	if(disease.processing)
+		on_start()
+		if(disease.stage > 1)
+			for(var/i in 2 to disease.stage)
+				on_stage_increase(i, i-1)	
+	
 
 /// Removes the symptom from a disease.
 /datum/disease_property/symptom/remove()
+	if(disease.processing)
+		on_end()
 	on_remove()
 	disease.symptoms -= src
 	..()

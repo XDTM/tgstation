@@ -11,7 +11,7 @@
 	severity = "Dangerous!"
 	cures = list(/datum/reagent/medicine/rezadone)
 	disease_flags = CAN_CARRY|CAN_RESIST
-	inherent_traits = list(DISEASE_SPREAD_NON_CONTAGIOUS, DISEASE_ABSTRACT, DISEASE_PROCESS_DEAD)
+	inherent_traits = list(DISEASE_ABSTRACT, DISEASE_PROCESS_DEAD)
 
 /datum/disease/decloning/stage_act()
 	..()

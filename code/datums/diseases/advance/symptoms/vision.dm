@@ -13,12 +13,14 @@
 		flash_proof = TRUE
 	else
 		flash_proof = FALSE
-		REMOVE_TRAIT(disease.affected_mob, TRAIT_FLASH_PROOF, OCULAR_REGROWTH_TRAIT)
+		if(disease.processing)
+			REMOVE_TRAIT(disease.affected_mob, TRAIT_FLASH_PROOF, OCULAR_REGROWTH_TRAIT)
 	if(HAS_TRAIT(disease, DISEASE_MUTATOR_DELTA))
 		thermal_vision = TRUE
 	else
 		thermal_vision = FALSE
-		REMOVE_TRAIT(disease.affected_mob, TRAIT_THERMAL_VISION, OCULAR_REGROWTH_TRAIT)
+		if(disease.processing)
+			REMOVE_TRAIT(disease.affected_mob, TRAIT_THERMAL_VISION, OCULAR_REGROWTH_TRAIT)
 
 /datum/disease_property/symptom/ocular_regrowth/on_stage_increase(new_stage, prev_stage)
 	if(new_stage == 5)

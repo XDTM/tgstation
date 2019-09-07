@@ -13,7 +13,7 @@
 	required_organs = list(/obj/item/organ/heart)
 	bypasses_immunity = TRUE // Immunity is based on not having a heart; this isn't a virus
 	var/sound = FALSE
-	inherent_traits = list(DISEASE_SPREAD_NON_CONTAGIOUS, DISEASE_ABSTRACT)
+	inherent_traits = list(DISEASE_ABSTRACT)
 
 /datum/disease/heart_failure/Copy()
 	var/datum/disease/heart_failure/D = ..()

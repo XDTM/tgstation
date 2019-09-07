@@ -12,7 +12,7 @@
 	infectable_biotypes = MOB_ORGANIC|MOB_UNDEAD|MOB_ROBOTIC|MOB_MINERAL
 	bypasses_immunity = TRUE //2spook
 	var/mob/living/simple_animal/parrot/Poly/ghost/parrot
-	inherent_traits = list(DISEASE_SPREAD_NON_CONTAGIOUS, DISEASE_ABSTRACT)
+	inherent_traits = list(DISEASE_ABSTRACT)
 
 /datum/disease/parrot_possession/stage_act()
 	..()

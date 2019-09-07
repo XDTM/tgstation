@@ -9,12 +9,13 @@
 #define CAN_RESIST	(1<<2)
 
 //Spread Flags
-#define DISEASE_SPREAD_SPECIAL			(1<<0)
-#define DISEASE_SPREAD_NON_CONTAGIOUS	(1<<1)
-#define DISEASE_SPREAD_BLOOD			(1<<2)
-#define DISEASE_SPREAD_CONTACT_FLUIDS	(1<<3)
-#define DISEASE_SPREAD_CONTACT_SKIN 	(1<<4)
-#define DISEASE_SPREAD_AIRBORNE			(1<<5)
+#define DISEASE_SPREAD_BLOOD			"disease_spread_blood"	//Allows transfer of disease via blood injection
+#define DISEASE_SPREAD_CONTACT_FLUIDS	"disease_spread_fluids"	//Allows transfer of disease via contact with body fluids (vomit, blood)
+#define DISEASE_SPREAD_CONTACT_SKIN 	"disease_spread_skin"	//Allows transfer of disease via skin contact (e.g. when bumping into each other)
+#define DISEASE_SPREAD_AIRBORNE			"disease_spread_air"	//Allows transfer of disease via air
+#define DISEASE_ABSTRACT 				"disease_abstract"		//Diseases with this trait are not "real" diseases
+#define DISEASE_FIXED_HOST				"disease_fixed_host"	//Prevents the disease from spreading from one host to others, although it can still be given from a sample. 
+
 
 //Mutator Defines (Effectively traits)
 #define DISEASE_MUTATOR_ALPHA		"alpha"		//mild effects, usually a small +1 to the symptom.
@@ -42,5 +43,4 @@
 #define DISEASE_CLASS_STATS "Stats"
 
 //Misc Flags
-#define DISEASE_ABSTRACT 		"disease_abstract"		//Diseases with this trait aren't "real" diseases, and won't transfer to blood or be spread in any way
 #define DISEASE_PROCESS_DEAD	"disease_proc_dead"		//Keeps processing while the host is dead

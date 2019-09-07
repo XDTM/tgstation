@@ -30,12 +30,16 @@
 /mob/living/proc/contact_contract_disease(datum/disease/D)
 	if(!can_contract_disease(D))
 		return FALSE
+	if(HAS_TRAIT(D, DISEASE_FIXED_HOST))
+		return
 	D.try_infect(src)
 
 
 /mob/living/carbon/contact_contract_disease(datum/disease/D, target_zone)
 	if(!can_contract_disease(D))
 		return FALSE
+	if(HAS_TRAIT(D, DISEASE_FIXED_HOST))
+		return
 
 	var/obj/item/clothing/Cl = null
 	var/passed = TRUE
@@ -107,6 +111,8 @@
 		D.try_infect(src)
 
 /mob/living/proc/airborne_contract_disease(datum/disease/D)
+	if(HAS_TRAIT(D, DISEASE_FIXED_HOST))
+		return
 	if(HAS_TRAIT(D, DISEASE_SPREAD_AIRBORNE) && prob(D.infectivity * 0.50))
 		ForceContractDisease(D)
 

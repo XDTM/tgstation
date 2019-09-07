@@ -10,7 +10,7 @@
 	disease_flags = CAN_CARRY|CAN_RESIST
 	required_organs = list(/obj/item/organ/appendix)
 	bypasses_immunity = TRUE // Immunity is based on not having an appendix; this isn't a virus
-	inherent_traits = list(DISEASE_SPREAD_NON_CONTAGIOUS, DISEASE_ABSTRACT)
+	inherent_traits = list(DISEASE_ABSTRACT)
 
 /datum/disease/appendicitis/stage_act()
 	..()

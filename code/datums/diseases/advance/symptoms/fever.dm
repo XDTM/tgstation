@@ -14,7 +14,8 @@
 		prevent_cooling = TRUE
 	else
 		prevent_cooling = FALSE
-		REMOVE_TRAIT(disease.affected_mob, TRAIT_NO_STABILIZE_HEAT, FEVER_TRAIT)
+		if(disease.processing)
+			REMOVE_TRAIT(disease.affected_mob, TRAIT_NO_STABILIZE_HEAT, FEVER_TRAIT)
 	multiplier = 1
 	if(HAS_TRAIT(disease,DISEASE_MUTATOR_EPSILON))
 		multiplier += 9

@@ -15,7 +15,7 @@
 	var/list/stage5 = list("Oh the humanity!")
 	var/new_form = /mob/living/carbon/human
 	var/bantype
-	inherent_traits = list(DISEASE_SPREAD_SPECIAL, DISEASE_HIDDEN_SCANNER)
+	inherent_traits = list(DISEASE_HIDDEN_SCANNER)
 
 /datum/disease/transformation/Copy()
 	var/datum/disease/transformation/D = ..()
@@ -144,7 +144,7 @@
 	..()
 
 /datum/disease/transformation/jungle_fever/monkeymode
-	inherent_traits = list(DISEASE_SPREAD_SPECIAL, DISEASE_HIDDEN_HUD, DISEASE_HIDDEN_SCANNER)
+	inherent_traits = list(DISEASE_HIDDEN_HUD, DISEASE_HIDDEN_SCANNER)
 	disease_flags = CAN_CARRY //no vaccines! no cure!
 
 /datum/disease/transformation/jungle_fever/monkeymode/after_add()

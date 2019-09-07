@@ -15,13 +15,15 @@
 		no_death = TRUE
 	else
 		no_death = FALSE
-		REMOVE_TRAIT(disease.affected_mob, TRAIT_NODEATH, DISEASE_TRAIT)
+		if(disease.processing)
+			REMOVE_TRAIT(disease.affected_mob, TRAIT_NODEATH, DISEASE_TRAIT)
 	if(HAS_TRAIT(disease, DISEASE_MUTATOR_EPSILON))
 		no_crit = TRUE
 	else
 		no_crit = FALSE
-		REMOVE_TRAIT(disease.affected_mob, TRAIT_NOSOFTCRIT, DISEASE_TRAIT)
-		REMOVE_TRAIT(disease.affected_mob, TRAIT_NOHARDCRIT, DISEASE_TRAIT)
+		if(disease.processing)
+			REMOVE_TRAIT(disease.affected_mob, TRAIT_NOSOFTCRIT, DISEASE_TRAIT)
+			REMOVE_TRAIT(disease.affected_mob, TRAIT_NOHARDCRIT, DISEASE_TRAIT)
 
 /datum/disease_property/symptom/life_support/on_process()
 	..()

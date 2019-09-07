@@ -144,7 +144,8 @@
 		night_vision = TRUE
 	else
 		night_vision = FALSE
-		REMOVE_TRAIT(disease.affected_mob, TRAIT_NIGHT_VISION, NOCTURNAL_REGEN_TRAIT)
+		if(disease.processing)
+			REMOVE_TRAIT(disease.affected_mob, TRAIT_NIGHT_VISION, NOCTURNAL_REGEN_TRAIT)
 
 
 /datum/disease_property/symptom/heal/darkness/on_stage_increase(new_stage, prev_stage)
@@ -319,13 +320,15 @@
 		temp_immune = TRUE
 	else
 		temp_immune = FALSE
-		REMOVE_TRAIT(disease.affected_mob, TRAIT_RESISTHEAT, "plasma_fixation")
-		REMOVE_TRAIT(disease.affected_mob, TRAIT_RESISTCOLD, "plasma_fixation")
+		if(disease.processing)
+			REMOVE_TRAIT(disease.affected_mob, TRAIT_RESISTHEAT, "plasma_fixation")
+			REMOVE_TRAIT(disease.affected_mob, TRAIT_RESISTCOLD, "plasma_fixation")
 	if(HAS_TRAIT(disease,DISEASE_MUTATOR_GAMMA))
 		tox_immune = TRUE
 	else
 		tox_immune = FALSE
-		REMOVE_TRAIT(disease.affected_mob, TRAIT_TOXIMMUNE, "plasma_fixation")
+		if(disease.processing)
+			REMOVE_TRAIT(disease.affected_mob, TRAIT_TOXIMMUNE, "plasma_fixation")
 
 /datum/disease_property/symptom/heal/plasma/on_process()
 	..()

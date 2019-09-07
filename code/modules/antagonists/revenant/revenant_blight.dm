@@ -13,7 +13,7 @@
 	severity = DISEASE_SEVERITY_HARMFUL
 	var/stagedamage = 0 //Highest stage reached.
 	var/finalstage = 0 //Because we're spawning off the cure in the final stage, we need to check if we've done the final stage's effects.
-	inherent_traits = list(DISEASE_SPREAD_NON_CONTAGIOUS)
+	inherent_traits = list(DISEASE_ABSTRACT)
 
 /datum/disease/revblight/cure()
 	if(affected_mob)

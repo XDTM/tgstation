@@ -17,7 +17,8 @@
 		whisper = TRUE
 	else
 		whisper = FALSE
-		REMOVE_TRAIT(disease.affected_mob, TRAIT_FORCEWHISPER, VOICE_CHANGE_TRAIT)
+		if(disease.processing)
+			REMOVE_TRAIT(disease.affected_mob, TRAIT_FORCEWHISPER, VOICE_CHANGE_TRAIT)
 
 /datum/disease_property/symptom/voice_change/on_end()
 	restore_voice()
