@@ -4,7 +4,7 @@
 
 /datum/disease_property/symptom/beard
 	name = "Facial Hypertrichosis"
-	desc = "The virus increases hair production significantly, causing rapid beard growth."
+	desc = "The disease increases hair production significantly, causing rapid beard growth."
 	symptom_delay_min = 18
 	symptom_delay_max = 36
 

@@ -1,10 +1,10 @@
 /datum/disease_property/symptom/sneeze
 	name = "Sneezing"
-	desc = "The virus causes irritation of the nasal cavity, making the host sneeze occasionally, spreading the disease in a cone if airborne."
+	desc = "The disease causes irritation of the nasal cavity, making the host sneeze occasionally, spreading the disease in a cone if airborne."
 	symptom_delay_min = 5
 	symptom_delay_max = 35
 	var/fluid_spread = FALSE
-	threshold_desc = "<b>ALPHA:</b> Increases sneezing range, spreading the virus over a larger area.<br>\
+	threshold_desc = "<b>ALPHA:</b> Increases sneezing range, spreading the disease over a larger area.<br>\
 					  <b>BETA:</b> Makes the fluids expelled through sneezing thicker, carrying fluid-infecting diseases as well."
 
 /datum/disease_property/symptom/sneeze/update_mutators()

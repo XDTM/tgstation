@@ -1,4 +1,3 @@
-///
 /datum/disease_property/symptom/fever
 	name = "Fever"
 	desc = "The disease causes a febrile response from the host, raising its natural body temperature."

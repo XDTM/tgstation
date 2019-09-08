@@ -1,6 +1,6 @@
 /datum/disease_property/symptom/itching
 	name = "Itching"
-	desc = "The virus irritates the skin, causing annoying itching."
+	desc = "The disease irritates the skin, causing annoying itching."
 	symptom_delay_min = 30
 	symptom_delay_max = 80
 	var/severe = FALSE

@@ -4,7 +4,7 @@ will also result in falling asleep more often and for longer.
 */
 /datum/disease_property/symptom/narcolepsy
 	name = "Narcolepsy"
-	desc = "The virus causes a hormone imbalance, making the host sleepy and narcoleptic."
+	desc = "The disease causes a hormone imbalance, making the host sleepy and narcoleptic."
 	symptom_delay_min = 60
 	symptom_delay_max = 120
 	var/sleepiness = 0

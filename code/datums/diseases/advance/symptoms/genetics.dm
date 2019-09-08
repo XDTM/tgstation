@@ -1,13 +1,13 @@
 /datum/disease_property/symptom/genetic_mutation
 	name = "DNA Mutation"
-	desc = "The virus bonds with the DNA of the host, causing random mutations until removed."
+	desc = "The disease bonds with the DNA of the host, causing random mutations until removed."
 	level = 6
 	var/list/possible_mutations
 	var/archived_dna = null
 	symptom_delay_min = 60
 	symptom_delay_max = 120
 	var/no_reset = FALSE
-	threshold_desc = "<b>BETA:</b> The mutations persist even if the virus is cured."
+	threshold_desc = "<b>BETA:</b> The mutations persist even if the disease is cured."
 
 /datum/disease_property/symptom/genetic_mutation/activate()
 	var/mob/living/carbon/C = disease.affected_mob

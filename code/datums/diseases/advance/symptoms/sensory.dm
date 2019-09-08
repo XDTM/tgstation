@@ -1,6 +1,6 @@
 /datum/disease_property/symptom/neural_restoration
 	name = "Neural Restoration"
-	desc = "The virus strengthens the bonds between neurons, curing brain damage and healing minor traumas."
+	desc = "The disease strengthens the bonds between neurons, curing brain damage and healing minor traumas."
 	symptom_delay_min = 6
 	symptom_delay_max = 6
 	var/restore_minor = FALSE

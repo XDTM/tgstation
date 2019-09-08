@@ -3,14 +3,14 @@
 */
 /datum/disease_property/symptom/fire
 	name = "Spontaneous Combustion"
-	desc = "The virus turns fat into an extremely flammable compound, and raises the body's temperature, making the host burst into flames spontaneously."
+	desc = "The disease turns fat into an extremely flammable compound, and raises the body's temperature, making the host burst into flames spontaneously."
 	level = 6
 	symptom_delay_min = 20
 	symptom_delay_max = 75
 	var/infective = FALSE
 	var/explosive = FALSE
 	var/next_explosion = 0
-	threshold_desc = "<b>BETA:</b> Host will spread the virus through skin flakes when bursting into flame.<br>\
+	threshold_desc = "<b>BETA:</b> Host will spread the disease through skin flakes when bursting into flame.<br>\
 					  <b>DELTA:</b> Host will cause an explosive reaction when in contact with water."
 
 /datum/disease_property/symptom/fire/update_mutators()

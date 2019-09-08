@@ -1,7 +1,7 @@
 ///Gives NOBREATH to the host, making them immune to oxygen damage and stopping breathing, but only while not in crit and blood volume is okay
 /datum/disease_property/symptom/oxygen
 	name = "Self-Respiration"
-	desc = "The disease rapidly synthesizes oxygen, effectively removing the need for breathing as long as the host's metabolism and circulation function regularly."
+	desc = "The disease rapidly synthesizes oxygen, effectively removing the need for breathing as long as the host's metabolism and circulation function properly."
 	var/nutrition = FALSE
 	var/crit_stop = FALSE
 	threshold_desc = "<b>GAMMA:</b>The disease also provides nutrition to the host's cells.<br>"

@@ -85,7 +85,7 @@
 ///Causes gradual eye damage
 /datum/disease_property/symptom/visionloss
 	name = "Hyphema"
-	desc = "The virus causes inflammation of the retina, leading to eye damage and eventually blindness."
+	desc = "The disease causes inflammation of the retina, leading to eye damage and eventually blindness."
 	symptom_delay_min = 40
 	symptom_delay_max = 80
 	var/remove_eyes = FALSE

@@ -1,6 +1,6 @@
 /datum/disease_property/symptom/voice_change
 	name = "Voice Change"
-	desc = "The virus alters the pitch and tone of the host's vocal cords, changing how their voice sounds."
+	desc = "The disease alters the pitch and tone of the host's vocal cords, changing how their voice sounds."
 	symptom_delay_min = 90
 	symptom_delay_max = 150
 	threshold_desc = "<b>ALPHA:</b> The disease keeps changing the host's voice, instead of only changing it once.<br>\

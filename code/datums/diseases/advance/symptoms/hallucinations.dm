@@ -4,7 +4,7 @@
 
 /datum/disease_property/symptom/hallucinations
 	name = "Hallucinations"
-	desc = "The virus stimulates the brain, causing occasional hallucinations."
+	desc = "The disease stimulates the brain, causing occasional hallucinations."
 	level = 5
 	symptom_delay_min = 25
 	symptom_delay_max = 90

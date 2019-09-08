@@ -4,6 +4,8 @@
 	symptom_delay_min = 45
 	symptom_delay_max = 90
 
+	//TODO shedding limbs on Delta or Epsilon
+
 /datum/disease_property/symptom/shedding/activate()
 	var/mob/living/M = disease.affected_mob
 	if(message_cooldown())

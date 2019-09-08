@@ -3,7 +3,7 @@
 */
 /datum/disease_property/symptom/confusion
 	name = "Auricolar Burst"
-	desc = "The virus causes occasional bursts of air in the ear's labyrinth, causing dizziness and lack of balance."
+	desc = "The disease causes occasional bursts of air in the ear's labyrinth, causing dizziness and lack of balance."
 	symptom_delay_min = 10
 	symptom_delay_max = 30
 	var/stumble = FALSE

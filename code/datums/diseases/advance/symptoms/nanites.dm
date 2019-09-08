@@ -1,6 +1,6 @@
 /datum/disease_property/symptom/nano_boost
 	name = "Nano-symbiosis"
-	desc = "The virus reacts to nanites in the host's bloodstream by enhancing their replication cycle."
+	desc = "The disease reacts to nanites in the host's bloodstream by enhancing their replication cycle."
 
 /datum/disease_property/symptom/nano_boost/on_process()
 	..()
@@ -9,7 +9,7 @@
 
 /datum/disease_property/symptom/nano_destroy
 	name = "Silicolysis"
-	desc = "The virus reacts to nanites in the host's bloodstream by attacking and consuming them."
+	desc = "The disease reacts to nanites in the host's bloodstream by attacking and consuming them."
 
 /datum/disease_property/symptom/nano_destroy/on_process()
 	..()

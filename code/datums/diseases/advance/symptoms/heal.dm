@@ -1,5 +1,5 @@
 /datum/disease_property/symptom/heal
-	name = "Basic Healing (does nothing)" //warning for adminspawn viruses
+	name = "Basic Healing (does nothing)" //warning for adminspawn diseasees
 	desc = "You should not be seeing this."
 	level = 0
 	var/passive_message = "" //Random message to the host warning them that the symptom exists
@@ -33,7 +33,7 @@
 ///Heals people close to or in space
 /datum/disease_property/symptom/heal/starlight
 	name = "Starlight Condensation"
-	desc = "The virus reacts to direct starlight, producing regenerative chemicals. Works best against toxin-based damage."
+	desc = "The disease reacts to direct starlight, producing regenerative chemicals. Works best against toxin-based damage."
 	level = 6
 	passive_message = "<span class='notice'>You miss the feeling of starlight on your skin.</span>"
 	var/nearspace_penalty = 0.3
@@ -82,9 +82,9 @@
 ///Removes chems from the body
 /datum/disease_property/symptom/heal/chem
 	name = "Phagocyte"
-	var/food_conversion = FALSE
-	desc = "The virus rapidly breaks down any foreign chemicals in the bloodstream."
+	desc = "The disease rapidly breaks down any foreign chemicals in the bloodstream."
 	threshold_desc = "<b>BETA:</b> Converts reagents into nutrition for the host."
+	var/food_conversion = FALSE
 
 /datum/disease_property/symptom/heal/chem/update_mutators()
 	if(HAS_TRAIT(disease,DISEASE_MUTATOR_BETA))
@@ -103,10 +103,10 @@
 ///Independently processes reagents as if it was a second liver
 /datum/disease_property/symptom/heal/metabolism
 	name = "Parallel Metabolization"
+	desc = "The disease causes the host's metabolism to accelerate rapidly, making them metabolize twice as fast,\
+	 but also causing increased hunger."
 	var/triple_metabolism = FALSE
 	var/reduced_hunger = FALSE
-	desc = "The virus causes the host's metabolism to accelerate rapidly, making them metabolize twice as fast,\
-	 but also causing increased hunger."
 	threshold_desc = "<b>ALPA:</b> Reduces hunger caused by the symptom.<br>\
 					  <b>GAMMA:</b> Chemical metabolization is tripled instead of doubled."
 
@@ -123,7 +123,7 @@
 /datum/disease_property/symptom/heal/metabolism/heal(mob/living/carbon/C, actual_power)
 	if(!istype(C))
 		return
-	C.reagents.metabolize(C, can_overdose=TRUE) //this works even without a liver; it's intentional since the virus is metabolizing by itself
+	C.reagents.metabolize(C, can_overdose=TRUE) //this works even without a liver; it's intentional since the disease is metabolizing by itself
 	if(triple_metabolism)
 		C.reagents.metabolize(C, can_overdose=TRUE)
 	C.overeatduration = max(C.overeatduration - 2, 0)
@@ -134,7 +134,7 @@
 
 /datum/disease_property/symptom/heal/darkness
 	name = "Nocturnal Regeneration"
-	desc = "The virus is able to mend the host's flesh when in conditions of low light, repairing physical damage. More effective against brute damage."
+	desc = "The disease is able to mend the host's flesh when in conditions of low light, repairing physical damage. More effective against brute damage."
 	passive_message = "<span class='notice'>You feel tingling on your skin as light passes over it.</span>"
 	threshold_desc = "<b>GAMMA:</b> Additionally gives night vision to the host."
 	var/night_vision = FALSE
@@ -190,7 +190,7 @@
 
 /datum/disease_property/symptom/heal/coma
 	name = "Regenerative Coma"
-	desc = "The virus causes the host to fall into a coma when severely damaged, then rapidly fixes the damage."
+	desc = "The disease causes the host to fall into a coma when severely damaged, then rapidly fixes the damage."
 	passive_message = "<span class='notice'>The pain from your wounds makes you feel oddly sleepy...</span>"
 	var/fake_death = FALSE
 	var/active_coma = FALSE //to prevent multiple coma procs
@@ -258,7 +258,7 @@
 
 /datum/disease_property/symptom/heal/water
 	name = "Tissue Hydration"
-	desc = "The virus uses excess water inside and outside the body to repair damaged tissue cells. More effective when using holy water and against burns."
+	desc = "The disease uses excess water inside and outside the body to repair damaged tissue cells. More effective when using holy water and against burns."
 	level = 6
 	passive_message = "<span class='notice'>Your skin feels oddly dry...</span>"
 	var/absorption_coeff = 1
@@ -307,7 +307,7 @@
 
 /datum/disease_property/symptom/heal/plasma
 	name = "Plasma Fixation"
-	desc = "The virus draws plasma from the atmosphere and from inside the body to heal and stabilize body temperature."
+	desc = "The disease draws plasma from the atmosphere and from inside the body to heal and stabilize body temperature."
 	level = 8
 	passive_message = "<span class='notice'>You feel an odd attraction to plasma.</span>"
 	var/temp_immune = FALSE
@@ -385,7 +385,7 @@
 
 /datum/disease_property/symptom/heal/radiation
 	name = "Radioactive Resonance"
-	desc = "The virus uses radiation to fix damage through local cellular mutations."
+	desc = "The disease uses radiation to fix damage through local cellular mutations."
 	level = 6
 	passive_message = "<span class='notice'>Your skin glows faintly.</span>"
 	var/glow = FALSE

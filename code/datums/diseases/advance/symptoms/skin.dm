@@ -1,6 +1,6 @@
 /datum/disease_property/symptom/polyvitiligo
 	name = "Polyvitiligo"
-	desc = "The virus replaces the melanin in the skin with a reactive pigment that regularly changes color."
+	desc = "The disease replaces the melanin in the skin with a reactive pigment that regularly changes color."
 	symptom_delay_min = 10
 	symptom_delay_max = 20
 	var/camo_skin = FALSE
