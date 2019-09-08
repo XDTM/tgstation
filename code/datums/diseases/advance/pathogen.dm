@@ -17,7 +17,7 @@
 
 /datum/pathogen/ab_murion
 	name = "AB Murion"
-	desc = "The current intergalactic standard for disease research, striking a good balance between core and membrane. Approved by 9 virologists out of 10."
+	desc = "The current intergalactic standard for disease research, striking a good balance between core and membrane. Recommended by 9 virologists out of 10."
 	spread_desc = "Fluid Contact"
 	max_symptoms = 4
 	max_traits = 5
@@ -82,7 +82,7 @@
 
 /datum/pathogen/count_d
 	name = "COUNT.d"
-	desc = "A variant of the more common DUKE.d, this pathogen prevents infection even through blood contact by synchronizing to their host's metabolism. The disease needs to be administered \
+	desc = "A variant of the more common DUKE.h, this pathogen prevents infection even through blood contact by synchronizing to their host's metabolism. The disease needs to be administered \
 	from the original sample to work."
 	spread_desc = "Direct Blood Transfer"
 	max_symptoms = 4
@@ -178,12 +178,12 @@
 
 /datum/pathogen/black
 	name = "BLACK"
-	desc = "Perfection made pathogen."
+	desc = "Perfection made pathogen. The result of cross-examining ultra-high tech NT biotechnology, underground military bioterror research, and scans of advanced abductor cyber-biology."
 	spread_desc = "Airborne, Skin Contact, Fluid Contact"
 	trait_desc = "Can infect corpses and thrive within dead hosts."
 	max_symptoms = 4
 	max_traits = 3
 	default_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_CONTACT_SKIN, DISEASE_SPREAD_AIRBORNE, DISEASE_PROCESS_DEAD)
-	resistance = 15
-	speed = 15
-	infectivity = 15
+	resistance = 12
+	speed = 12
+	infectivity = 12

@@ -267,6 +267,159 @@
 	research_icon_state = "disease_trait"
 	property_type = /datum/disease_property/trait
 
+/datum/design/virology/property/trait/undead_adaptation
+	name = "Necrotic Metabolism"
+	desc = "The disease is able to thrive and act even within dead hosts."
+	id = "disease_trait_undead_adaptation"
+	property_type = /datum/disease_property/trait/undead_adaptation
+
+/datum/design/virology/property/trait/inorganic_adaptation
+	name = "Inorganic Biology"
+	desc = "The disease can survive and replicate even in an inorganic environment."
+	id = "disease_trait_inorganic_adaptation"
+	property_type = /datum/disease_property/trait/inorganic_adaptation
+
+/datum/design/virology/property/trait/immolation
+	name = "Immolation"
+	desc = "The disease accelerates its metabolism to the point of self-destruction, increasing its stats but causing it to burn out \
+	and cure itself some time after the final stage. Faster diseases are quicker to burn out."
+	id = "disease_trait_immolation"
+	property_type = /datum/disease_property/trait/immolation
+
+/datum/design/virology/property/trait/mutator_alpha
+	name = "Alpha Strain"
+	desc = "The disease has an additional segment of DNA which enhances some symptoms."
+	id = "disease_trait_mutator_alpha"
+	property_type = /datum/disease_property/trait/mutator_alpha
+
+/datum/design/virology/property/trait/mutator_beta
+	name = "Beta Sequence"
+	desc = "The disease has a parallel sequence of DNA which causes symptoms to have additional effects."
+	id = "disease_trait_mutator_beta"
+	property_type = /datum/disease_property/trait/mutator_beta
+
+/datum/design/virology/property/trait/mutator_gamma
+	name = "Gamma Ribosomes"
+	desc = "The disease has specialized ribosomes who can read DNA in multiple configurations, evolving some symptoms."
+	id = "disease_trait_mutator_gamma"
+	property_type = /datum/disease_property/trait/mutator_gamma
+
+/datum/design/virology/property/trait/mutator_delta
+	name = "Delta Plane"
+	desc = "The disease has an advanced two-dimensional planar DNA, containing the multitude of instructions needed for very complex symptom effects."
+	id = "disease_trait_mutator_delta"
+	property_type = /datum/disease_property/trait/mutator_delta
+
+/datum/design/virology/property/trait/mutator_epsilon
+	name = "Epsilon Cell"
+	desc = "The disease hosts a mutable sub-disease, allowing it to specialize for different tasks when reproducing, therefore enabling far more powerful symptom effects. \
+	However, the cost of hosting and replicating the cell reduces its speed significantly, as well as reducing resistance and infectivity."
+	id = "disease_trait_mutator_epsilon"
+	property_type = /datum/disease_property/trait/mutator_epsilon
+
+/datum/design/virology/property/trait/mutator_omega
+	name = "Omega Nucleus"
+	desc = "The disease replaces its DNA with an extremely advanced molecule, able to intelligently transform itself into a variety of configurations. \
+	The disease is less efficient because of this, but it simultaneously holds the effects of mutators from Alpha to Delta."
+	id = "disease_trait_mutator_omega"
+	property_type = /datum/disease_property/trait/mutator_omega
+
+/datum/design/virology/property/trait/mutator_theta
+	name = "Theta Core"
+	desc = "The disease additionally grows a nodule of exotic matter, changing the effect of some symptoms in anomalous ways."
+	id = "disease_trait_mutator_theta"
+	property_type = /datum/disease_property/trait/mutator_theta
+
+/datum/design/virology/property/trait/fluid_spreading
+	name = "Fluid Infection"
+	desc = "The disease can survive inside blood and body fluids and infect new hosts on contact."
+	id = "disease_trait_fluid_spreading"
+	property_type = /datum/disease_property/trait/fluid_spreading
+
+/datum/design/virology/property/trait/contact_spreading
+	name = "Contact Infection"
+	desc = "The disease can infect others through brief skin-to-skin contact."
+	id = "disease_trait_contact_spreading"
+	property_type = /datum/disease_property/trait/contact_spreading
+
+/datum/design/virology/property/trait/airborne_spreading
+	name = "Airborne Infection"
+	desc = "The disease can survive briefly in open air, and infect others who breathe it."
+	id = "disease_trait_airborne_spreading"
+	property_type = /datum/disease_property/trait/airborne_spreading
+
+/datum/design/virology/property/trait/all_stats
+	name = "Selective Genes"
+	desc = "The disease performs artificial selection when reproducing, keeping only the better pathogens. Increases all stats by 1."
+	id = "disease_trait_all_stats"
+	property_type = /datum/disease_property/trait/all_stats
+
+/datum/design/virology/property/trait/resistance
+	name = "Internal Membrane"
+	desc = "The disease has an additional internal membrane, increasing the resistance of the disease by 2."
+	id = "disease_trait_resistance"
+	property_type = /datum/disease_property/trait/resistance
+
+/datum/design/virology/property/trait/resistance_for_speed
+	name = "Outer Shell"
+	desc = "The disease has an impermeable external shell, increasing the resistance of the disease by 4, but slowing down its speed by 2."
+	id = "disease_trait_resistance_for_speed"
+	property_type = /datum/disease_property/trait/resistance_for_speed
+
+/datum/design/virology/property/trait/resistance_for_infectivity
+	name = "Fuzzy Membrane"
+	desc = "The disease has a fuzzy external membrane, increasing the resistance of the disease by 4, but reducing its infectivity by 2."
+	id = "disease_trait_resistance_for_infectivity"
+	property_type = /datum/disease_property/trait/resistance_for_infectivity
+
+/datum/design/virology/property/trait/speed
+	name = "Efficient Metabolism"
+	desc = "The disease has a more efficient metabolic process, increasing the speed of the disease by 2."
+	id = "disease_trait_speed"
+	property_type = /datum/disease_property/trait/speed
+
+/datum/design/virology/property/trait/speed_for_resistance
+	name = "Porous Membrane"
+	desc = "The disease has a porous membrane, increasing the speed of the disease by 4, but reducing its resistance by 2."
+	id = "disease_trait_speed_for_resistance"
+	property_type = /datum/disease_property/trait/speed_for_resistance
+
+/datum/design/virology/property/trait/speed_for_infectivity
+	name = "Amorphous Shape"
+	desc = "The disease has an amorphous shape, increasing the speed of the disease by 4, but reducing its infectivity by 2."
+	id = "disease_trait_speed_for_infectivity"
+	property_type = /datum/disease_property/trait/speed_for_infectivity
+
+/datum/design/virology/property/trait/infectivity
+	name = "Motile Cilia"
+	desc = "The disease has external motile cilia, increasing the infectivity of the disease by 2."
+	id = "disease_trait_infectivity"
+	property_type = /datum/disease_property/trait/infectivity
+
+/datum/design/virology/property/trait/infectivity_for_resistance
+	name = "Barbed Membrane"
+	desc = "The disease has a barbed membrane, increasing the infectivity of the disease by 4, but reducing its resistance by 2."
+	id = "disease_trait_infectivity_for_resistance"
+	property_type = /datum/disease_property/trait/infectivity_for_resistance
+
+/datum/design/virology/property/trait/infectivity_for_speed
+	name = "Suction Tendrils"
+	desc = "The disease has several suction terndrils, increasing the infectivity of the disease by 4, but reducing its speed by 2."
+	id = "disease_trait_infectivity_for_speed"
+	property_type = /datum/disease_property/trait/infectivity_for_speed
+
+/datum/design/virology/property/trait/stealth_hud
+	name = "Mimetic Enzymes"
+	desc = "The disease mimics body cells when analyzed superficially, making it invisible to medical HUDs."
+	id = "disease_trait_stealth_hud"
+	property_type = /datum/disease_property/trait/stealth_hud
+
+/datum/design/virology/property/trait/stealth_scan
+	name = "Metabolic Mirroring"
+	desc = "Makes the disease invisible to medical analysis by closely mirroring the host's metabolic functions. Reduces disease stats due to the loss of efficiency."
+	id = "disease_trait_stealth_scan"
+	property_type = /datum/disease_property/trait/stealth_scan
+
 ///////////////////////////////////////////////////////////
 //////////////////////////PATHOGENS////////////////////////
 ///////////////////////////////////////////////////////////
@@ -276,3 +429,108 @@
 	research_icon = 'icons/obj/device.dmi'
 	research_icon_state = "disease_pathogen"
 	var/pathogen_type = /datum/pathogen
+
+/datum/design/virology/pathogen/ab_murion
+	name = "AB Murion"
+	desc = "The current intergalactic standard for disease research, striking a good balance between core and membrane. Recommended by 9 virologists out of 10."
+	id = "pathogen_ab_murion"
+	var/pathogen_type = /datum/pathogen/ab_murion
+
+/datum/design/virology/pathogen/zy_murion
+	name = "ZY Murion"
+	desc = "A variant of the AB Murion, mutated to spread by skin contact instead of fluids."
+	id = "pathogen_zy_murion"
+	var/pathogen_type = /datum/pathogen/zy_murion
+
+/datum/design/virology/pathogen/csal_41
+	name = "CSAL-41"
+	desc = "A pathogen blueprint resulting from bio-miniaturization research. There is less space to work with, but the reduced size has significant benefits in efficiency and infectivity."
+	id = "pathogen_csal_41"
+	var/pathogen_type = /datum/pathogen/csal_41
+
+/datum/design/virology/pathogen/csal_42
+	name = "CSAL-42"
+	desc = "A modern variant of CSAL-41, this pathogen offers a compromise between miniaturization and capacity."
+	id = "pathogen_csal_42"
+	var/pathogen_type = /datum/pathogen/csal_42
+
+/datum/design/virology/pathogen/mono_gtr
+	name = "Mono-GTR"
+	desc = "A pathogen consisting of a specialized core surrounded by several layers of support structures. It was initially used to spread vaccinations to livestock."
+	id = "pathogen_mono_gtr"
+	var/pathogen_type = /datum/pathogen/mono_gtr
+
+/datum/design/virology/pathogen/mono_pwr
+	name = "Mono-PWR"
+	desc = "A variant of Mono-GTR geared towards maximizing efficiency instead of support structures."
+	id = "pathogen_mono_pwr"
+	var/pathogen_type = /datum/pathogen/mono_pwr
+
+/datum/design/virology/pathogen/duke_h
+	name = "DUKE.h"
+	desc = "A pathogen designed to be the noble gas equivalent of virology. It has no natural spread mechanism, preventing unintentional outbreaks. \
+	However, these safety features take a heavy toll on the disease's growth speed."
+	id = "pathogen_duke_h"
+	var/pathogen_type = /datum/pathogen/duke_h
+
+/datum/design/virology/pathogen/count_d
+	name = "COUNT.d"
+	desc = "A variant of the more common DUKE.h, this pathogen prevents infection even through blood contact by synchronizing to their host's metabolism. The disease needs to be administered \
+	from the original sample to work."
+	id = "pathogen_count_d"
+	var/pathogen_type = /datum/pathogen/count_d
+
+/datum/design/virology/pathogen/large_8
+	name = "LARGE-8"
+	desc = "A pathogen with an uncommon design, placing the support structures at the center and its multiple cores in an octagonal pattern around it."
+	id = "pathogen_large_8"
+	var/pathogen_type = /datum/pathogen/large_8
+
+/datum/design/virology/pathogen/huge_16
+	name = "HUGE-16"
+	desc = "A variation of LARGE-8, this massive pathogen has an extreme amount of space for both cores and support structures, but suffers greatly in terms of base efficiency."
+	id = "pathogen_huge_16"
+	var/pathogen_type = /datum/pathogen/huge_16
+
+/datum/design/virology/pathogen/dawn
+	name = "Dawn"
+	desc = "The result of the infamous project Dawn: a variation of the AB Murion which is nearly undetectable by medical scans, while being more efficient at the same time. \
+	Its use was heavily restricted after several outbreaks from research institutes proved nearly impossible to eradicate."
+	id = "pathogen_dawn"
+	var/pathogen_type = /datum/pathogen/dawn
+
+/datum/design/virology/pathogen/dusk
+	name = "Dusk"
+	desc = "An illegal revisitation of the Dawn project, resulting in an even more dangerous pathogen."
+	id = "pathogen_dusk"
+	var/pathogen_type = /datum/pathogen/dusk
+
+/datum/design/virology/pathogen/midnight
+	name = "Midnight"
+	desc = "\[REDACTED\]"
+	id = "pathogen_ab_murion"
+	var/pathogen_type = /datum/pathogen/midnight
+
+/datum/design/virology/pathogen/syn_dr_111
+	name = "SYN:Dr_111"
+	desc = "Developed by an unnamed syndicate doctor, this pathogen has severely interdependent mechanisms which limit its cusomizability, but give it a spectacular boost in efficiency."
+	id = "pathogen_syn_dr_111"
+	var/pathogen_type = /datum/pathogen/syn_dr_111
+
+/datum/design/virology/pathogen/syn_dr_0m3
+	name = "SYN:Dr_0M3"
+	desc = "A modification of SYN:DR_111 geared towards mutators instead of pure efficiency."
+	id = "pathogen_syn_dr_0m3"
+	var/pathogen_type = /datum/pathogen/syn_dr_0m3
+
+/datum/design/virology/pathogen/grey
+	name = "GREY"
+	desc = "Reverse-engineered from abductor biotechnology, this pathogen is extremely infective, while still having a high core capacity."
+	id = "pathogen_grey"
+	var/pathogen_type = /datum/pathogen/grey
+
+/datum/design/virology/pathogen/black
+	name = "BLACK"
+	desc = "Perfection made pathogen."
+	id = "pathogen_black"
+	var/pathogen_type = /datum/pathogen/black

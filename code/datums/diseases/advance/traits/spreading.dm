@@ -24,7 +24,7 @@
 
 /datum/disease_property/trait/airborne_spreading
 	name = "Airborne Infection"
-	desc = "The disease can survive briefly in open air, and infect others who breath it."
+	desc = "The disease can survive briefly in open air, and infect others who breathe it."
 
 /datum/disease_property/trait/airborne_spreading/on_add()
 	..()
