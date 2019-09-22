@@ -6,9 +6,10 @@
 	cure_chance = 10
 	agent = "H13N1 flu virion"
 	viable_mobtypes = list(/mob/living/carbon/human, /mob/living/carbon/monkey)
-	base_infect_chance = 75
+	base_infect_chance = 20
 	desc = "If left untreated the subject will feel quite unwell."
 	severity = DISEASE_SEVERITY_MINOR
+	natural_immunity_chance = 12
 	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_AIRBORNE)
 
 /datum/disease/flu/stage_act()

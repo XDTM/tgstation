@@ -24,14 +24,14 @@
 	var/infectivity = 65
 	var/cure_chance = 8
 	var/carrier = FALSE //If our host is only a carrier
-	var/bypasses_immunity = FALSE //Does it skip species virus immunity check? Some things may diseases and not viruses
-	var/base_infect_chance = 50 //Chance to infect a new host. Modified by the type of infection.
+	var/base_infect_chance = 15 //Chance to infect a new host. Modified by the type of infection.
 	var/severity = DISEASE_SEVERITY_NONTHREAT
 	var/list/required_organs = list()
 	var/needs_all_cures = TRUE
 	var/list/strain_data = list() //dna_spread special bullshit
 	var/infectable_biotypes = MOB_ORGANIC //if the disease can spread on organics, synthetics, or undead
 	var/copy_type = null //if this is null, copies will use the type of the instance being copied
+	var/natural_immunity_chance = 0
 
 	var/inherent_traits = list(DISEASE_SPREAD_AIRBORNE, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_CONTACT_SKIN)
 
@@ -63,7 +63,14 @@
 	infectee.med_hud_set_status()
 
 	var/turf/source_turf = get_turf(infectee)
-	log_virus("[key_name(infectee)] was infected by virus: [src.admin_details()] at [loc_name(source_turf)]")
+	log_virus("[key_name(infectee)] was infected by disease: [src.admin_details()] at [loc_name(source_turf)]")
+
+	if(prob(natural_immunity_chance))
+		log_virus("[key_name(infectee)] was naturally immune to the disease: [src.admin_details()] at [loc_name(source_turf)]")
+		D.cure()
+
+/datum/disease/proc/get_infect_chance()
+	return base_infect_chance * (stage - 1)
 
 //Return a string for admin logging uses, should describe the disease in detail
 /datum/disease/proc/admin_details()

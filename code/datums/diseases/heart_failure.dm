@@ -11,7 +11,6 @@
 	severity = "Dangerous!"
 	disease_flags = CAN_CARRY|CAN_RESIST
 	required_organs = list(/obj/item/organ/heart)
-	bypasses_immunity = TRUE // Immunity is based on not having a heart; this isn't a virus
 	var/sound = FALSE
 	inherent_traits = list(DISEASE_ABSTRACT)
 

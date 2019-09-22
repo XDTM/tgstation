@@ -2,13 +2,18 @@
 	dupe_mode = COMPONENT_DUPE_ALLOWED
 	var/list/datum/disease/diseases //make sure these are the static, non-processing versions!
 	var/expire_time
+	var/infection_type = DISEASE_SPREAD_CONTACT_FLUIDS
 	var/min_clean_strength = CLEAN_WEAK
 
-/datum/component/infective/Initialize(list/datum/disease/_diseases, expire_in)
+/datum/component/infective/Initialize(list/datum/disease/_diseases, expire_in, _infection_type)
 	if(islist(_diseases))
 		diseases = _diseases
 	else
 		diseases = list(_diseases)
+
+	if(_infection_type)
+		infection_type = _infection_type
+		
 	if(expire_in)
 		expire_time = world.time + expire_in
 		QDEL_IN(src, expire_in)
@@ -85,4 +90,4 @@
 
 /datum/component/infective/proc/try_infect(mob/living/L, target_zone)
 	for(var/V in diseases)
-		L.contact_contract_disease(V, target_zone)
+		L.contact_contract_disease(V, target_zone, infection_type)

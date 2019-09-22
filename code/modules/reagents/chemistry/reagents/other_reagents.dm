@@ -19,7 +19,7 @@
 				continue
 
 			if((method == TOUCH || method == VAPOR) && (HAS_TRAIT(D, DISEASE_SPREAD_CONTACT_FLUIDS)))
-				L.contact_contract_disease(D)
+				L.contact_contract_disease(D, type = DISEASE_SPREAD_CONTACT_FLUIDS)
 			else //ingest, patch or inject
 				L.ForceContractDisease(D)
 

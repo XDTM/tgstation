@@ -11,7 +11,7 @@
 	desc = "A rare highly transmissible virulent virus. Few samples exist, rumoured to be carefully grown and cultured by clandestine bio-weapon specialists. Causes fever, blood vomiting, lung damage, weight loss, and fatigue."
 	required_organs = list(/obj/item/organ/lungs)
 	severity = DISEASE_SEVERITY_BIOHAZARD
-	bypasses_immunity = TRUE // TB primarily impacts the lungs; it's also bacterial or fungal in nature; viral immunity should do nothing.
+	natural_immunity_chance = 4
 	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_CONTACT_SKIN, DISEASE_SPREAD_AIRBORNE)
 
 /datum/disease/tuberculosis/stage_act() //it begins

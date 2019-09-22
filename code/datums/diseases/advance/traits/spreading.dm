@@ -33,3 +33,17 @@
 /datum/disease_property/trait/airborne_spreading/on_remove()
 	REMOVE_TRAIT(disease, DISEASE_SPREAD_AIRBORNE, type)
 	..()
+
+/datum/disease_property/trait/bluespace_spreading
+	name = "Bluespace Infection"
+	desc = "The disease constantly teleports a portion of its pathogens randomly around the host, potentially infecting nearby targets through any protection. \
+	Takes a severe toll on the disease's speed as a result."
+	speed = -5
+
+/datum/disease_property/trait/bluespace_spreading/on_process()
+	..()
+	if(prob(10))
+		for(var/mob/living/carbon/C in range(4, disease.affected_mob))
+			C.ForceContractDisease(disease)
+			return //only one
+

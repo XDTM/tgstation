@@ -6,9 +6,10 @@
 	cure_chance = 10
 	agent = "1nqu1s1t10n flu virion"
 	viable_mobtypes = list(/mob/living/carbon/human)
-	base_infect_chance = 35
+	base_infect_chance = 10
 	desc = "If left untreated the subject will burn to death for being a heretic."
 	severity = DISEASE_SEVERITY_DANGEROUS
+	natural_immunity_chance = 10
 	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_AIRBORNE)
 
 /datum/disease/fluspanish/stage_act()

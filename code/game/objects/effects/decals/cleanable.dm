@@ -23,7 +23,7 @@
 			if(HAS_TRAIT(D, DISEASE_SPREAD_CONTACT_FLUIDS))
 				diseases_to_add += D
 		if(LAZYLEN(diseases_to_add))
-			AddComponent(/datum/component/infective, diseases_to_add)
+			AddComponent(/datum/component/infective, diseases_to_add, null, DISEASE_SPREAD_CONTACT_FLUIDS)
 
 	var/turf/T = get_turf(src)
 	if(T && is_station_level(T.z))

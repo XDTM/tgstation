@@ -111,12 +111,12 @@
 	for(var/thing in diseases)
 		var/datum/disease/D = thing
 		if(HAS_TRAIT(D, DISEASE_SPREAD_CONTACT_SKIN))
-			user.contact_contract_disease(D)
+			user.contact_contract_disease(D, type = DISEASE_SPREAD_CONTACT_SKIN)
 
 	for(var/thing in user.diseases)
 		var/datum/disease/D = thing
 		if(HAS_TRAIT(D, DISEASE_SPREAD_CONTACT_SKIN))
-			contact_contract_disease(D)
+			contact_contract_disease(D, type = DISEASE_SPREAD_CONTACT_SKIN)
 
 	for(var/datum/surgery/S in surgeries)
 		if(!(mobility_flags & MOBILITY_STAND) || !S.lying_required)
@@ -132,12 +132,12 @@
 		for(var/thing in diseases)
 			var/datum/disease/D = thing
 			if(HAS_TRAIT(D, DISEASE_SPREAD_CONTACT_SKIN) && prob(85))
-				M.contact_contract_disease(D)
+				M.contact_contract_disease(D, type = DISEASE_SPREAD_CONTACT_SKIN)
 
 	for(var/thing in M.diseases)
 		var/datum/disease/D = thing
 		if(HAS_TRAIT(D, DISEASE_SPREAD_CONTACT_SKIN))
-			contact_contract_disease(D)
+			contact_contract_disease(D, type = DISEASE_SPREAD_CONTACT_SKIN)
 
 	if(M.a_intent == INTENT_HELP)
 		help_shake_act(M)

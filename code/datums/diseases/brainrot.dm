@@ -9,6 +9,7 @@
 	cure_chance = 15//higher chance to cure, since two reagents are required
 	desc = "This disease destroys the braincells, causing brain fever, brain necrosis and general intoxication."
 	required_organs = list(/obj/item/organ/brain)
+	natural_immunity_chance = 8
 	severity = DISEASE_SEVERITY_HARMFUL	
 	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_SKIN, DISEASE_SPREAD_CONTACT_FLUIDS)
 

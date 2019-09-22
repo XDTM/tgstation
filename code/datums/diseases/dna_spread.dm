@@ -11,6 +11,7 @@
 	var/transformed = FALSE
 	desc = "This disease transplants the genetic code of the initial vector into new hosts."
 	severity = DISEASE_SEVERITY_MEDIUM
+	natural_immunity_chance = 6
 	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_SKIN, DISEASE_SPREAD_CONTACT_FLUIDS)
 
 /datum/disease/dnaspread/Copy()

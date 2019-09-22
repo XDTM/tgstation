@@ -245,12 +245,15 @@
 		stats["speed"] = CLAMP(stats["speed"] + P.speed, 1, 10)
 		stats["infectivity"] = CLAMP(stats["infectivity"] + P.infectivity, 1, 10)
 
-	base_infect_chance = stats["infectivity"] * 10 //10% at infectivity 1, 100% at infectivity 10
+	base_infect_chance = 5 + stats["infectivity"] * 2 //7% at infectivity 1, 25% at infectivity 10 (28%/100% at stage 5 due to the x4 multiplier)
 
 	//Average time for stage 5: 15 minutes at speed 1, 1.5 minutes at speed 10
 	stage_time_min = 1200 / stats["speed"] // 12 seconds at speed 10, 2 minutes at speed 1
 	stage_time_max = 2400 / stats["speed"] // 24 seconds at speed 10, 4 minutes at speed 1
 	
+	//Adjust chance of natural immunity based on resistance
+	natural_immunity_chance = 15 / resistance
+
 	//Generated a cure based on resistance
 	generate_cure(stats["resistance"])
 

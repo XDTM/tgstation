@@ -6,10 +6,11 @@
 	agent = "Fukkos Miracos"
 	viable_mobtypes = list(/mob/living/carbon/human)
 	disease_flags = CAN_CARRY|CAN_RESIST|CURABLE
-	base_infect_chance = 40
+	base_infect_chance = 10
 	desc = "This disease disrupts the magnetic field of your body, making it act as if a powerful magnet. Injections of iron help stabilize the field."
 	severity = DISEASE_SEVERITY_MEDIUM
 	infectable_biotypes = MOB_ORGANIC|MOB_ROBOTIC
+	natural_immunity_chance = 5
 	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_AIRBORNE, DISEASE_PROCESS_DEAD)
 
 /datum/disease/magnitis/stage_act()

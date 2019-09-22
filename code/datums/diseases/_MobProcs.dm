@@ -35,7 +35,7 @@
 	D.try_infect(src)
 
 
-/mob/living/carbon/contact_contract_disease(datum/disease/D, target_zone)
+/mob/living/carbon/contact_contract_disease(datum/disease/D, target_zone, type = DISEASE_SPREAD_CONTACT_SKIN)
 	if(!can_contract_disease(D))
 		return FALSE
 	if(HAS_TRAIT(D, DISEASE_FIXED_HOST))
@@ -49,8 +49,12 @@
 	var/hands_ch = 35
 	var/feet_ch = 15
 
-	if(!prob(D.infectivity * 0.75))
-		return
+	if(type == DISEASE_SPREAD_CONTACT_SKIN)
+		if(!prob(D.get_infect_chance() * DISEASE_CONTACT_SPREAD_COEFF))
+			return
+	else if(type == DISEASE_SPREAD_CONTACT_FLUIDS)
+		if(!prob(D.get_infect_chance() * DISEASE_FLUID_SPREAD_COEFF))
+			return
 
 	if(satiety>0 && prob(satiety/10)) // positive satiety makes it harder to contract the disease.
 		return
@@ -113,7 +117,7 @@
 /mob/living/proc/airborne_contract_disease(datum/disease/D)
 	if(HAS_TRAIT(D, DISEASE_FIXED_HOST))
 		return
-	if(HAS_TRAIT(D, DISEASE_SPREAD_AIRBORNE) && prob(D.infectivity * 0.50))
+	if(HAS_TRAIT(D, DISEASE_SPREAD_AIRBORNE) && prob(D.get_infect_chance() * DISEASE_AIRBORNE_SPREAD_COEFF))
 		ForceContractDisease(D)
 
 /mob/living/carbon/airborne_contract_disease(datum/disease/D)
@@ -139,7 +143,7 @@
 
 /mob/living/carbon/human/can_contract_disease(datum/disease/D)
 	if(dna)
-		if(HAS_TRAIT(src, TRAIT_VIRUSIMMUNE) && !D.bypasses_immunity)
+		if(HAS_TRAIT(src, TRAIT_VIRUSIMMUNE) && !HAS_TRAIT(D, DISEASE_ABSTRACT)) //Abstract diseases are not "real" diseases and thus not subject to immunity
 			return FALSE
 
 	for(var/thing in D.required_organs)

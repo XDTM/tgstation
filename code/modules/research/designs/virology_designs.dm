@@ -257,6 +257,60 @@
 	id = "symptom_vomit"
 	property_type = /datum/disease_property/symptom/vomit
 
+/datum/design/virology/property/symptom/trauma_healthy
+	name = "Anosognosia"
+	desc = "The disease affects the patient's brain, making them unable to notice pain or wounds."
+	id = "symptom_healthy"
+	property_type = /datum/disease_property/symptom/trauma/healthy
+
+/datum/design/virology/property/symptom/trauma_speech_impediment
+	name = "Speech Impediment"
+	desc = "The disease affects the patient's brain, making them unable to form coherent sentences."
+	id = "symptom_speech_impediment"
+	property_type = /datum/disease_property/symptom/trauma/speech_impediment
+
+/datum/design/virology/property/symptom/trauma_muscle_weakness
+	name = "Muscle Weakness"
+	desc = "The disease affects the patient's brain, causing occasional bouts of muscle weakness."
+	id = "symptom_muscle_weakness"
+	property_type = /datum/disease_property/symptom/trauma/muscle_weakness
+
+/datum/design/virology/property/symptom/trauma_muscle_spasms
+	name = "Muscle Spasms"
+	desc = "The disease affects the patient's brain, causing occasional muscle spasms."
+	id = "symptom_muscle_spasms"
+	property_type = /datum/disease_property/symptom/trauma/muscle_spasms
+
+/datum/design/virology/property/symptom/trauma_mute
+	name = "Mutism"
+	desc = "The disease affects the patient's brain, making them completely unable to speak."
+	id = "symptom_mute"
+	property_type = /datum/disease_property/symptom/trauma/mute
+
+/datum/design/virology/property/symptom/trauma_blindness
+	name = "Cerebral Blindness"
+	desc = "The disease affects the patient's brain, making them unable to see."
+	id = "symptom_blindness"
+	property_type = /datum/disease_property/symptom/trauma/blindness
+
+/datum/design/virology/property/symptom/trauma_paralysis
+	name = "Paralysis"
+	desc = "The disease affects the patient's brain, causing paralysis of one or multiple limbs."
+	id = "symptom_paralysis"
+	property_type = /datum/disease_property/symptom/trauma/paralysis
+
+/datum/design/virology/property/symptom/trauma_pacifism
+	name = "Pacifism"
+	desc = "The disease affects the patient's brain, suppressing violent tendencies."
+	id = "symptom_pacifism"
+	property_type = /datum/disease_property/symptom/trauma/pacifism
+
+/datum/design/virology/property/symptom/trauma_phobia
+	name = "Phobia"
+	desc = "The disease affects the patient's brain, causing irrational fears."
+	id = "symptom_phobia"
+	property_type = /datum/disease_property/symptom/trauma/phobia
+
 ///////////////////////////////////////////////////////////
 ////////////////////////////TRAITS/////////////////////////
 ///////////////////////////////////////////////////////////

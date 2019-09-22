@@ -91,12 +91,12 @@
 		for(var/thing in diseases)
 			var/datum/disease/D = thing
 			if(HAS_TRAIT(D, DISEASE_SPREAD_CONTACT_SKIN))
-				L.contact_contract_disease(D)
+				L.contact_contract_disease(D, type = DISEASE_SPREAD_CONTACT_SKIN)
 
 		for(var/thing in L.diseases)
 			var/datum/disease/D = thing
 			if(HAS_TRAIT(D, DISEASE_SPREAD_CONTACT_SKIN))
-				contact_contract_disease(D)
+				contact_contract_disease(D, type = DISEASE_SPREAD_CONTACT_SKIN)
 
 		//Should stop you pushing a restrained person out of the way
 		if(L.pulledby && L.pulledby != src && L.restrained())
@@ -289,12 +289,12 @@
 			for(var/thing in diseases)
 				var/datum/disease/D = thing
 				if(HAS_TRAIT(D, DISEASE_SPREAD_CONTACT_SKIN))
-					L.contact_contract_disease(D)
+					L.contact_contract_disease(D, type = DISEASE_SPREAD_CONTACT_SKIN)
 
 			for(var/thing in L.diseases)
 				var/datum/disease/D = thing
 				if(HAS_TRAIT(D, DISEASE_SPREAD_CONTACT_SKIN))
-					contact_contract_disease(D)
+					contact_contract_disease(D, type = DISEASE_SPREAD_CONTACT_SKIN)
 
 			if(iscarbon(L))
 				var/mob/living/carbon/C = L

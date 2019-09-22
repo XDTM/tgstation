@@ -9,6 +9,7 @@
 	viable_mobtypes = list(/mob/living/carbon/human)
 	desc = "If left untreated the subject will probably drive others to insanity."
 	severity = DISEASE_SEVERITY_MEDIUM
+	natural_immunity_chance = 8
 	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_AIRBORNE)
 
 /datum/disease/pierrot_throat/stage_act()

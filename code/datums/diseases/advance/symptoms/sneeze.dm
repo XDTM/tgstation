@@ -31,4 +31,4 @@
 						if(is_A_facing_B(M, target) && disease_air_spread_walk(get_turf(M), get_turf(target)))
 							target.airborne_contract_disease(disease)
 							if(fluid_spread && HAS_TRAIT(disease, DISEASE_SPREAD_CONTACT_FLUIDS))
-								target.contact_contract_disease(disease)
+								target.contact_contract_disease(disease, type = DISEASE_SPREAD_CONTACT_FLUIDS)

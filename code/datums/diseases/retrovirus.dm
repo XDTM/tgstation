@@ -7,10 +7,11 @@
 	viable_mobtypes = list(/mob/living/carbon/human)
 	desc = "A DNA-altering retrovirus that scrambles the structural and unique enzymes of a host constantly."
 	severity = DISEASE_SEVERITY_HARMFUL
-	base_infect_chance = 30
+	base_infect_chance = 10
 	stage_time_min = 1000
 	stage_time_max = 2000
 	var/restcure = 0
+	natural_immunity_chance = 5
 	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_CONTACT_SKIN)
 
 /datum/disease/dna_retrovirus/New()
