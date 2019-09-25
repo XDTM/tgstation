@@ -21,18 +21,18 @@
 		if(disease.processing)
 			REMOVE_TRAIT(disease.affected_mob, TRAIT_ANTIMAGIC, DISEASE_TRAIT)
 
-/datum/disease_property/symptom/polyvitiligo/on_stage_increase(new_stage, prev_stage)
+/datum/disease_property/symptom/polyvitiligo/passive_effect_start()
 	var/mob/living/carbon/M = disease.affected_mob
-	if(new_stage == 5)
-		ADD_TRAIT(M, TRAIT_ANTIMAGIC, DISEASE_TRAIT)
+	ADD_TRAIT(M, TRAIT_ANTIMAGIC, DISEASE_TRAIT)
 
-/datum/disease_property/symptom/polyvitiligo/on_stage_decrease(new_stage, prev_stage)
+/datum/disease_property/symptom/polyvitiligo/passive_effect_end()
 	var/mob/living/carbon/M = disease.affected_mob
-	if(new_stage == 4)
-		REMOVE_TRAIT(M, TRAIT_ANTIMAGIC, DISEASE_TRAIT)
-
-/datum/disease_property/symptom/polyvitiligo/on_end()
-	REMOVE_TRAIT(disease.affected_mob, TRAIT_ANTIMAGIC, DISEASE_TRAIT)
+	REMOVE_TRAIT(M, TRAIT_ANTIMAGIC, DISEASE_TRAIT)
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		//Return skin tone to normal
+		H.skin_tone = GLOB.skin_tones[deconstruct_block(getblock(H.dna.uni_identity, DNA_SKIN_TONE_BLOCK), GLOB.skin_tones.len)]
+		H.update_body_parts()
 
 /datum/disease_property/symptom/polyvitiligo/activate()
 	var/mob/living/carbon/human/M = disease.affected_mob
@@ -52,11 +52,3 @@
 		else
 			if(message_cooldown())
 				to_chat(M, "<span class='notice'>Your skin tingles...</span>")
-
-/datum/disease_property/symptom/polyvitiligo/on_end()
-	var/mob/living/carbon/human/M = disease.affected_mob
-	if(!istype(M))
-		return
-	//Return skin tone to normal
-	M.skin_tone = GLOB.skin_tones[deconstruct_block(getblock(M.dna.uni_identity, DNA_SKIN_TONE_BLOCK), GLOB.skin_tones.len)]
-	M.update_body_parts()

@@ -19,7 +19,7 @@
 	if(disease.stage == 5 && !M.has_trauma_type(trauma_type, severity))
 		M.gain_trauma(trauma_type, severity)
 
-/datum/disease_property/symptom/trauma/on_end()
+/datum/disease_property/symptom/trauma/passive_effect_end()
 	M.cure_trauma_type(trauma_type, TRAUMA_RESILIENCE_BASIC) //No need to check for severe, if the mutator is active it will be above the cure threshold
 
 /datum/disease_property/symptom/trauma/healthy

@@ -128,6 +128,11 @@
 	mood_change = -4
 	timeout = 3 MINUTES
 
+/datum/mood_event/hallucination_paranoia
+	description = "<span class='warning'>Mysterious noises, shadows moving in your peripheral vision, the feeling of something crawling on your skin...</span>\n"
+	mood_change = -3
+	timeout = 1 MINUTES
+
 /datum/mood_event/painful_medicine
 	description = "<span class='warning'>Medicine may be good for me but right now it stings like hell.</span>\n"
 	mood_change = -5

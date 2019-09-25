@@ -28,24 +28,15 @@
 			to_chat(M, "<span class='warning'>[pick("You feel too hot.", "You feel like your blood is boiling.")]</span>")
 	heat(M)
 
-/datum/disease_property/symptom/fever/on_stage_increase(new_stage, prev_stage)
+/datum/disease_property/symptom/fever/passive_effect_start()
 	var/mob/living/carbon/M = disease.affected_mob
-	if(new_stage == 4)
-		if(!fevering)
-			M.natural_bodytemperature += (40 * multiplier)
-			fevering = TRUE
-		if(prevent_cooling)
-			ADD_TRAIT(M, TRAIT_NO_STABILIZE_HEAT, FEVER_TRAIT)
+	if(!fevering)
+		M.natural_bodytemperature += (40 * multiplier)
+		fevering = TRUE
+	if(prevent_cooling)
+		ADD_TRAIT(M, TRAIT_NO_STABILIZE_HEAT, FEVER_TRAIT)
 
-/datum/disease_property/symptom/fever/on_stage_decrease(new_stage, prev_stage)
-	var/mob/living/carbon/M = disease.affected_mob
-	if(new_stage == 3)
-		if(fevering)
-			M.natural_bodytemperature -= (40 * multiplier)
-			fevering = FALSE
-		REMOVE_TRAIT(M, TRAIT_NO_STABILIZE_HEAT, FEVER_TRAIT)
-
-/datum/disease_property/symptom/fever/on_end()
+/datum/disease_property/symptom/fever/passive_effect_end()
 	var/mob/living/carbon/M = disease.affected_mob
 	if(fevering)
 		M.natural_bodytemperature -= (40 * multiplier)

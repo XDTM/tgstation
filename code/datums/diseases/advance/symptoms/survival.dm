@@ -32,7 +32,8 @@
 		if(M.health <= M.crit_threshold)
 			survival_counter = max(0, survival_counter - 1)
 			if(survival_counter == 0)
-				to_chat(M, "<span class='userdanger'>Your body collapses, suddenly unable to sustain your injuries!")
+				if(HAS_TRAIT_FROM(M, TRAIT_NOSOFTCRIT, DISEASE_TRAIT))
+					to_chat(M, "<span class='userdanger'>Your body collapses, suddenly unable to sustain your injuries!")
 				REMOVE_TRAIT(M, TRAIT_NOSOFTCRIT, DISEASE_TRAIT)
 				REMOVE_TRAIT(M, TRAIT_NOHARDCRIT, DISEASE_TRAIT)
 		else
@@ -41,25 +42,16 @@
 			ADD_TRAIT(M, TRAIT_NOHARDCRIT, DISEASE_TRAIT)
 	
 
-/datum/disease_property/symptom/life_support/on_stage_increase(new_stage, prev_stage)
+/datum/disease_property/symptom/life_support/passive_effect_start()
 	var/mob/living/carbon/M = disease.affected_mob
-	if(new_stage == 5)
-		ADD_TRAIT(M, TRAIT_NOCRITDAMAGE, DISEASE_TRAIT)
-		if(no_death)
-			ADD_TRAIT(M, TRAIT_NODEATH, DISEASE_TRAIT)
-		if(no_crit)
-			ADD_TRAIT(M, TRAIT_NOSOFTCRIT, DISEASE_TRAIT)
-			ADD_TRAIT(M, TRAIT_NOHARDCRIT, DISEASE_TRAIT)
+	ADD_TRAIT(M, TRAIT_NOCRITDAMAGE, DISEASE_TRAIT)
+	if(no_death)
+		ADD_TRAIT(M, TRAIT_NODEATH, DISEASE_TRAIT)
+	if(no_crit)
+		ADD_TRAIT(M, TRAIT_NOSOFTCRIT, DISEASE_TRAIT)
+		ADD_TRAIT(M, TRAIT_NOHARDCRIT, DISEASE_TRAIT)
 
-/datum/disease_property/symptom/life_support/on_stage_decrease(new_stage, prev_stage)
-	var/mob/living/carbon/M = disease.affected_mob
-	if(new_stage == 4)
-		REMOVE_TRAIT(M, TRAIT_NOCRITDAMAGE, DISEASE_TRAIT)
-		REMOVE_TRAIT(M, TRAIT_NODEATH, DISEASE_TRAIT)
-		REMOVE_TRAIT(M, TRAIT_NOSOFTCRIT, DISEASE_TRAIT)
-		REMOVE_TRAIT(M, TRAIT_NOHARDCRIT, DISEASE_TRAIT)
-
-/datum/disease_property/symptom/life_support/on_end()
+/datum/disease_property/symptom/life_support/passive_effect_end()
 	var/mob/living/carbon/M = disease.affected_mob
 	REMOVE_TRAIT(M, TRAIT_NOCRITDAMAGE, DISEASE_TRAIT)
 	REMOVE_TRAIT(M, TRAIT_NODEATH, DISEASE_TRAIT)

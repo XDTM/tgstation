@@ -148,6 +148,11 @@
 	mood_change = 6
 	timeout = 5 MINUTES
 
+/datum/mood_event/mental_clarity
+	description = "<span class='nicegreen'>My thoughts are clearer and faster than usual!</span>\n"
+	mood_change = 2
+	timeout = 2 MINUTES
+
 /datum/mood_event/area
 	description = "" //Fill this out in the area
 	mood_change = 0

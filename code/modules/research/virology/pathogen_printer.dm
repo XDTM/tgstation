@@ -1,53 +1,27 @@
 /obj/machinery/pathogen_printer
 	name = "pathogen printer"
 	desc = "Synthesizes pathogens with different structures and gene combinations."
-	icon_screen = "crew"
-	icon_keyboard = "med_key"
-	circuit = /obj/item/circuitboard/computer/operating
-	ui_x = 350
-	ui_y = 470
-
-	var/mob/living/carbon/human/patient
-	var/obj/structure/table/optable/table
-	var/list/advanced_surgeries = list()
-	var/datum/techweb/linked_techweb
+	icon_state = "pathogen"
+	icon = 'icons/obj/chemical.dmi'
+	circuit = /obj/item/circuitboard/machine/pathogen_printer
+	var/obj/machinery/computer/disease_analyzer/linked_analyzer
 	var/menu = MENU_OPERATION
-	light_color = LIGHT_COLOR_BLUE
 
-/obj/machinery/computer/operating/Initialize()
+/obj/machinery/pathogen_printer/Initialize()
 	. = ..()
-	linked_techweb = SSresearch.science_tech
-	find_table()
+	find_analyzer()
 
-/obj/machinery/computer/operating/attackby(obj/item/O, mob/user, params)
-	if(istype(O, /obj/item/disk/surgery))
-		user.visible_message("<span class='notice'>[user] begins to load \the [O] in \the [src]...</span>", \
-			"<span class='notice'>You begin to load a surgery protocol from \the [O]...</span>", \
-			"<span class='italics'>You hear the chatter of a floppy drive.</span>")
-		var/obj/item/disk/surgery/D = O
-		if(do_after(user, 10, target = src))
-			advanced_surgeries |= D.surgeries
-		return TRUE
-	return ..()
-
-/obj/machinery/computer/operating/proc/sync_surgeries()
-	for(var/i in linked_techweb.researched_designs)
-		var/datum/design/surgery/D = SSresearch.techweb_design_by_id(i)
-		if(!istype(D))
-			continue
-		advanced_surgeries |= D.surgery
-
-/obj/machinery/computer/operating/proc/find_table()
+/obj/machinery/computer/operating/proc/find_analyzer()
 	for(var/direction in GLOB.cardinals)
-		table = locate(/obj/structure/table/optable, get_step(src, direction))
-		if(table)
-			table.computer = src
+		analyzer = locate(/obj/machinery/computer/disease_analyzer, get_step(src, direction))
+		if(analyzer)
+			linked_analyzer = analyzer
 			break
 
 /obj/machinery/computer/operating/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.not_incapacitated_state)
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
-		ui = new(user, src, ui_key, "operating_computer", name, ui_x, ui_y, master_ui, state)
+		ui = new(user, src, ui_key, "pathogen_printer", name, ui_x, ui_y, master_ui, state)
 		ui.open()
 
 /obj/machinery/computer/operating/ui_data(mob/user)

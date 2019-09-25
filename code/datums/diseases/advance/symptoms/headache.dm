@@ -7,6 +7,7 @@
 	level = 1
 	symptom_delay_min = 15
 	symptom_delay_max = 30
+	passive_stage = 4
 	var/headache_active = FALSE
 	var/strong_headache = FALSE
 	var/cluster_headache = FALSE
@@ -29,22 +30,18 @@
 	else
 		brain_hemorrhage = FALSE
 
-/datum/disease_property/symptom/headache/on_stage_increase(new_stage, prev_stage)
-	if(new_stage >= 4 && !headache_active)
+/datum/disease_property/symptom/headache/passive_effect_start()
+	if(!headache_active)
 		if(!strong_headache)
 			SEND_SIGNAL(disease.affected_mob, COMSIG_ADD_MOOD_EVENT, "headache", /datum/mood_event/headache)
 		else
 			SEND_SIGNAL(disease.affected_mob, COMSIG_ADD_MOOD_EVENT, "headache", /datum/mood_event/headache/strong)
 		headache_active = TRUE
 
-/datum/disease_property/symptom/headache/on_stage_decrease(new_stage, prev_stage)
-	if(new_stage <= 3 && headache_active)
+/datum/disease_property/symptom/headache/passive_effect_end()
+	if(headache_active)
 		SEND_SIGNAL(disease.affected_mob, COMSIG_CLEAR_MOOD_EVENT, "headache")
 		headache_active = FALSE
-
-/datum/disease_property/symptom/headache/on_end()
-	SEND_SIGNAL(disease.affected_mob, COMSIG_CLEAR_MOOD_EVENT, "headache")
-	headache_active = FALSE
 
 /datum/disease_property/symptom/headache/activate()
 	var/mob/living/carbon/M = disease.affected_mob
@@ -55,7 +52,7 @@
 		M.adjustOrganLoss(ORGAN_SLOT_BRAIN, rand(10,25))
 	if(disease.stage < 4)
 		if(message_cooldown())
-			to_chat(M, "<span class='warning'>[pick("Your head aches.", "Your head pounds.")]</span>")
+			to_chat(M, "<span class='warning'>[pick("Your head feels stuffed.", "Your head pounds.")]</span>")
 	else
 		if(!strong_headache)
 			to_chat(M, "<span class='warning'>[pick("Your head hurts.", "Your head pounds painfully.")]</span>")

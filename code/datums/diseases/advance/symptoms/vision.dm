@@ -22,21 +22,13 @@
 		if(disease.processing)
 			REMOVE_TRAIT(disease.affected_mob, TRAIT_THERMAL_VISION, OCULAR_REGROWTH_TRAIT)
 
-/datum/disease_property/symptom/ocular_regrowth/on_stage_increase(new_stage, prev_stage)
-	if(new_stage == 5)
-		if(thermal_vision)
-			ADD_TRAIT(disease.affected_mob, TRAIT_THERMAL_VISION, OCULAR_REGROWTH_TRAIT)
-		if(flash_proof)
-			ADD_TRAIT(disease.affected_mob, TRAIT_FLASH_PROOF, OCULAR_REGROWTH_TRAIT)
+/datum/disease_property/symptom/ocular_regrowth/passive_effect_start()
+	if(thermal_vision)
+		ADD_TRAIT(disease.affected_mob, TRAIT_THERMAL_VISION, OCULAR_REGROWTH_TRAIT)
+	if(flash_proof)
+		ADD_TRAIT(disease.affected_mob, TRAIT_FLASH_PROOF, OCULAR_REGROWTH_TRAIT)
 
-/datum/disease_property/symptom/ocular_regrowth/on_stage_decrease(new_stage, prev_stage)
-	if(new_stage == 4)
-		if(thermal_vision)
-			REMOVE_TRAIT(disease.affected_mob, TRAIT_THERMAL_VISION, OCULAR_REGROWTH_TRAIT)
-		if(flash_proof)
-			REMOVE_TRAIT(disease.affected_mob, TRAIT_FLASH_PROOF, OCULAR_REGROWTH_TRAIT)
-
-/datum/disease_property/symptom/ocular_regrowth/on_end(new_stage, prev_stage)
+/datum/disease_property/symptom/ocular_regrowth/passive_effect_end()
 	REMOVE_TRAIT(disease.affected_mob, TRAIT_THERMAL_VISION, OCULAR_REGROWTH_TRAIT)
 	REMOVE_TRAIT(disease.affected_mob, TRAIT_FLASH_PROOF, OCULAR_REGROWTH_TRAIT)
 
@@ -51,7 +43,7 @@
 				if(regrowth_progress >= 100)
 					var/obj/item/organ/eyes/new_eyes = new
 					new_eyes.Insert(C)
-					to_chat(C, "<span class='notice'>You feel a pressure behind your eye sockets... then you realize that you have a new pair of eyes!</span>")
+					to_chat(C, "<span class='notice'>You feel a pressure behind your eye sockets... then you open your eyelids and realize that you have a new pair of eyes!</span>")
 					regrowth_progress = 0
 				return
 			if(HAS_TRAIT_FROM(C, TRAIT_BLIND, EYE_DAMAGE))
@@ -77,7 +69,7 @@
 					eyes.applyOrganDamage(-2)
 					regrowth_progress = 0
 			else
-				regrowth_progress = 0 //Won't store regrowth for the next damage
+				regrowth_progress = 0 //Won't store regrowth until there is some form of damage
 		else
 			if(message_cooldown())
 				to_chat(C, "<span class='notice'>[pick("Your eyes feel great.","You feel like your eyes can focus more clearly.", "You don't feel the need to blink.")]</span>")

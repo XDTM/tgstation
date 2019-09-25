@@ -5,7 +5,6 @@
 /datum/disease_property/symptom/hallucinations
 	name = "Hallucinations"
 	desc = "The disease stimulates the brain, causing occasional hallucinations."
-	level = 5
 	symptom_delay_min = 25
 	symptom_delay_max = 90
 	var/hypnosis = FALSE
@@ -28,13 +27,16 @@
 		if(1, 2)
 			if(message_cooldown())
 				to_chat(M, "<span class='notice'>[pick("Something appears in your peripheral vision, then winks out.", "You hear a faint whisper with no source.", "Your head aches.")]</span>")
+			SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "paranoia", /datum/mood_event/hallucination_paranoia)
 		if(3, 4)
 			if(message_cooldown())
 				to_chat(M, "<span class='danger'>[pick("Something is following you.", "You are being watched.", "You hear a whisper in your ear.", "Thumping footsteps slam toward you from nowhere.")]</span>")
+			SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "paranoia", /datum/mood_event/hallucination_paranoia)
 		else
 			if(hypnosis && prob(15))
 				M.apply_status_effect(/datum/status_effect/trance, rand(100,200), FALSE)
 			else
 				if(message_cooldown())
 					to_chat(M, "<span class='userdanger'>[pick("Oh, your head...", "Your head pounds rhytmically.", "They're watching.", "Something in the shadows... wriggling...", "Thumping footsteps slam toward you from nowhere.")]</span>")
+				SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "paranoia", /datum/mood_event/hallucination_paranoia)
 				M.hallucination += (20 * multiplier)

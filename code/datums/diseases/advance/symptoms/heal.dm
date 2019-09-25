@@ -148,15 +148,11 @@
 			REMOVE_TRAIT(disease.affected_mob, TRAIT_NIGHT_VISION, NOCTURNAL_REGEN_TRAIT)
 
 
-/datum/disease_property/symptom/heal/darkness/on_stage_increase(new_stage, prev_stage)
-	if(night_vision && new_stage >= 5)
+/datum/disease_property/symptom/heal/darkness/passive_effect_start()
+	if(night_vision)
 		ADD_TRAIT(disease.affected_mob, TRAIT_NIGHT_VISION, NOCTURNAL_REGEN_TRAIT)
 
-/datum/disease_property/symptom/heal/darkness/on_stage_decrease(new_stage, prev_stage)
-	if(new_stage <= 4)
-		REMOVE_TRAIT(disease.affected_mob, TRAIT_NIGHT_VISION, NOCTURNAL_REGEN_TRAIT)
-
-/datum/disease_property/symptom/heal/darkness/on_end()
+/datum/disease_property/symptom/heal/darkness/passive_effect_end()
 	REMOVE_TRAIT(disease.affected_mob, TRAIT_NIGHT_VISION, NOCTURNAL_REGEN_TRAIT)
 
 /datum/disease_property/symptom/heal/darkness/can_heal()

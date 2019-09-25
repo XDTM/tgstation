@@ -20,9 +20,6 @@
 		if(disease.processing)
 			REMOVE_TRAIT(disease.affected_mob, TRAIT_FORCEWHISPER, VOICE_CHANGE_TRAIT)
 
-/datum/disease_property/symptom/voice_change/on_end()
-	restore_voice()
-
 /datum/disease_property/symptom/voice_change/activate()
 	var/mob/living/carbon/M = disease.affected_mob
 	if(disease.stage < 5)
@@ -31,16 +28,14 @@
 	else if(repeat)
 		randomize_voice()
 
-/datum/disease_property/symptom/voice_change/on_stage_increase(new_stage, prev_stage)
-	if(new_stage == 5)
-		randomize_voice()
-		if(whisper)
-			var/mob/living/carbon/M = disease.affected_mob
-			ADD_TRAIT(M, TRAIT_FORCEWHISPER, VOICE_CHANGE_TRAIT)
+/datum/disease_property/symptom/voice_change/passive_effect_start()
+	randomize_voice()
+	if(whisper)
+		var/mob/living/carbon/M = disease.affected_mob
+		ADD_TRAIT(M, TRAIT_FORCEWHISPER, VOICE_CHANGE_TRAIT)
 
-/datum/disease_property/symptom/voice_change/on_stage_decrease(new_stage, prev_stage)
-	if(new_stage == 4)
-		restore_voice()
+/datum/disease_property/symptom/voice_change/passive_effect_end()
+	restore_voice()
 
 /datum/disease_property/symptom/voice_change/proc/randomize_voice()	
 	var/mob/living/carbon/M = disease.affected_mob

@@ -32,6 +32,8 @@
 /datum/disease_property/symptom/neural_restoration/activate()
 	var/mob/living/M = disease.affected_mob
 	if(disease.stage >= 5)
+		if(prob(15))
+			SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "clarity", /datum/mood_event/mental_clarity)
 		M.adjustOrganLoss(ORGAN_SLOT_BRAIN, -2)
 		if(iscarbon(M))
 			var/mob/living/carbon/C = M

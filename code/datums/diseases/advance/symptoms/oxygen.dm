@@ -22,23 +22,11 @@
 			crit_stop = TRUE
 			return
 		else if(crit_stop)
-			to_chat(M, "<span class='notice'>You stop feeling the need to breathe.</span>")
+			if(!HAS_TRAIT(M, TRAIT_NOBREATH))
+				to_chat(M, "<span class='notice'>You stop feeling the need to breathe.</span>")
 			ADD_TRAIT(M, TRAIT_NOBREATH, DISEASE_TRAIT)
 			crit_stop = FALSE
 		if(message_cooldown())
 			to_chat(M, "<span class='notice'>[pick("You realize you haven't been breathing.", "You don't feel the need to breathe.")]</span>")
 		if(nutrition && (M.nutrition < NUTRITION_LEVEL_WELL_FED))
 			M.adjust_nutrition(1)
-
-/datum/disease_property/symptom/oxygen/on_stage_increase(new_stage, prev_stage)
-	var/mob/living/carbon/M = disease.affected_mob
-	if(new_stage == 5)
-		ADD_TRAIT(M, TRAIT_NOBREATH, DISEASE_TRAIT)
-
-/datum/disease_property/symptom/oxygen/on_stage_decrease(new_stage, prev_stage)
-	var/mob/living/carbon/M = disease.affected_mob
-	if(new_stage == 4)
-		REMOVE_TRAIT(M, TRAIT_NOBREATH, DISEASE_TRAIT)
-
-/datum/disease_property/symptom/oxygen/on_end()
-	REMOVE_TRAIT(disease.affected_mob, TRAIT_NOBREATH, DISEASE_TRAIT)
