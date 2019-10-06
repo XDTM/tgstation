@@ -235,7 +235,7 @@
 /obj/item/reagent_containers/glass/bottle/random_virus
 	name = "Experimental disease culture bottle"
 	desc = "A small bottle. Contains an untested viral culture in synthblood medium."
-	spawned_disease = /datum/disease/advance/random
+	// spawned_disease = /datum/disease/advance/random //TODO Replace with new random proc
 
 /obj/item/reagent_containers/glass/bottle/pierrot_throat
 	name = "Pierrot's Throat culture bottle"

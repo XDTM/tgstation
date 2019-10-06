@@ -8,7 +8,6 @@
 //Disease Flags
 #define CURABLE		(1<<0)
 #define CAN_CARRY	(1<<1)
-#define CAN_RESIST	(1<<2)
 
 //Spread Flags
 #define DISEASE_SPREAD_BLOOD			"disease_spread_blood"	//Allows transfer of disease via blood injection
@@ -46,3 +45,4 @@
 
 //Misc Flags
 #define DISEASE_PROCESS_DEAD	"disease_proc_dead"		//Keeps processing while the host is dead
+#define DISEASE_NO_IMMUNITY		"disease_no_immunity"	//The disease does not give immunity when cured (still does if naturally immune)

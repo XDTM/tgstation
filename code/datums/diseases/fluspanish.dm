@@ -10,6 +10,7 @@
 	desc = "If left untreated the subject will burn to death for being a heretic."
 	severity = DISEASE_SEVERITY_DANGEROUS
 	natural_immunity_chance = 10
+	natural_carrier_chance = 5
 	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_AIRBORNE)
 
 /datum/disease/fluspanish/stage_act()

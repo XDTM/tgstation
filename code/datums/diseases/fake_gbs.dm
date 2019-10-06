@@ -8,6 +8,7 @@
 	desc = "If left untreated death will occur."
 	severity = DISEASE_SEVERITY_BIOHAZARD
 	natural_immunity_chance = 5
+	natural_carrier_chance = 5
 	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_SKIN, DISEASE_SPREAD_CONTACT_FLUIDS)
 
 /datum/disease/fake_gbs/stage_act()

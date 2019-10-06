@@ -1,12 +1,13 @@
 #define MAIN_SCREEN 1
-#define SYMPTOM_DETAILS 2
+#define PROPERTY_DETAILS 2
+#define RESEARCH_SCREEN 3
 
-/obj/machinery/computer/pandemic
-	name = "PanD.E.M.I.C 2200"
-	desc = "Used to work with viruses."
+/obj/machinery/computer/disease_analyzer
+	name = "Disease Analyzer"
+	desc = "Analyzes diseases, using their data and machine learning to generate pathogen DNA designs."
 	density = TRUE
 	icon = 'icons/obj/chemical.dmi'
-	icon_state = "mixer0"
+	icon_state = "viro_analyzer_idle"
 	use_power = TRUE
 	idle_power_usage = 20
 	resistance_flags = ACID_PROOF
@@ -19,15 +20,15 @@
 	var/datum/disease_property/symptom/selected_symptom
 	var/obj/item/reagent_containers/beaker
 
-/obj/machinery/computer/pandemic/Initialize()
+/obj/machinery/computer/disease_analyzer/Initialize()
 	. = ..()
 	update_icon()
 
-/obj/machinery/computer/pandemic/Destroy()
+/obj/machinery/computer/disease_analyzer/Destroy()
 	QDEL_NULL(beaker)
 	return ..()
 
-/obj/machinery/computer/pandemic/examine(mob/user)
+/obj/machinery/computer/disease_analyzer/examine(mob/user)
 	. = ..()
 	if(beaker)
 		var/is_close
@@ -38,63 +39,82 @@
 			. += "It has a beaker inside it."
 		. += "<span class='info'>Alt-click to eject [is_close ? beaker : "the beaker"].</span>"
 
-/obj/machinery/computer/pandemic/AltClick(mob/user)
+/obj/machinery/computer/disease_analyzer/AltClick(mob/user)
 	. = ..()
 	if(user.canUseTopic(src, BE_CLOSE))
 		eject_beaker()
 
-/obj/machinery/computer/pandemic/handle_atom_del(atom/A)
+/obj/machinery/computer/disease_analyzer/handle_atom_del(atom/A)
 	if(A == beaker)
 		beaker = null
 		update_icon()
 	return ..()
 
-/obj/machinery/computer/pandemic/proc/get_by_index(thing, index)
-	if(!beaker || !beaker.reagents)
-		return
-	var/datum/reagent/blood/B = locate() in beaker.reagents.reagent_list
-	if(B && B.data[thing])
-		return B.data[thing][index]
-
-/obj/machinery/computer/pandemic/proc/get_virus_id_by_index(index)
-	var/datum/disease/D = get_by_index("viruses", index)
-	if(D)
-		return D.get_disease_id()
-
-/obj/machinery/computer/pandemic/proc/get_viruses_data(datum/reagent/blood/B)
+/obj/machinery/computer/disease_analyzer/proc/get_disease_data(datum/reagent/blood/B)
 	. = list()
-	var/list/V = B.get_diseases()
+	var/list/diseases = B.get_diseases()
 	var/index = 1
-	for(var/virus in V)
-		var/datum/disease/D = virus
+	for(var/disease in diseases)
+		var/datum/disease/D = disease
 		if(!istype(D))
 			continue
 
 		var/list/this = list()
-		this["name"] = D.name
+		this["name"] = SSdisease.get_disease_name(D.get_disease_id())
 		if(istype(D, /datum/disease/advance))
 			var/datum/disease/advance/A = D
-			var/disease_name = SSdisease.get_disease_name(A.get_disease_id())
-			if((disease_name == "Unknown") && A.mutable)
-				this["can_rename"] = TRUE
-			this["name"] = disease_name
 			this["is_adv"] = TRUE
 			this["symptoms"] = list()
+
+			//Pathogen Details
+			var/datum/pathogen/P = A.pathogen
+			var/list/pathogen = list()
+			pathogen["name"] = P.name
+			pathogen["desc"] = P.desc
+			pathogen["max_symptoms"] = P.max_symptoms
+			pathogen["max_traits"] = P.max_traits
+			this["pathogen"] = list(pathogen)
+
+			//Symptom List
 			var/symptom_index = 1
 			for(var/symptom in A.symptoms)
 				var/datum/disease_property/symptom/S = symptom
 				var/list/this_symptom = list()
 				this_symptom["name"] = S.name
+				this_symptom["desc"] = S.desc
 				this_symptom["sym_index"] = symptom_index
 				symptom_index++
 				this["symptoms"] += list(this_symptom)
+			var/trait_index = 1
+
+			//Trait List
+			for(var/trait in A.disease_traits)
+				var/datum/disease_property/trait/S = trait
+				var/list/this_trait = list()
+				this_trait["name"] = S.name
+				this_trait["desc"] = S.desc
+				this_trait["trait_index"] = trait_index
+				trait_index++
+				this["traits"] += list(this_trait)
+			
+			//Total Stats
 			this["resistance"] = A.stats["resistance"]
 			this["speed"] = A.stats["speed"]
 			this["infectivity"] = A.stats["infectivity"]
+
+			//Active Mutators
+			var/list/mutators = list()
+			mutators["alpha"] = HAS_TRAIT(A, DISEASE_MUTATOR_ALPHA)
+			mutators["beta"] = HAS_TRAIT(A, DISEASE_MUTATOR_BETA)
+			mutators["gamma"] = HAS_TRAIT(A, DISEASE_MUTATOR_GAMMA)
+			mutators["delta"] = HAS_TRAIT(A, DISEASE_MUTATOR_DELTA)
+			mutators["epsilon"] = HAS_TRAIT(A, DISEASE_MUTATOR_EPSILON)
+			this["mutators"] = list(mutators)
+
 		this["index"] = index++
 		this["agent"] = D.agent
 		this["description"] = D.desc || "none"
-		this["spread"] = D.spread_text || "none"
+		this["spread"] = D.get_spread_desc() || "none"
 		this["cure"] = D.cure_text || "none"
 
 		. += list(this)
@@ -104,7 +124,9 @@
 	var/list/this = list()
 	this["name"] = P.name
 	this["desc"] = P.desc
-	this["level"] = P.level
+	this["resistance"] = P.resistance
+	this["speed"] = P.speed
+	this["infectivity"] = P.infectivity
 	if(istype(P, /datum/disease_property/symptom))
 		var/datum/disease_property/symptom/S = P
 		this["threshold_desc"] = S.threshold_desc
@@ -124,21 +146,19 @@
 
 		. += list(this)
 
-/obj/machinery/computer/pandemic/proc/reset_replicator_cooldown()
-	wait = FALSE
-	update_icon()
-	playsound(src, 'sound/machines/ping.ogg', 30, TRUE)
-
 /obj/machinery/computer/pandemic/update_icon()
-	if(stat & BROKEN)
-		icon_state = (beaker ? "mixer1_b" : "mixer0_b")
-		return
-
-	icon_state = "mixer[(beaker) ? "1" : "0"][powered() ? "" : "_nopower"]"
-	if(wait)
-		add_overlay("waitlight")
+	if(beaker)
+		add_overlay("viro_analyzer_sample")
 	else
 		cut_overlays()
+
+	if(stat & BROKEN)
+		icon_state = "viro_analyzer_broken"
+		return
+	
+	if(stat & NOPOWER)
+		icon_state = "viro_analyzer_nopower"
+		return
 
 /obj/machinery/computer/pandemic/proc/eject_beaker()
 	if(beaker)
@@ -168,9 +188,9 @@
 					data[/datum/reagent/blood] = list()
 					data[/datum/reagent/blood]["dna"] = B.data["blood_DNA"] || "none"
 					data[/datum/reagent/blood]["type"] = B.data["blood_type"] || "none"
-					data["viruses"] = get_viruses_data(B)
+					data["diseases"] = get_disease_data(B)
 					data["resistances"] = get_resistance_data(B)
-		if(SYMPTOM_DETAILS)
+		if(PROPERTY_DETAILS)
 			data["property"] = get_property_data(selected_symptom)
 
 	return data
@@ -268,3 +288,7 @@
 /obj/machinery/computer/pandemic/on_deconstruction()
 	eject_beaker()
 	. = ..()
+
+#undef MAIN_SCREEN
+#undef PROPERTY_DETAILS
+#undef RESEARCH_SCREEN

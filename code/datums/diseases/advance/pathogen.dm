@@ -42,8 +42,8 @@
 	speed = 2
 	infectivity = 4
 
-/datum/pathogen/csal_42
-	name = "CSAL-42"
+/datum/pathogen/csal_45
+	name = "CSAL-45"
 	desc = "A modern variant of CSAL-41, this pathogen offers a compromise between miniaturization and capacity."
 	spread_desc = "Airborne"
 	max_symptoms = 3
@@ -123,10 +123,10 @@
 
 /datum/pathogen/dusk
 	name = "Dusk"
-	desc = "An illegal revisitation of the Dawn project, resulting in an even more dangerous pathogen."
+	desc = "A black market version of the Dawn project, resulting in an even more dangerous pathogen."
 	spread_desc = "Fluid Contact"
 	trait_desc = "Undetectable by medical scanners and HUDs."
-	max_symptoms = 2
+	max_symptoms = 3
 	max_traits = 3
 	default_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_CONTACT_SKIN, DISEASE_HIDDEN_HUD, DISEASE_HIDDEN_SCANNER)
 	speed = 4
@@ -136,15 +136,15 @@
 	name = "Midnight"
 	desc = "\[REDACTED\]"
 	spread_desc = "Airborne"
-	trait_desc = "Undetectable by medical scanners and HUDs. Contains an Epsilon mutator."
+	trait_desc = "Undetectable by medical scanners and HUDs. Contains a free Epsilon mutator."
 	max_symptoms = 1
 	max_traits = 3
-	default_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_AIRBORNE, DISEASE_HIDDEN_HUD, DISEASE_HIDDEN_SCANNER)
+	default_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_AIRBORNE, DISEASE_HIDDEN_HUD, DISEASE_HIDDEN_SCANNER, DISEASE_MUTATOR_EPSILON)
 	speed = 2
 	infectivity = 2
 
-/datum/pathogen/syn_dr_111
-	name = "SYN:Dr_111"
+/datum/pathogen/syn_dr_i11
+	name = "SYN:Dr_I11"
 	desc = "Developed by an unnamed syndicate doctor, this pathogen has severely interdependent mechanisms which limit its cusomizability, but give it a spectacular boost in efficiency."
 	spread_desc = "Skin Contact"
 	max_symptoms = 2
@@ -156,7 +156,7 @@
 
 /datum/pathogen/syn_dr_0m3
 	name = "SYN:Dr_0M3"
-	desc = "A modification of SYN:DR_111 geared towards mutators instead of pure efficiency."
+	desc = "A modification of SYN:Dr_I11 geared towards mutators instead of pure efficiency."
 	spread_desc = "Skin Contact"
 	trait_desc = "Contains Alpha, Beta and Gamma mutators."
 	max_symptoms = 2
@@ -170,20 +170,20 @@
 	name = "GREY"
 	desc = "Reverse-engineered from abductor biotechnology, this pathogen is extremely infective, while still having a high core capacity."
 	spread_desc = "Airborne, Skin Contact, Fluid Contact"
-	trait_desc = "Can infect corpses and thrive within dead hosts."
-	max_symptoms = 6
+	trait_desc = "Can infect corpses and thrive within dead hosts. Cured hosts will not gain immunity."
+	max_symptoms = 4
 	max_traits = 4
-	default_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_CONTACT_SKIN, DISEASE_SPREAD_AIRBORNE, DISEASE_PROCESS_DEAD)
-	infectivity = 6
+	default_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_CONTACT_SKIN, DISEASE_SPREAD_AIRBORNE, DISEASE_NO_IMMUNITY, DISEASE_PROCESS_DEAD)
+	infectivity = 5
 
 /datum/pathogen/black
 	name = "BLACK"
 	desc = "Perfection made pathogen. The result of cross-examining ultra-high tech NT biotechnology, underground military bioterror research, and scans of advanced abductor cyber-biology."
 	spread_desc = "Airborne, Skin Contact, Fluid Contact"
-	trait_desc = "Can infect corpses and thrive within dead hosts."
+	trait_desc = "Can infect corpses and thrive within dead hosts. Cured hosts will not gain immunity."
 	max_symptoms = 4
 	max_traits = 3
-	default_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_CONTACT_SKIN, DISEASE_SPREAD_AIRBORNE, DISEASE_PROCESS_DEAD)
+	default_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_CONTACT_SKIN, DISEASE_SPREAD_AIRBORNE, DISEASE_NO_IMMUNITY, DISEASE_PROCESS_DEAD)
 	resistance = 12
 	speed = 12
 	infectivity = 12

@@ -1,7 +1,6 @@
 /datum/disease/pierrot_throat
 	name = "Pierrot's Throat"
 	max_stages = 4
-	spread_text = "Airborne"
 	cure_text = "Banana products, especially banana bread."
 	cures = list(/datum/reagent/consumable/banana)
 	cure_chance = 75
@@ -10,6 +9,7 @@
 	desc = "If left untreated the subject will probably drive others to insanity."
 	severity = DISEASE_SEVERITY_MEDIUM
 	natural_immunity_chance = 8
+	natural_carrier_chance = 8
 	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_AIRBORNE)
 
 /datum/disease/pierrot_throat/stage_act()

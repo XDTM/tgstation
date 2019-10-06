@@ -170,7 +170,10 @@
 		for(var/thing in diseases)
 			var/datum/disease/D = thing
 			if(!HAS_TRAIT(D, DISEASE_ABSTRACT)) //Not an actual pathogen
-				blood_data["viruses"] += D.Copy()
+				var/datum/disease/disease_copy = D.Copy()
+				if(D.stage == 5)
+					disease_copy.live_sample = TRUE
+				blood_data["viruses"] += disease_copy
 
 		blood_data["blood_DNA"] = copytext(dna.unique_enzymes,1,0)
 		if(disease_resistances && disease_resistances.len)

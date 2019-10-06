@@ -1,7 +1,6 @@
 /datum/disease_property/symptom/heal
 	name = "Basic Healing (does nothing)" //warning for adminspawn diseasees
 	desc = "You should not be seeing this."
-	level = 0
 	var/passive_message = "" //Random message to the host warning them that the symptom exists
 
 /datum/disease_property/symptom/heal/on_process()
@@ -34,7 +33,6 @@
 /datum/disease_property/symptom/heal/starlight
 	name = "Starlight Condensation"
 	desc = "The disease reacts to direct starlight, producing regenerative chemicals. Works best against toxin-based damage."
-	level = 6
 	passive_message = "<span class='notice'>You miss the feeling of starlight on your skin.</span>"
 	var/nearspace_penalty = 0.3
 	threshold_desc = "<b>Stage Speed 6:</b> Increases healing speed.<br>\
@@ -255,7 +253,6 @@
 /datum/disease_property/symptom/heal/water
 	name = "Tissue Hydration"
 	desc = "The disease uses excess water inside and outside the body to repair damaged tissue cells. More effective when using holy water and against burns."
-	level = 6
 	passive_message = "<span class='notice'>Your skin feels oddly dry...</span>"
 	var/absorption_coeff = 1
 	threshold_desc = "<b>ALPHA:</b> Water is consumed more efficiently."
@@ -304,7 +301,6 @@
 /datum/disease_property/symptom/heal/plasma
 	name = "Plasma Fixation"
 	desc = "The disease draws plasma from the atmosphere and from inside the body to heal and stabilize body temperature."
-	level = 8
 	passive_message = "<span class='notice'>You feel an odd attraction to plasma.</span>"
 	var/temp_immune = FALSE
 	var/tox_immune = FALSE
@@ -382,7 +378,6 @@
 /datum/disease_property/symptom/heal/radiation
 	name = "Radioactive Resonance"
 	desc = "The disease uses radiation to fix damage through local cellular mutations."
-	level = 6
 	passive_message = "<span class='notice'>Your skin glows faintly.</span>"
 	var/glow = FALSE
 	var/obj/effect/dummy/viral_glow/glow_object

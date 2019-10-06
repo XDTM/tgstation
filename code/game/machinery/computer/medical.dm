@@ -249,7 +249,7 @@
 					AfS += " [initial(M.name)];"
 				temp = {"<b>Name:</b> [Dis.name]
 <BR><b>Number of stages:</b> [Dis.max_stages]
-<BR><b>Spread:</b> [Dis.spread_text] Transmission
+<BR><b>Spread:</b> [Dis.get_spread_desc()]
 <BR><b>Possible Cure:</b> [(Dis.cure_text||"none")]
 <BR><b>Affected Lifeforms:</b>[AfS]
 <BR>

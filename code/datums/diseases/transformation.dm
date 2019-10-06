@@ -101,7 +101,7 @@
 	cures = list(/datum/reagent/medicine/adminordrazine)
 	viable_mobtypes = list(/mob/living/carbon/monkey, /mob/living/carbon/human)
 	cure_chance = 1
-	disease_flags = CAN_CARRY|CAN_RESIST
+	disease_flags = CAN_CARRY
 	desc = "Monkeys with this disease will bite humans, causing humans to mutate into a monkey."
 	severity = DISEASE_SEVERITY_BIOHAZARD
 	stage_time_min = 300

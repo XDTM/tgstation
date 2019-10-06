@@ -488,103 +488,103 @@
 	name = "AB Murion"
 	desc = "The current intergalactic standard for disease research, striking a good balance between core and membrane. Recommended by 9 virologists out of 10."
 	id = "pathogen_ab_murion"
-	var/pathogen_type = /datum/pathogen/ab_murion
+	pathogen_type = /datum/pathogen/ab_murion
 
 /datum/design/virology/pathogen/zy_murion
 	name = "ZY Murion"
 	desc = "A variant of the AB Murion, mutated to spread by skin contact instead of fluids."
 	id = "pathogen_zy_murion"
-	var/pathogen_type = /datum/pathogen/zy_murion
+	pathogen_type = /datum/pathogen/zy_murion
 
 /datum/design/virology/pathogen/csal_41
 	name = "CSAL-41"
 	desc = "A pathogen blueprint resulting from bio-miniaturization research. There is less space to work with, but the reduced size has significant benefits in efficiency and infectivity."
 	id = "pathogen_csal_41"
-	var/pathogen_type = /datum/pathogen/csal_41
+	pathogen_type = /datum/pathogen/csal_41
 
-/datum/design/virology/pathogen/csal_42
-	name = "CSAL-42"
+/datum/design/virology/pathogen/csal_45
+	name = "CSAL-45"
 	desc = "A modern variant of CSAL-41, this pathogen offers a compromise between miniaturization and capacity."
-	id = "pathogen_csal_42"
-	var/pathogen_type = /datum/pathogen/csal_42
+	id = "pathogen_csal_45"
+	pathogen_type = /datum/pathogen/csal_45
 
 /datum/design/virology/pathogen/mono_gtr
 	name = "Mono-GTR"
 	desc = "A pathogen consisting of a specialized core surrounded by several layers of support structures. It was initially used to spread vaccinations to livestock."
 	id = "pathogen_mono_gtr"
-	var/pathogen_type = /datum/pathogen/mono_gtr
+	pathogen_type = /datum/pathogen/mono_gtr
 
 /datum/design/virology/pathogen/mono_pwr
 	name = "Mono-PWR"
 	desc = "A variant of Mono-GTR geared towards maximizing efficiency instead of support structures."
 	id = "pathogen_mono_pwr"
-	var/pathogen_type = /datum/pathogen/mono_pwr
+	pathogen_type = /datum/pathogen/mono_pwr
 
 /datum/design/virology/pathogen/duke_h
 	name = "DUKE.h"
 	desc = "A pathogen designed to be the noble gas equivalent of virology. It has no natural spread mechanism, preventing unintentional outbreaks. \
 	However, these safety features take a heavy toll on the disease's growth speed."
 	id = "pathogen_duke_h"
-	var/pathogen_type = /datum/pathogen/duke_h
+	pathogen_type = /datum/pathogen/duke_h
 
 /datum/design/virology/pathogen/count_d
 	name = "COUNT.d"
 	desc = "A variant of the more common DUKE.h, this pathogen prevents infection even through blood contact by synchronizing to their host's metabolism. The disease needs to be administered \
 	from the original sample to work."
 	id = "pathogen_count_d"
-	var/pathogen_type = /datum/pathogen/count_d
+	pathogen_type = /datum/pathogen/count_d
 
 /datum/design/virology/pathogen/large_8
 	name = "LARGE-8"
 	desc = "A pathogen with an uncommon design, placing the support structures at the center and its multiple cores in an octagonal pattern around it."
 	id = "pathogen_large_8"
-	var/pathogen_type = /datum/pathogen/large_8
+	pathogen_type = /datum/pathogen/large_8
 
 /datum/design/virology/pathogen/huge_16
 	name = "HUGE-16"
 	desc = "A variation of LARGE-8, this massive pathogen has an extreme amount of space for both cores and support structures, but suffers greatly in terms of base efficiency."
 	id = "pathogen_huge_16"
-	var/pathogen_type = /datum/pathogen/huge_16
+	pathogen_type = /datum/pathogen/huge_16
 
 /datum/design/virology/pathogen/dawn
 	name = "Dawn"
 	desc = "The result of the infamous project Dawn: a variation of the AB Murion which is nearly undetectable by medical scans, while being more efficient at the same time. \
 	Its use was heavily restricted after several outbreaks from research institutes proved nearly impossible to eradicate."
 	id = "pathogen_dawn"
-	var/pathogen_type = /datum/pathogen/dawn
+	pathogen_type = /datum/pathogen/dawn
 
 /datum/design/virology/pathogen/dusk
 	name = "Dusk"
-	desc = "An illegal revisitation of the Dawn project, resulting in an even more dangerous pathogen."
+	desc = "A black market version of the Dawn project, resulting in an even more dangerous pathogen."
 	id = "pathogen_dusk"
-	var/pathogen_type = /datum/pathogen/dusk
+	pathogen_type = /datum/pathogen/dusk
 
 /datum/design/virology/pathogen/midnight
 	name = "Midnight"
 	desc = "\[REDACTED\]"
 	id = "pathogen_ab_murion"
-	var/pathogen_type = /datum/pathogen/midnight
+	pathogen_type = /datum/pathogen/midnight
 
-/datum/design/virology/pathogen/syn_dr_111
-	name = "SYN:Dr_111"
+/datum/design/virology/pathogen/syn_dr_i11
+	name = "SYN:Dr_I11"
 	desc = "Developed by an unnamed syndicate doctor, this pathogen has severely interdependent mechanisms which limit its cusomizability, but give it a spectacular boost in efficiency."
-	id = "pathogen_syn_dr_111"
-	var/pathogen_type = /datum/pathogen/syn_dr_111
+	id = "pathogen_syn_dr_i11"
+	pathogen_type = /datum/pathogen/syn_dr_i11
 
 /datum/design/virology/pathogen/syn_dr_0m3
 	name = "SYN:Dr_0M3"
-	desc = "A modification of SYN:DR_111 geared towards mutators instead of pure efficiency."
+	desc = "A modification of SYN:Dr_I11 geared towards mutators instead of pure efficiency."
 	id = "pathogen_syn_dr_0m3"
-	var/pathogen_type = /datum/pathogen/syn_dr_0m3
+	pathogen_type = /datum/pathogen/syn_dr_0m3
 
 /datum/design/virology/pathogen/grey
 	name = "GREY"
 	desc = "Reverse-engineered from abductor biotechnology, this pathogen is extremely infective, while still having a high core capacity."
 	id = "pathogen_grey"
-	var/pathogen_type = /datum/pathogen/grey
+	pathogen_type = /datum/pathogen/grey
 
 /datum/design/virology/pathogen/black
 	name = "BLACK"
-	desc = "Perfection made pathogen."
+	desc = "Perfection made pathogen. The result of cross-examining ultra-high tech NT biotechnology, underground military bioterror research, and scans of advanced abductor cyber-biology."
 	id = "pathogen_black"
-	var/pathogen_type = /datum/pathogen/black
+	pathogen_type = /datum/pathogen/black

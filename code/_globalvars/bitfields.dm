@@ -180,8 +180,7 @@ GLOBAL_LIST_INIT(bitfields, list(
 	),
 	"disease_flags" = list (
 		"CURABLE" = CURABLE,
-		"CAN_CARRY"	= CAN_CARRY,
-		"CAN_RESIST" = CAN_RESIST
+		"CAN_CARRY"	= CAN_CARRY
 	),
 	"mob_biotypes" = list (
 		"MOB_ORGANIC" = MOB_ORGANIC,

@@ -1,7 +1,6 @@
 /datum/disease/brainrot
 	name = "Brainrot"
 	max_stages = 4
-	spread_text = "On contact"
 	cure_text = "Mannitol"
 	cures = list(/datum/reagent/medicine/mannitol)
 	agent = "Cryptococcus Cosmosis"
@@ -10,6 +9,7 @@
 	desc = "This disease destroys the braincells, causing brain fever, brain necrosis and general intoxication."
 	required_organs = list(/obj/item/organ/brain)
 	natural_immunity_chance = 8
+	natural_carrier_chance = 4
 	severity = DISEASE_SEVERITY_HARMFUL	
 	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_SKIN, DISEASE_SPREAD_CONTACT_FLUIDS)
 

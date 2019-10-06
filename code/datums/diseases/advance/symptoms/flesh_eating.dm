@@ -4,7 +4,6 @@
 /datum/disease_property/symptom/flesh_eating
 	name = "Necrotizing Fasciitis"
 	desc = "The disease aggressively attacks body cells, necrotizing tissues and organs."
-	level = 6
 	symptom_delay_min = 3
 	symptom_delay_max = 6
 	var/pain = FALSE

@@ -20,6 +20,7 @@
 		M.gain_trauma(trauma_type, severity)
 
 /datum/disease_property/symptom/trauma/passive_effect_end()
+	var/mob/living/carbon/M = disease.affected_mob
 	M.cure_trauma_type(trauma_type, TRAUMA_RESILIENCE_BASIC) //No need to check for severe, if the mutator is active it will be above the cure threshold
 
 /datum/disease_property/symptom/trauma/healthy

@@ -5,7 +5,7 @@
 	symptom_delay_max = 20
 	var/camo_skin = FALSE
 	var/anti_magic = FALSE
-	threshold_desc = "<b>GAMMA:</b> The skin pigment becomes mimetic, taking the color of whatever's behind the host.\n
+	threshold_desc = "<b>GAMMA:</b> The skin pigment becomes mimetic, taking the color of whatever's behind the host.\
 					  <b>THETA:</b> The disease creates an exotic matter layer on top of the host's skin, shielding them from magic influences."
 
 /datum/disease_property/symptom/polyvitiligo/update_mutators()

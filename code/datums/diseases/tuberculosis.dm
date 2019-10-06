@@ -2,7 +2,6 @@
 	form = "Disease"
 	name = "Fungal tuberculosis"
 	max_stages = 5
-	spread_text = "Airborne"
 	cure_text = "Spaceacillin & Convermol"
 	cures = list(/datum/reagent/medicine/spaceacillin, /datum/reagent/medicine/C2/convermol)
 	agent = "Fungal Tubercle bacillus Cosmosis"
@@ -12,6 +11,7 @@
 	required_organs = list(/obj/item/organ/lungs)
 	severity = DISEASE_SEVERITY_BIOHAZARD
 	natural_immunity_chance = 4
+	natural_carrier_chance = 4
 	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_CONTACT_SKIN, DISEASE_SPREAD_AIRBORNE)
 
 /datum/disease/tuberculosis/stage_act() //it begins

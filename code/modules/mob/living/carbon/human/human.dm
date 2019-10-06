@@ -101,7 +101,7 @@
 					stat("Viruses:", null)
 					for(var/thing in diseases)
 						var/datum/disease/D = thing
-						stat("*", "[D.name], Type: [D.spread_text], Stage: [D.stage]/[D.max_stages], Possible Cure: [D.cure_text]")
+						stat("*", "[D.name], Type: [D.get_spread_desc()], Stage: [D.stage]/[D.max_stages], Possible Cure: [D.cure_text]")
 
 
 /mob/living/carbon/human/show_inv(mob/user)

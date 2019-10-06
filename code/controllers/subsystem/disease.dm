@@ -29,7 +29,7 @@ SUBSYSTEM_DEF(disease)
 	return current_id
 
 /datum/controller/subsystem/disease/proc/get_disease_name(id)
-	var/datum/disease/advance/A = archive_diseases[id]
+	var/datum/disease/A = archive_diseases[id]
 	if(A.name)
 		return A.name
 	else

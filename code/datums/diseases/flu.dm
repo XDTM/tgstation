@@ -10,6 +10,7 @@
 	desc = "If left untreated the subject will feel quite unwell."
 	severity = DISEASE_SEVERITY_MINOR
 	natural_immunity_chance = 12
+	natural_carrier_chance = 5
 	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_AIRBORNE)
 
 /datum/disease/flu/stage_act()

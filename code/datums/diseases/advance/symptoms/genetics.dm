@@ -1,7 +1,6 @@
 /datum/disease_property/symptom/genetic_mutation
 	name = "DNA Mutation"
 	desc = "The disease bonds with the DNA of the host, causing random mutations until removed."
-	level = 6
 	var/list/possible_mutations
 	var/archived_dna = null
 	symptom_delay_min = 60

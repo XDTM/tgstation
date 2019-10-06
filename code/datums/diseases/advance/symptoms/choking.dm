@@ -5,7 +5,6 @@
 /datum/disease_property/symptom/choking
 	name = "Choking"
 	desc = "The disease causes inflammation of the host's air conduits, leading to intermittent choking."
-	level = 3
 	symptom_delay_min = 30
 	symptom_delay_max = 120
 	threshold_desc = "<b>GAMMA:</b> Doubles the duration of choking episodes."

@@ -34,33 +34,24 @@
 
 /datum/reagent/blood/on_new(list/data)
 	if(istype(data))
-		SetViruses(src, data)
+		init_diseases(src, data)
 
 /datum/reagent/blood/on_merge(list/mix_data)
 	if(data && mix_data)
 		if(data["blood_DNA"] != mix_data["blood_DNA"])
 			data["cloneable"] = 0 //On mix, consider the genetic sampling unviable for pod cloning if the DNA sample doesn't match.
-		if(data["viruses"] || mix_data["viruses"])
+		data["viruses"] += mix_data["viruses"] //Diseases can coexist outside of a host
+	return TRUE
 
-			var/list/mix1 = data["viruses"]
-			var/list/mix2 = mix_data["viruses"]
-
-			// Stop issues with the list changing during mixing.
-			var/list/to_mix = list()
-
-			for(var/datum/disease/advance/AD in mix1)
-				to_mix += AD
-			for(var/datum/disease/advance/AD in mix2)
-				to_mix += AD
-
-			var/datum/disease/advance/AD = disease_multi_mix(to_mix)
-			if(AD)
-				var/list/preserve = list(AD)
-				for(var/D in data["viruses"])
-					if(!istype(D, /datum/disease/advance))
-						preserve += D
-				data["viruses"] = preserve
-	return 1
+/datum/reagent/blood/proc/init_diseases(datum/reagent/R, list/data)
+	if(data)
+		var/list/preserve = list()
+		if(istype(data) && data["viruses"])
+			for(var/datum/disease/A in data["viruses"])
+				preserve += A.Copy()
+			R.data = data.Copy()
+		if(preserve.len)
+			R.data["viruses"] = preserve
 
 /datum/reagent/blood/proc/get_diseases()
 	. = list()

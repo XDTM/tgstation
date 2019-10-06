@@ -4,7 +4,6 @@
 /datum/disease_property/symptom/fire
 	name = "Spontaneous Combustion"
 	desc = "The disease turns fat into an extremely flammable compound, and raises the body's temperature, making the host burst into flames spontaneously."
-	level = 6
 	symptom_delay_min = 20
 	symptom_delay_max = 75
 	var/infective = FALSE

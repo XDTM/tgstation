@@ -19,15 +19,15 @@
 	form = "Advance Disease" // Will let med-scanners know that this disease was engineered.
 	agent = "advance microbes"
 	max_stages = 5
-	spread_text = "Unknown"
 	viable_mobtypes = list(/mob/living/carbon/human, /mob/living/carbon/monkey)
+	severity = "Unknown"
 
 	// NEW VARS
 	var/datum/pathogen/pathogen = null ///The pathogen defining the properties of the disease
 	var/list/stats = list()	///A list containing the current stats of the disease.
 	var/list/symptoms = list() /// The symptoms of the disease.
 	var/list/disease_traits = list() /// The traits of the disease.
-	var/id = ""
+	var/id = "" 
 	var/processing = FALSE
 	var/mutable = TRUE //set to FALSE to prevent most in-game methods of altering the disease via virology
 	var/oldres	//To prevent setting new cures unless resistance changes.
@@ -168,19 +168,6 @@
 		name_symptoms += S.name
 	return "[name] sym:[english_list(name_symptoms)] r:[stats["resistance"]] s:[stats["speed"]] i:[stats["infectivity"]]"
 
-/*
-
-	NEW PROCS
-
- */
-
-/// Mix the properties of two diseases (the src and the argument)
-/datum/disease/advance/proc/mix(datum/disease/advance/D)
-	if(!(is_same(D)))
-		var/list/possible_properties = shuffle(D.get_properties())
-		for(var/datum/disease_property/P in possible_properties)
-			add_property(P.Copy())
-
 /// Checks if a given property is already in the disease
 /datum/disease/advance/proc/has_property(datum/disease_property/D)
 	for(var/datum/disease_property/property in get_properties())
@@ -189,10 +176,8 @@
 	return FALSE
 
 /// Will pick a random property within the levels specified. Can optionally generate only symptoms or only traits.
-/datum/disease/advance/proc/get_random_property(level_min, level_max, symptom = TRUE, trait = TRUE)
+/datum/disease/advance/proc/get_random_property(symptom = TRUE, trait = TRUE)
 	if(!symptom && !trait)
-		return
-	if(level_min > level_max)
 		return
 
 	var/list/possible_properties = list()
@@ -202,7 +187,7 @@
 			continue
 		if(!trait && ispath(P, /datum/disease_property/trait))
 			continue
-		if(initial(P.naturally_occuring) && initial(P.level) >= level_min && initial(P.level) <= level_max)
+		if(initial(P.naturally_occuring))
 			if(!has_property(P))
 				possible_properties += P
 
@@ -252,7 +237,10 @@
 	stage_time_max = 2400 / stats["speed"] // 24 seconds at speed 10, 4 minutes at speed 1
 	
 	//Adjust chance of natural immunity based on resistance
-	natural_immunity_chance = 15 / resistance
+	natural_immunity_chance = 15 / stats["resistance"]
+
+	//Adjust chance of natural carrier based on resistance
+	natural_carrier_chance = 15 / stats["resistance"]
 
 	//Generated a cure based on resistance
 	generate_cure(stats["resistance"])
@@ -260,28 +248,6 @@
 /datum/disease/advance/proc/update_mutators()
 	for(var/datum/disease_property/symptom/S in symptoms)
 		S.update_mutators()
-
-/datum/disease/advance/proc/SetSeverity(level_sev)
-
-	switch(level_sev)
-
-		if(-INFINITY to 0)
-			severity = DISEASE_SEVERITY_POSITIVE
-		if(1)
-			severity = DISEASE_SEVERITY_NONTHREAT
-		if(2)
-			severity = DISEASE_SEVERITY_MINOR
-		if(3)
-			severity = DISEASE_SEVERITY_MEDIUM
-		if(4)
-			severity = DISEASE_SEVERITY_HARMFUL
-		if(5)
-			severity = DISEASE_SEVERITY_DANGEROUS
-		if(6 to INFINITY)
-			severity = DISEASE_SEVERITY_BIOHAZARD
-		else
-			severity = "Unknown"
-
 
 // Will generate a random cure, the more resistance the symptoms have, the harder the cure.
 /datum/disease/advance/proc/generate_cure(resistance)
@@ -323,7 +289,7 @@
 			P.remove()
 			refresh(TRUE)
 
-// Name the disease.
+/// Name the disease.
 /datum/disease/advance/proc/assign_name(name = "Unknown")
 	refresh()
 	var/datum/disease/advance/A = SSdisease.archive_diseases[get_disease_id()]
@@ -337,60 +303,17 @@
 		id = SSdisease.generate_id()
 	return id
 
-/// Calls add_symptom or add_trait based on the property type
+/// Adds a property to the disease
 /datum/disease/advance/proc/add_property(datum/disease_property/P, overwrite = TRUE)
 	P.add_to(src, overwrite)
 
 /datum/disease/advance/proc/remove_property(datum/disease_property/P)
 	P.remove()
 
+/// Gets a list containing all disease symptoms and traits
 /datum/disease/advance/proc/get_properties()
 	var/list/properties = symptoms + disease_traits
 	return properties
-/*
-
-	Static Procs
-
-*/
-
-/// Mix a list of advance diseases and return the mixed result.
-/proc/disease_multi_mix(list/D_list)
-	var/list/diseases = list()
-
-	for(var/datum/disease/advance/A in D_list)
-		diseases += A.Copy()
-
-	if(!diseases.len)
-		return null
-	if(diseases.len <= 1)
-		return pick(diseases) // Just return the only entry.
-
-	var/i = 0
-	// Mix our diseases until we are left with only one result.
-	while(i < 20 && diseases.len > 1)
-
-		i++
-
-		var/datum/disease/advance/D1 = pick(diseases)
-		diseases -= D1
-
-		var/datum/disease/advance/D2 = pick(diseases)
-		D2.mix(D1)
-
-	 // Should be only 1 entry left, but if not let's only return a single entry
-	var/datum/disease/advance/to_return = pick(diseases)
-	to_return.refresh(TRUE)
-	return to_return
-
-/proc/SetViruses(datum/reagent/R, list/data)
-	if(data)
-		var/list/preserve = list()
-		if(istype(data) && data["viruses"])
-			for(var/datum/disease/A in data["viruses"])
-				preserve += A.Copy()
-			R.data = data.Copy()
-		if(preserve.len)
-			R.data["viruses"] = preserve
 
 // /proc/AdminCreateVirus(client/user)
 

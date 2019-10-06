@@ -1,15 +1,15 @@
 /datum/disease/wizarditis
 	name = "Wizarditis"
 	max_stages = 4
-	spread_text = "Airborne"
 	cure_text = "The Manly Dorf"
 	cures = list(/datum/reagent/consumable/ethanol/manly_dorf)
 	cure_chance = 100
 	agent = "Rincewindus Vulgaris"
 	viable_mobtypes = list(/mob/living/carbon/human)
-	disease_flags = CAN_CARRY|CAN_RESIST|CURABLE
+	disease_flags = CAN_CARRY|CURABLE
 	base_infect_chance = 10
 	natural_immunity_chance = 5
+	natural_carrier_chance = 5
 	desc = "Some speculate that this virus is the cause of the Space Wizard Federation's existence. Subjects affected show the signs of mental retardation, yelling obscure sentences or total gibberish. On late stages subjects sometime express the feelings of inner power, and, cite, 'the ability to control the forces of cosmos themselves!' A gulp of strong, manly spirits usually reverts them to normal, humanlike, condition."
 	severity = DISEASE_SEVERITY_HARMFUL
 	required_organs = list(/obj/item/bodypart/head)

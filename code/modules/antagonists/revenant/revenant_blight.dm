@@ -4,7 +4,6 @@
 	stage_time_min = 60
 	stage_time_max = 140
 	cure_text = "Holy water or extensive rest."
-	spread_text = "A burst of unholy energy"
 	cures = list(/datum/reagent/water/holywater)
 	cure_chance = 50 //higher chance to cure, because revenants are assholes
 	agent = "Unholy Forces"

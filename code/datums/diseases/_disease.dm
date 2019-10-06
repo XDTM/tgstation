@@ -1,13 +1,12 @@
 /datum/disease
 	//Flags
-	var/disease_flags = CURABLE|CAN_CARRY|CAN_RESIST
+	var/disease_flags = CURABLE|CAN_CARRY
 
 	//Fluff
 	var/form = "Virus"
 	var/name = "No disease"
 	var/desc = ""
 	var/agent = "some microbes"
-	var/spread_text = ""
 	var/cure_text = ""
 
 	//Stages
@@ -23,7 +22,7 @@
 	var/list/cures = list() //list of cures if the disease has the CURABLE flag, these are reagent ids
 	var/infectivity = 65
 	var/cure_chance = 8
-	var/carrier = FALSE //If our host is only a carrier
+	
 	var/base_infect_chance = 15 //Chance to infect a new host. Modified by the type of infection.
 	var/severity = DISEASE_SEVERITY_NONTHREAT
 	var/list/required_organs = list()
@@ -31,7 +30,10 @@
 	var/list/strain_data = list() //dna_spread special bullshit
 	var/infectable_biotypes = MOB_ORGANIC //if the disease can spread on organics, synthetics, or undead
 	var/copy_type = null //if this is null, copies will use the type of the instance being copied
-	var/natural_immunity_chance = 0
+	var/natural_immunity_chance = 0 //chance that the disease is instantly cured upon infection, also generating immunity to it
+	var/natural_carrier_chance = 0 //chance that the host becomes a healthy carrier for the disease, not suffering from it but still being able to spread it
+	var/live_sample = FALSE //tracks if the disease was taken from the blood of a patient when at stage 5
+	var/carrier = FALSE //If our host is only a carrier
 
 	var/inherent_traits = list(DISEASE_SPREAD_AIRBORNE, DISEASE_SPREAD_CONTACT_FLUIDS, DISEASE_SPREAD_CONTACT_SKIN)
 
@@ -68,6 +70,10 @@
 	if(prob(natural_immunity_chance))
 		log_virus("[key_name(infectee)] was naturally immune to the disease: [src.admin_details()] at [loc_name(source_turf)]")
 		D.cure()
+
+	if(prob(natural_carrier_chance))
+		log_virus("[key_name(infectee)] was naturally a healthy carrier to the disease: [src.admin_details()] at [loc_name(source_turf)]")
+		D.carrier = TRUE
 
 /datum/disease/proc/get_infect_chance()
 	return base_infect_chance * (stage - 1)
@@ -145,9 +151,9 @@
 		end = Temp
 
 
-/datum/disease/proc/cure(add_resistance = TRUE)
+/datum/disease/proc/cure(add_resistance = TRUE, natural_immunity = FALSE)
 	if(affected_mob)
-		if(add_resistance && (disease_flags & CAN_RESIST))
+		if(add_resistance && !HAS_TRAIT(src, DISEASE_ABSTRACT) && !(HAS_TRAIT(src, DISEASE_NO_IMMUNITY) && natural_immunity == FALSE))
 			affected_mob.disease_resistances |= get_disease_id()
 	qdel(src)
 
@@ -168,6 +174,18 @@
 
 /datum/disease/proc/get_disease_id()
 	return "[type]"
+
+/datum/disease/proc/get_spread_desc()
+	var/list/spread_types = list()
+	if(HAS_TRAIT(DISEASE_SPREAD_BLOOD))
+		spread_types += "Blood"
+	if(HAS_TRAIT(DISEASE_SPREAD_CONTACT_FLUIDS))
+		spread_types += "Fluid Contact"
+	if(HAS_TRAIT(DISEASE_SPREAD_CONTACT_SKIN))
+		spread_types += "Skin Contact"
+	if(HAS_TRAIT(DISEASE_SPREAD_CONTACT_AIRBORNE))
+		spread_types += "Airborne"
+	return english_list(spread_types)
 
 //Use this to compare severities
 /proc/get_disease_severity_value(severity)

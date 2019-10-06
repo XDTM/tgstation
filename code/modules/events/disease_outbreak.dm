@@ -60,8 +60,8 @@
 				DS.strain_data["SE"] = H.dna.mutation_index
 			else
 				D = new virus_type()
-		else
-			D = new /datum/disease/advance/random(max_severity, max_severity)
+		// else
+			// D = new /datum/disease/advance/random(max_severity, max_severity)  //TODO Replace with new random proc
 		D.carrier = TRUE
 		H.ForceContractDisease(D, FALSE, TRUE)
 

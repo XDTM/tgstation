@@ -6,9 +6,10 @@
 	cure_chance = 15//higher chance to cure, since two reagents are required
 	agent = "Gravitokinetic Bipotential SADS+"
 	viable_mobtypes = list(/mob/living/carbon/human)
-	disease_flags = CAN_CARRY|CAN_RESIST|CURABLE
+	disease_flags = CAN_CARRY|CURABLE
 	severity = DISEASE_SEVERITY_BIOHAZARD
 	natural_immunity_chance = 10
+	natural_carrier_chance = 5
 	inherent_traits = list(DISEASE_SPREAD_BLOOD, DISEASE_SPREAD_CONTACT_SKIN, DISEASE_SPREAD_CONTACT_FLUIDS)
 
 /datum/disease/gbs/stage_act()

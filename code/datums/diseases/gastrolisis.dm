@@ -1,7 +1,6 @@
 /datum/disease/gastrolosis
 	name = "Invasive Gastrolosis"
 	max_stages = 4
-	spread_text = "Degenerative Virus"
 	cure_text = "Salt and mutadone"
 	agent = "Agent S and DNA restructuring"
 	viable_mobtypes = list(/mob/living/carbon/human)

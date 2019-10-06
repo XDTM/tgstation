@@ -10,7 +10,7 @@
 	desc = @"If left untreated the subject will [REDACTED]!"
 	severity = "Dangerous!"
 	cures = list(/datum/reagent/medicine/rezadone)
-	disease_flags = CAN_CARRY|CAN_RESIST
+	disease_flags = CAN_CARRY
 	inherent_traits = list(DISEASE_ABSTRACT, DISEASE_PROCESS_DEAD)
 
 /datum/disease/decloning/stage_act()

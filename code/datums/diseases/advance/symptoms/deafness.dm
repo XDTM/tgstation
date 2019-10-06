@@ -4,7 +4,6 @@
 /datum/disease_property/symptom/deafness
 	name = "Deafness"
 	desc = "The disease causes inflammation of the eardrums, causing intermittent deafness."
-	level = 4
 	symptom_delay_min = 25
 	symptom_delay_max = 80
 	var/permanent = FALSE

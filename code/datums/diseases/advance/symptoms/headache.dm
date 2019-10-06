@@ -4,7 +4,6 @@
 /datum/disease_property/symptom/headache
 	name = "Headache"
 	desc = "The disease causes inflammation inside the brain, causing constant headaches."
-	level = 1
 	symptom_delay_min = 15
 	symptom_delay_max = 30
 	passive_stage = 4

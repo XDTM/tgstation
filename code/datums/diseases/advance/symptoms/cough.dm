@@ -4,7 +4,6 @@
 /datum/disease_property/symptom/cough
 	name = "Cough"
 	desc = "The disease irritates the throat of the host, causing occasional coughing."
-	level = 1
 	symptom_delay_min = 2
 	symptom_delay_max = 15
 	var/drop_items = FALSE

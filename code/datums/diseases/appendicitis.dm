@@ -7,7 +7,7 @@
 	viable_mobtypes = list(/mob/living/carbon/human)
 	desc = "If left untreated the subject will become very weak, and may vomit often."
 	severity = DISEASE_SEVERITY_MEDIUM
-	disease_flags = CAN_CARRY|CAN_RESIST
+	disease_flags = CAN_CARRY
 	required_organs = list(/obj/item/organ/appendix)
 	inherent_traits = list(DISEASE_ABSTRACT)
 

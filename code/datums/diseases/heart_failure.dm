@@ -9,7 +9,7 @@
 	viable_mobtypes = list(/mob/living/carbon/human)
 	desc = "If left untreated the subject will die!"
 	severity = "Dangerous!"
-	disease_flags = CAN_CARRY|CAN_RESIST
+	disease_flags = CAN_CARRY
 	required_organs = list(/obj/item/organ/heart)
 	var/sound = FALSE
 	inherent_traits = list(DISEASE_ABSTRACT)
